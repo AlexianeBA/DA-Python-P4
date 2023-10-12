@@ -8,7 +8,7 @@ class Player:
         self.score = score
         
     def update_score(self, score):
-        self.score = self.score + score
+        self.score += score
         
     def update_rank(self, new_rank):
         self.rank = new_rank
