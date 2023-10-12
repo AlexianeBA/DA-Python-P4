@@ -14,4 +14,16 @@ class Tournament:
         self.rounds: List[Round] = []
         self.description = description
         
+    def add_tournament(self):
+        add_tournament = {
+            "name": self.name,
+            "location": self.location,
+            "date": self.date,
+            "nb_rounds": self.nb_round,
+            "current_round": self.current_round,
+            "players": self.players.add_player(),
+            "rounds": self.rounds.add_round()
+        }
+        return add_tournament
+    
     
