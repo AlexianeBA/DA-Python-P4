@@ -10,10 +10,11 @@ class Round:
         
     def create_list_matches(self):
         pass
+    #ajouter les 8 matches
     
     def update_score(self):
         pass
-    
+    #mettre à jour le score après chaque tours
     def add_round(self):
         add_round= {
             "name_of_round": self.name_of_round,
