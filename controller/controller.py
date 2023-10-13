@@ -32,7 +32,7 @@ class Controller:
         print(selected_menu)
         if selected_menu == 1:
             add_player = self.create_player()
-            print(add_player)
+        print(add_player)
         if selected_menu == 2:
             display_list_players = self.view.display_player()
             print(display_list_players)
@@ -40,7 +40,7 @@ class Controller:
             create_tournament = self.create_tournament()
             print(create_tournament)
         if selected_menu == 4:
-            play_tournament = self.tournament.play_tournament()
+            play_tournament = self.play_tournament()
             print(play_tournament)
         if selected_menu == 5:
             display_list_tournaments = self.view. diplay_tournaments()
@@ -59,19 +59,32 @@ class Controller:
             print(display_list_matchs_of_tournament)
         if selected_menu == 10:
             pass
-           
+    
+
+    #création d'un tournois   
     def create_tournament(self):
         self.tournament.create_tournament() 
-    def create_player(self):
-        data = self.view.input_player()
-        p=Player(lastname=data["lastname"],
-            firstname=data["firstname"],
-            sexe=data["sexe"],
-            date_of_birth=data["date of birth"],
-            rank=data["rank"],
-            score=data["score"],
-            player_id=data["player_id"])
-        print(p)
-        
-        self.player.save_player_in_db(p,self.db) 
     
+    
+    #création de joueur   
+    def create_player(self):
+        player= Player()
+        player.lastname = self.view.get_player_lastname()
+        player.firstname= self.view.get_player_firstname()
+        # data = self.view.input_player()
+        # player=Player(lastname=data["lastname"],
+        #     firstname=data["firstname"],
+        #     sexe=data["sexe"],
+        #     date_of_birth=data["date of birth"],
+        #     rank=data["rank"],
+        #     score=data["score"],
+        #     player_id=data["player_id"])
+        # print(player)
+        
+        # self.player.save_player_in_db(player,self.db) 
+    
+    def play_tournament(self):
+        self.tournament.play_tournament()
+        
+    
+   

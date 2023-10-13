@@ -26,8 +26,6 @@ class Tournament:
         }
         return add_tournament
     
-    def create_tournament():
-        pass
     
     def play_tournament():
         pass

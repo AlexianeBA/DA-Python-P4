@@ -29,21 +29,21 @@ class Player:
     
     
     #get player
-    def get_player_by_id(self, player_id):
-        player_data = db.get_player_by_id(player_id)
+    # def get_player_by_id(self, player_id):
+    #     player_data = db.get_player_by_id(player_id)
         
-        if player_data:
-            return {
-                "lastname":player_data["lastname"],
-                "firstname":player_data["firstname"],
-                "sexe":player_data["sexe"],
-                "date_of_birth":player_data["date of birth"],
-                "rank":player_data["rank"],
-                "score":player_data["score"],
-                "player_id":player_data["player_id"]
-            }
-        else:
-            return None
+    #     if player_data:
+    #         return {
+    #             "lastname":player_data["lastname"],
+    #             "firstname":player_data["firstname"],
+    #             "sexe":player_data["sexe"],
+    #             "date_of_birth":player_data["date of birth"],
+    #             "rank":player_data["rank"],
+    #             "score":player_data["score"],
+    #             "player_id":player_data["player_id"]
+    #         }
+    #     else:
+    #         return None
         
     #sauvgarder joueur
     

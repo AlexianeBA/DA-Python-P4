@@ -38,6 +38,14 @@ class View:
             "player_id": player_id
         }
         return player_data
+    
+    def get_player_lastname():
+        lastname = input("Nom de famille : ")
+        return lastname
+    
+    def get_player_firstname():
+        firstname = input("Prénom : ")
+        return firstname
    #afficher les joueurs
     def display_player(self):
         pass
