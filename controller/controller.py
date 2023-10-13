@@ -32,7 +32,7 @@ class Controller:
         print(selected_menu)
         if selected_menu == 1:
             add_player = self.create_player()
-        print(add_player)
+            print(add_player)
         if selected_menu == 2:
             display_list_players = self.view.display_player()
             print(display_list_players)
