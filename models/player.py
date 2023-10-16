@@ -8,48 +8,37 @@ class Player:
         self.rank = rank
         self.score = score
         self.player_id = player_id
+        self.opponent = []
         
     def update_score(self, score):
         self.score += score
         
     def update_rank(self, new_rank):
         self.rank = new_rank
-        
-    def serialize_player(self):
-        serialize_player= {
-            "lastname": self.lastname,
-            "firstname": self.firstname,
-            "sexe": self.sexe,
-            "date of birth": self.date_of_birth,
-            "rank": self.rank,
-            "score": self.score,
-            "player_id": self.player_id
+    
+    def add_opponent(self, opponent):
+        self.opponent.append(opponent)
+           
+    def serialize_player(self, player):
+        serialize_player = {
+            "lastname": player.lastname,
+            "firstname": player.firstname,
+            "sexe": player.sexe,
+            "date of birth": player.date_of_birth,
+            "rank": player.rank,
+            "score": player.score,
+            "player_id": player.player_id
         }
         return serialize_player
-    
-    
-    #get player
-    # def get_player_by_id(self, player_id):
-    #     player_data = db.get_player_by_id(player_id)
-        
-    #     if player_data:
-    #         return {
-    #             "lastname":player_data["lastname"],
-    #             "firstname":player_data["firstname"],
-    #             "sexe":player_data["sexe"],
-    #             "date_of_birth":player_data["date of birth"],
-    #             "rank":player_data["rank"],
-    #             "score":player_data["score"],
-    #             "player_id":player_data["player_id"]
-    #         }
-    #     else:
-    #         return None
+      
+   
         
     #sauvgarder joueur
     
-    def save_player_in_db(self,player,db):
+    def save_player_in_db(self,player, db):
         serialize_player = self.serialize_player(player)
         db.insert(serialize_player)
+        print(serialize_player)
     
     
     

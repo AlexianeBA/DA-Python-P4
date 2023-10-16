@@ -19,8 +19,9 @@ from models.match import Match
 class Controller:
     def __init__(self, object_view:View):
         self.view = object_view
-        self.player= Player
+        self.player:Player = Player()
         self.tournament = object_view
+        self.match: Match = Match()
         self.view = object_view
         self.db = TinyDB('db.json')
 
@@ -64,28 +65,32 @@ class Controller:
     
 
 
-    #création d'un tournois   
-    def create_tournament(self):
-        self.tournament.create_tournament() 
-    
+
     
     #création de joueur   
     def create_player(self):
         print("create_player")
-        player= Player()
-        player.lastname = self.view.get_player_lastname()
-        player.firstname= self.view.get_player_firstname()
-        player.sexe= self.view.get_player_sexe()
-        player.date_of_birth= self.view.get_player_date_of_birth()
-        player.rank = self.view.get_player_rank()
-        player.id = self.view.get_player_id()
+        joueur: Player= Player()
+       
+        joueur.lastname = self.view.get_player_lastname()
+        joueur.firstname= self.view.get_player_firstname()
+        joueur.sexe= self.view.get_player_sexe()
+        joueur.date_of_birth= self.view.get_player_date_of_birth()
+        joueur.rank = self.view.get_player_rank()
+        joueur.id = self.view.get_player_id()
         
-        print(player)
-        
-        self.player.save_player_in_db(player,self.db) 
+        print(joueur)
+        #Sauvegarde des données du joeur
+        self.player.save_player_in_db(joueur, self.db) 
     
     # def play_tournament(self):
     #     self.tournament.play_tournament()
         
+ 
     
-   
+       #création d'un tournois   
+    def create_tournament(self):
+        pass
+    
+    def play_tournament():
+        pass

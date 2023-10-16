@@ -3,24 +3,44 @@ from models.match import Match
 
 class Round:
     def __init__(self, name_of_round="", date_and_hour_start= "", date_and_hour_end=""):
+        
         self.list_of_matches: List[Match]= []
         self.name_of_round = name_of_round
         self.date_and_hour_start = date_and_hour_start
         self.date_and_hour_end = date_and_hour_end
         
-    def create_list_matches(self):
+    #ajouter les 8 matches    
+    def create_list_of_matches(self):
+        list_of_players = []
+        list_1 = []
+        list_2 = []
         pass
-    #ajouter les 8 matches
     
-    def update_score(self):
-        pass
     #mettre à jour le score après chaque tours
-    def add_round(self):
-        add_round= {
+    def update_score(self,user_response):
+        match: Match=Match()
+        if user_response == "1":
+            match.player_1.update_score(1)
+            match.player_1_result += 1
+            print("gagant joueur 1")
+        elif user_response == "2":
+            print("gagnant joueur 2")
+            match.player_2.update_score(1)
+            match.player_2_result += 1
+        elif user_response == "0":
+            print("match nul")
+            match.player_1.update_score(1)
+            match.player_1_result += 0.5
+            match.player_2.update_score(1)
+            match.player_2_result += 0.5
+            
+    
+    def serialize_round(self):
+        serialize_round= {
             "name_of_round": self.name_of_round,
             "list_of_matches": self.list_of_matches,
             "date_and_hour_start": self.date_and_hour_start,
             "date_and_hour_end": self.date_and_hour_end
         }
-        return add_round
+        return serialize_round
         
