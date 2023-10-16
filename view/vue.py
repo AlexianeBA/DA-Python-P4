@@ -15,37 +15,55 @@ class View:
         }
         print(menu)
         
-    def menu_user_response(self):
-        self.user_response = input()
+    def menu_user_response(self, prompt):
+        self.user_response = input(prompt)
         return self.user_response
     
     #input player
-    def input_player():
-        print("Veillez entrer vos informations : ")
-        lastname = input("Nom de famille : ")
-        firstname = input("Prénom : ")
-        sexe= input("Sexe : ")
-        date_of_birth = input("Date de naissance : ")
-        rank = input("Classement : ")
-        player_id = input("Votre identifiant de joeur : ")
+    # def input_player():
+    #     print("Veillez entrer vos informations : ")
+    #     lastname = input("Nom de famille : ")
+    #     firstname = input("Prénom : ")
+    #     sexe= input("Sexe : ")
+    #     date_of_birth = input("Date de naissance : ")
+    #     rank = input("Classement : ")
+    #     player_id = input("Votre identifiant de joeur : ")
         
-        player_data = {
-            "lastname": lastname,
-            "firstname": firstname,
-            "sexe": sexe,
-            "date of birth": date_of_birth,
-            "rank": rank,
-            "player_id": player_id
-        }
-        return player_data
+    #     player_data = {
+    #         "lastname": lastname,
+    #         "firstname": firstname,
+    #         "sexe": sexe,
+    #         "date of birth": date_of_birth,
+    #         "rank": rank,
+    #         "player_id": player_id
+    #     }
+    #     return player_data
     
-    def get_player_lastname():
+    def get_player_lastname(self):
+        print("get_player_lastname")
         lastname = input("Nom de famille : ")
         return lastname
     
-    def get_player_firstname():
+    def get_player_firstname(self):
         firstname = input("Prénom : ")
         return firstname
+    
+    def get_player_sexe(self):
+        sexe = input("Sexe: ")
+        return sexe
+    
+    def get_player_date_of_birth(self):
+        date_of_birth = input("Date de naissance: ")
+        return date_of_birth
+    
+    def get_player_rank(self):
+        rank = input("Niveau: ")
+        return rank
+    
+    def get_player_id(self):
+        player_id = input("Identifiant: ")
+        return player_id
+        
    #afficher les joueurs
     def display_player(self):
         pass

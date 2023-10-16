@@ -19,7 +19,7 @@ from models.match import Match
 class Controller:
     def __init__(self, object_view:View):
         self.view = object_view
-        self.player:Player = Player
+        self.player= Player
         self.tournament = object_view
         self.view = object_view
         self.db = TinyDB('db.json')
@@ -28,9 +28,11 @@ class Controller:
     def start(self):
         print("start")
         self.view.display_menu()
-        selected_menu = self.view.menu_user_response()
+        selected_menu = self.view.menu_user_response("Séléctionnez une option")
         print(selected_menu)
-        if selected_menu == 1:
+        print(type(selected_menu))
+        if selected_menu == "1":
+            print("choix 1")
             add_player = self.create_player()
             print(add_player)
         if selected_menu == 2:
@@ -61,6 +63,7 @@ class Controller:
             pass
     
 
+
     #création d'un tournois   
     def create_tournament(self):
         self.tournament.create_tournament() 
@@ -68,23 +71,21 @@ class Controller:
     
     #création de joueur   
     def create_player(self):
+        print("create_player")
         player= Player()
         player.lastname = self.view.get_player_lastname()
         player.firstname= self.view.get_player_firstname()
-        # data = self.view.input_player()
-        # player=Player(lastname=data["lastname"],
-        #     firstname=data["firstname"],
-        #     sexe=data["sexe"],
-        #     date_of_birth=data["date of birth"],
-        #     rank=data["rank"],
-        #     score=data["score"],
-        #     player_id=data["player_id"])
-        # print(player)
+        player.sexe= self.view.get_player_sexe()
+        player.date_of_birth= self.view.get_player_date_of_birth()
+        player.rank = self.view.get_player_rank()
+        player.id = self.view.get_player_id()
         
-        # self.player.save_player_in_db(player,self.db) 
+        print(player)
+        
+        self.player.save_player_in_db(player,self.db) 
     
-    def play_tournament(self):
-        self.tournament.play_tournament()
+    # def play_tournament(self):
+    #     self.tournament.play_tournament()
         
     
    

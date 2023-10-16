@@ -47,8 +47,8 @@ class Player:
         
     #sauvgarder joueur
     
-    def save_player_in_db(self,p,db):
-        serialize_player = self.serialize_player(p)
+    def save_player_in_db(self,player,db):
+        serialize_player = self.serialize_player(player)
         db.insert(serialize_player)
     
     
