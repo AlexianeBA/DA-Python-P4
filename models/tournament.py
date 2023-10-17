@@ -16,6 +16,7 @@ class Tournament:
         self.db = TinyDB('db.json')
         self.table = self.db.table("Tournaments")
         self.player:Player = Player()
+        
     def serialize_tournament(self):
         
         serialize_tournament = {
