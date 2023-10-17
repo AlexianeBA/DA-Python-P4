@@ -1,4 +1,4 @@
-
+from tinydb import TinyDB, Query
 class Player:
     def __init__(self, lastname="", firstname="", sexe="", date_of_birth="", rank="", score=0, player_id=""):
         self.lastname = lastname
@@ -9,6 +9,9 @@ class Player:
         self.score = score
         self.player_id = player_id
         self.opponent = []
+        self.db = TinyDB('db.json')
+        self.table = self.db.table("Players")
+        
         
     def update_score(self, score):
         self.score += score
@@ -30,15 +33,17 @@ class Player:
             "player_id": player.player_id
         }
         return serialize_player
-      
-   
-        
-    #sauvgarder joueur
     
-    def save_player_in_db(self,player, db):
+    #récupérer la liste des joueurs  
+    def get_all_players(self):
+        players = self.db.table("Players").all()
+        return players
+    
+    
+    #sauvgarder joueur
+    def save_player_in_db(self,player):
         serialize_player = self.serialize_player(player)
-        db.insert(serialize_player)
-        print(serialize_player)
+        self.table.insert(serialize_player)
     
     
     
@@ -57,6 +62,6 @@ class Player:
         pass
     
     
- 
+
     
     

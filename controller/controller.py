@@ -21,10 +21,15 @@ class Controller:
         self.view = object_view
         self.player:Player = Player()
         self.tournament = object_view
-        self.match: Match = Match()
+        # self.match: Match = Match()
         self.view = object_view
         self.db = TinyDB('db.json')
-
+        TinyDB.default_table_name = "Players"
+        self.players_table = self.db.table("Players")
+        self.tournament_table = self.db.table("Tournaments")
+       
+        
+        
         
     def start(self):
         print("start")
@@ -36,10 +41,10 @@ class Controller:
             print("choix 1")
             add_player = self.create_player()
             print(add_player)
-        if selected_menu == 2:
-            display_list_players = self.view.display_player()
+        if selected_menu == "2":
+            display_list_players = self.view.display_list_of_players()
             print(display_list_players)
-        if selected_menu == 3:
+        if selected_menu == "3":
             create_tournament = self.create_tournament()
             print(create_tournament)
         if selected_menu == 4:
@@ -69,9 +74,8 @@ class Controller:
     
     #création de joueur   
     def create_player(self):
-        print("create_player")
+        print("Création des joueurs: ")
         joueur: Player= Player()
-       
         joueur.lastname = self.view.get_player_lastname()
         joueur.firstname= self.view.get_player_firstname()
         joueur.sexe= self.view.get_player_sexe()
@@ -81,16 +85,23 @@ class Controller:
         
         print(joueur)
         #Sauvegarde des données du joeur
-        self.player.save_player_in_db(joueur, self.db) 
-    
-    # def play_tournament(self):
-    #     self.tournament.play_tournament()
-        
- 
+        self.player.save_player_in_db(joueur, self.db)
+         
     
        #création d'un tournois   
     def create_tournament(self):
-        pass
+        print("Création d'un nouveau tournoi")
+        name = self.view.get_tournament_name()
+        location = self.view.get_tournament_location()
+        date = self.view.get_tournament_date()
+        # nb_round = self.tournament.nb_rounds
+        descritpion = self.view.get_tournament_description()
+        
+        new_tournament = Tournament(name, location, date, descritpion)
+        
+        self.tournament = new_tournament
+        self.tournament.save_tournament_in_db()
+        return new_tournament
     
     def play_tournament():
         pass

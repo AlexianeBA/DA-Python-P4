@@ -1,4 +1,11 @@
+from models.player import Player
+from tinydb import TinyDB
+from models.tournament import Tournament
+
 class View:
+    def __init__(self):
+        self.player: Player = Player()
+        self.db = TinyDB("db.json")
     def display_menu(self):
         menu = {
             1:"Ajouter des joueurs",
@@ -65,8 +72,16 @@ class View:
         return player_id
         
    #afficher les joueurs
-    def display_player(self):
-        pass
+    def display_list_of_players(self):
+        player: Player = Player()
+        players = self.player.get_all_players()
+        if players:
+            print("Liste des joueurs :")
+            for player in players:
+                print(f"Nom : {player['lastname']}, Prénom : {player['firstname']}, Sexe : {player['sexe']}, Date de naissance : {player['date of birth']}, Classement : {player['rank']}")
+        else:
+            print("Aucun joueur n'a été trouvé dans la base de données.")
+        return players
    
     #afficher le tournoi
     def diplay_tournaments(self):
@@ -106,3 +121,18 @@ class View:
     def display_list_matchs_of_tournament():
         pass
    
+    def get_tournament_name(self):
+        tournament_name = input("Nom du tournoi: ")
+        return tournament_name
+    
+    def get_tournament_location(self):
+        tournament_location = input("Lieu du tournoi: ")
+        return tournament_location
+    
+    def get_tournament_date(self):
+        tournament_date = input("Date du tournoi: ")
+        return tournament_date
+    
+    def get_tournament_description(self):
+        tournament_description = input("Description du tournoi: ")
+        return tournament_description                                                                                                                                                                        
