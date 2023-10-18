@@ -101,7 +101,8 @@ class Controller:
         
         self.tournament = new_tournament
         self.tournament.save_tournament_in_db()
-        return new_tournament
+        
+        self.tournament.create_round()
     
     def play_tournament():
         pass

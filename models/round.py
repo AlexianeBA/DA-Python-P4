@@ -9,18 +9,14 @@ class Round:
         self.date_and_hour_start = date_and_hour_start
         self.date_and_hour_end = date_and_hour_end
         
-    #ajouter les 8 matches    
-    def create_list_of_matches(self, tournament):
-        list_1 = []
-        list_1 = tournament.players[0:4]
-        list_2 = []
-        list_2 = tournament.players[4:8]
-        for i in range(len(list_1)):
-            player_1 = list_1[i]
-            player_2 =list_2[i]
+    #création d'une liste de matches pour un tournoi    
+    def create_list_of_matches(self, player_group_1, player_group_2):
+        for player_1, player_2 in zip(player_group_1, player_group_2):
             match = Match(player_1, player_2, 0,0)
             self.list_of_matches.append(match.add_opponent())
-        return self.list_of_matches
+            
+       
+    
     #mettre à jour le score après chaque tours
     def update_score(self,user_response):
         match: Match=Match()
