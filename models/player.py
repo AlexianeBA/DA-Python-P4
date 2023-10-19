@@ -27,7 +27,7 @@ class Player:
             "lastname": player.lastname,
             "firstname": player.firstname,
             "sexe": player.sexe,
-            "date of birth": player.date_of_birth,
+            "date_of_birth": player.date_of_birth,
             "rank": player.rank,
             "score": player.score,
             "player_id": player.player_id
@@ -37,7 +37,24 @@ class Player:
     #récupérer la liste des joueurs  
     def get_all_players(self):
         players = self.db.table("Players").all()
-        return players
+        list_of_players = []
+        for player in players:
+            deserialized_player = self.deserialize_player(player)
+            list_of_players.append(deserialized_player)
+        return list_of_players
+    
+    def deserialize_player(self, player_dict):
+        player_object = Player(
+            lastname=player_dict["lastname"],
+            firstname=player_dict["firstname"],
+            sexe=player_dict["sexe"],
+            date_of_birth=player_dict["date_of_birth"],
+            rank=player_dict["rank"],
+            score=player_dict["score"],
+            player_id=player_dict["player_id"]
+            )
+        return player_object
+        
     
     
     #sauvgarder joueur

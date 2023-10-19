@@ -7,19 +7,18 @@ class View:
         self.player: Player = Player()
         self.db = TinyDB("db.json")
     def display_menu(self):
-        menu = {
-            1:"Ajouter des joueurs",
-            2:"Afficher la liste des joueurs",
-            3:"Créer un tournoi",
-            4:"Lancer un tournoi",
-            5:"Afficher la liste des tournois",
-            6:"Afficher la liste des joueurs d'un tournoi",
-            7:"Afficher le classement des joueurs d'un tounoi",
-            8:"Afficher les tours d'un tournoi",
-            9:"Afficher tous les matchs d'un tounoi",
-            10:"Quitter"
-            
-        }
+        menu = '''
+1: Ajouter des joueurs
+2: Afficher la liste des joueurs
+3: Créer un tournoi
+4: Lancer un tournoi
+5: Afficher la liste des tournois
+6: Afficher la liste des joueurs d'un tournoi
+7: Afficher le classement des joueurs d'un tounoi
+8: Afficher les tours d'un tournoi
+9: Afficher tous les matchs d'un tounoi
+10: Quitter    
+        '''
         print(menu)
         
     def menu_user_response(self, prompt):
@@ -40,7 +39,7 @@ class View:
     #         "lastname": lastname,
     #         "firstname": firstname,
     #         "sexe": sexe,
-    #         "date of birth": date_of_birth,
+    #         "date_of_birth": date_of_birth,
     #         "rank": rank,
     #         "player_id": player_id
     #     }
@@ -78,10 +77,12 @@ class View:
         if players:
             print("Liste des joueurs :")
             for player in players:
-                print(f"Nom : {player['lastname']}, Prénom : {player['firstname']}, Sexe : {player['sexe']}, Date de naissance : {player['date of birth']}, Classement : {player['rank']}")
+                print(f"Nom : {player['lastname']}, Prénom : {player['firstname']}, Sexe : {player['sexe']}, Date de naissance : {player['date_of_birth']}, Classement : {player['rank']}")
         else:
             print("Aucun joueur n'a été trouvé dans la base de données.")
-        return players
+       
+       
+    # afficher player menu 
    
     #afficher le tournoi
     def diplay_tournaments(self):

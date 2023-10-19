@@ -15,7 +15,7 @@ class Tournament:
         self.description = description
         self.db = TinyDB('db.json')
         self.table = self.db.table("Tournaments")
-        self.player:Player = Player()
+        self.players: List[Player] = []
         
     def serialize_tournament(self):
         
@@ -26,8 +26,8 @@ class Tournament:
             "nb_rounds": self.nb_round,
             "current_round": self.current_round,
             "desciption": self.description,
-            "players": self.player.get_all_players(),
-            # "rounds": self.rounds.add_round()
+            "players": self.players,
+            "rounds": self.rounds
         }
         return serialize_tournament
     
@@ -35,6 +35,7 @@ class Tournament:
         serialize_tournament = self.serialize_tournament()
         self.table.insert(serialize_tournament)
 
+    # 1er round
     def create_round(self):
         
         if self.current_round <= self.nb_round:
@@ -56,4 +57,5 @@ class Tournament:
             print("Le tournoi est terminé.")
 
     
+      # trier par score 2eme round
     

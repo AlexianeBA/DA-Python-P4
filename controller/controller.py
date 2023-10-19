@@ -32,9 +32,8 @@ class Controller:
         
         
     def start(self):
-        print("start")
         self.view.display_menu()
-        selected_menu = self.view.menu_user_response("Séléctionnez une option")
+        selected_menu = self.view.menu_user_response("Séléctionnez une option: ")
         print(selected_menu)
         print(type(selected_menu))
         if selected_menu == "1":
@@ -42,8 +41,7 @@ class Controller:
             add_player = self.create_player()
             print(add_player)
         if selected_menu == "2":
-            display_list_players = self.view.display_list_of_players()
-            print(display_list_players)
+            self.view.display_list_of_players()
         if selected_menu == "3":
             create_tournament = self.create_tournament()
             print(create_tournament)
@@ -101,7 +99,19 @@ class Controller:
         
         self.tournament = new_tournament
         self.tournament.save_tournament_in_db()
+        # TODO : créer méthode qui va appeler get_all_players. Dans cette méthode, contruire un dictionnaire
+        player = self.player.get_all_players()
+        dict = {}
+        for p in player:
+            dict[1] : p
+            print("1",p.lastname)
+        {"1":Player,"2":Player,"3":Player}
         
+        if len(players)<8:
+            joueur = ajouter joueur()
+            list.append(joueur)
+            self.tournament.players = list
+        self.tournament.save_tournament_in_db()
         self.tournament.create_round()
     
     def play_tournament():
