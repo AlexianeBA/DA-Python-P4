@@ -33,11 +33,10 @@ class Controller:
         
     def start(self):
         self.view.display_menu()
-        selected_menu = self.view.menu_user_response("Séléctionnez une option: ")
+        selected_menu = self.view.menu_user_response()
         print(selected_menu)
         print(type(selected_menu))
         if selected_menu == "1":
-            print("choix 1")
             add_player = self.create_player()
             print(add_player)
         if selected_menu == "2":
@@ -72,7 +71,7 @@ class Controller:
     
     #création de joueur   
     def create_player(self):
-        print("Création des joueurs: ")
+        print(self.view.print_create_player)
         joueur: Player= Player()
         joueur.lastname = self.view.get_player_lastname()
         joueur.firstname= self.view.get_player_firstname()
@@ -83,12 +82,13 @@ class Controller:
         
         print(joueur)
         #Sauvegarde des données du joeur
-        self.player.save_player_in_db(joueur, self.db)
-         
+        serialized_player = joueur.serialize_player()
+        self.player.save_player_in_db(serialized_player)
+        return joueur
     
        #création d'un tournois   
     def create_tournament(self):
-        print("Création d'un nouveau tournoi")
+        print(self.view.print_create_tournament)
         name = self.view.get_tournament_name()
         location = self.view.get_tournament_location()
         date = self.view.get_tournament_date()
@@ -100,19 +100,52 @@ class Controller:
         self.tournament = new_tournament
         self.tournament.save_tournament_in_db()
         # TODO : créer méthode qui va appeler get_all_players. Dans cette méthode, contruire un dictionnaire
-        player = self.player.get_all_players()
-        dict = {}
-        for p in player:
-            dict[1] : p
-            print("1",p.lastname)
-        {"1":Player,"2":Player,"3":Player}
+        players = self.player.get_all_players()
+        player_dict = {}
+        print(self.view.display_list_players_to_chose())
+        for index, player in enumerate(players, start=1):
+            player:Player
+            player_dict[str(index)] = player
+            print(f"{index}: {player.lastname}")
         
-        if len(players)<8:
-            joueur = ajouter joueur()
-            list.append(joueur)
-            self.tournament.players = list
+        while len(self.tournament.players)<=7:
+            joueur = self.add_player(player_dict)
+            self.tournament.players.append(joueur)
         self.tournament.save_tournament_in_db()
-        self.tournament.create_round()
+        self.create_round()
     
+    def add_player(self, player_dict):
+        user_input = self.view.input_index_player()
+        if input == 'C':
+            return self.create_player()
+        elif user_input in player_dict:
+            return player_dict[user_input]
+        else:
+            self.view.input_index_player_invalible()
+            return None
+            
+            
     def play_tournament():
         pass
+    
+    
+        # 1er round
+    def create_round(self):
+        round: Round= Round()
+        if self.current_round <= self.nb_round:
+            players = self.player.get_all_players()
+            if len(players)<8:
+                self.view.not_enough_players()
+                return
+            player_group_1 = players[0:4]
+            player_group_2 = players[4:8]
+            
+            round_name = f"Round {self.current_round} - {self.name}"
+            new_round = Round(name_of_round=round_name)
+            new_round.create_list_of_matches(player_group_1, player_group_2)
+            self.rounds.append(new_round)
+            self.current_round += 1
+            print(f"Round {self.current_round} - {self.name} créé.")
+            
+        else:
+            self.view.end_of_tournament

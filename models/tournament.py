@@ -18,7 +18,13 @@ class Tournament:
         self.players: List[Player] = []
         
     def serialize_tournament(self):
+        list_players = []
+        for player in self.players:
+            list_players.append(player.serialize_player())
         
+        list_rounds = []
+        for round in self.rounds:
+            list_rounds.append(round.serialize_round())
         serialize_tournament = {
             "name": self.name,
             "location": self.location,
@@ -26,8 +32,8 @@ class Tournament:
             "nb_rounds": self.nb_round,
             "current_round": self.current_round,
             "desciption": self.description,
-            "players": self.players,
-            "rounds": self.rounds
+            "players": list_players,
+            "rounds": list_rounds,
         }
         return serialize_tournament
     
@@ -35,26 +41,7 @@ class Tournament:
         serialize_tournament = self.serialize_tournament()
         self.table.insert(serialize_tournament)
 
-    # 1er round
-    def create_round(self):
-        
-        if self.current_round <= self.nb_round:
-            players = self.player.get_all_players()
-            if len(players)<8:
-                print("Il n'y a pas assez de joueurs")
-                return
-            player_group_1 = players[0:4]
-            player_group_2 = players[4:8]
-            
-            round_name = f"Round {self.current_round} - {self.name}"
-            new_round = Round(name_of_round=round_name)
-            new_round.create_list_of_matches(player_group_1, player_group_2)
-            self.rounds.append(new_round)
-            self.current_round += 1
-            print(f"Round {self.current_round} - {self.name} créé.")
-            
-        else:
-            print("Le tournoi est terminé.")
+
 
     
       # trier par score 2eme round

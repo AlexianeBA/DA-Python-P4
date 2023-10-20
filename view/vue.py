@@ -21,8 +21,8 @@ class View:
         '''
         print(menu)
         
-    def menu_user_response(self, prompt):
-        self.user_response = input(prompt)
+    def menu_user_response(self):
+        self.user_response = input("Sélectionnez une option: ")
         return self.user_response
     
     #input player
@@ -81,9 +81,27 @@ class View:
         else:
             print("Aucun joueur n'a été trouvé dans la base de données.")
        
-       
+    def print_create_player():
+        create_player = print("Création des joueurs: ")   
+        return create_player
     # afficher player menu 
-   
+    def print_create_tournament():
+        print("Création d'un nouveau tournoi")
+        
+    def display_list_players_to_chose():
+        print("Liste des joueurs présents: ")
+        
+    def input_index_player():
+        input("Mettez l'index du joueur ou créez en un appuyant sur 'C'")
+        
+    def input_index_player_invalible():
+        print("Index du joueur invalide.")
+        
+    def not_enough_players():
+        print("Il n'y a pas assez de joueurs.")
+        
+    def end_of_tournament():
+        print("Le tournoi est terminé.")
     #afficher le tournoi
     def diplay_tournaments(self):
         pass

@@ -22,15 +22,15 @@ class Player:
     def add_opponent(self, opponent):
         self.opponent.append(opponent)
            
-    def serialize_player(self, player):
+    def serialize_player(self):
         serialize_player = {
-            "lastname": player.lastname,
-            "firstname": player.firstname,
-            "sexe": player.sexe,
-            "date_of_birth": player.date_of_birth,
-            "rank": player.rank,
-            "score": player.score,
-            "player_id": player.player_id
+            "lastname": self.lastname,
+            "firstname": self.firstname,
+            "sexe": self.sexe,
+            "date_of_birth": self.date_of_birth,
+            "rank": self.rank,
+            "score": self.score,
+            "player_id": self.player_id
         }
         return serialize_player
     
@@ -59,8 +59,7 @@ class Player:
     
     #sauvgarder joueur
     def save_player_in_db(self,player):
-        serialize_player = self.serialize_player(player)
-        self.table.insert(serialize_player)
+        self.table.insert(player)
     
     
     
