@@ -15,6 +15,7 @@ from models.player import Player
 from models.tournament import Tournament
 from models.round import Round
 from models.match import Match
+import random
 
 class Controller:
     def __init__(self, object_view:View):
@@ -27,6 +28,7 @@ class Controller:
         TinyDB.default_table_name = "Players"
         self.players_table = self.db.table("Players")
         self.tournament_table = self.db.table("Tournaments")
+        self.rounds = []
        
         
         
@@ -79,12 +81,12 @@ class Controller:
         joueur.date_of_birth= self.view.get_player_date_of_birth()
         joueur.rank = self.view.get_player_rank()
         joueur.id = self.view.get_player_id()
-        
-        print(joueur)
-        #Sauvegarde des données du joeur
+        self.view.player_create()
+        #Sauvegarde des données du joueur
         serialized_player = joueur.serialize_player()
         self.player.save_player_in_db(serialized_player)
-        return joueur
+        self.view.player_save()
+        
     
        #création d'un tournois   
     def create_tournament(self):
@@ -116,13 +118,11 @@ class Controller:
     
     def add_player(self, player_dict):
         user_input = self.view.input_index_player()
-        if input == 'C':
+        if user_input == 'C':
             return self.create_player()
-        elif user_input in player_dict:
-            return player_dict[user_input]
         else:
-            self.view.input_index_player_invalible()
-            return None
+            return player_dict[user_input]
+            
             
             
     def play_tournament():
@@ -131,21 +131,20 @@ class Controller:
     
         # 1er round
     def create_round(self):
-        round: Round= Round()
-        if self.current_round <= self.nb_round:
+        if self.rounds.current_round <= self.rounds.nb_round:
             players = self.player.get_all_players()
             if len(players)<8:
                 self.view.not_enough_players()
                 return
-            player_group_1 = players[0:4]
-            player_group_2 = players[4:8]
+                player_group_1 = players[:4]
+                player_group_2 = players[4:8]
             
-            round_name = f"Round {self.current_round} - {self.name}"
-            new_round = Round(name_of_round=round_name)
-            new_round.create_list_of_matches(player_group_1, player_group_2)
-            self.rounds.append(new_round)
-            self.current_round += 1
-            print(f"Round {self.current_round} - {self.name} créé.")
+                round_name = f"Round {self.current_round} - {self.name}"
+                new_round = Round(name_of_round=round_name)
+                new_round.create_list_of_matches(player_group_1, player_group_2)
+                self.rounds.append(new_round)
+                self.current_round += 1
+                print(f"Round {self.current_round} - {self.name} créé.")
             
-        else:
-            self.view.end_of_tournament
+            else:
+                self.view.end_of_tournament

@@ -15,7 +15,7 @@ class Round:
             player_1: Player = player_1
             player_2: Player = player_2
             match = Match(player_1, player_2, 0,0)
-            self.list_of_matches.append(match.add_opponent())
+            self.list_of_matches.append(match)
             
        
     

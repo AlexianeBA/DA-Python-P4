@@ -25,28 +25,10 @@ class View:
         self.user_response = input("Sélectionnez une option: ")
         return self.user_response
     
-    #input player
-    # def input_player():
-    #     print("Veillez entrer vos informations : ")
-    #     lastname = input("Nom de famille : ")
-    #     firstname = input("Prénom : ")
-    #     sexe= input("Sexe : ")
-    #     date_of_birth = input("Date de naissance : ")
-    #     rank = input("Classement : ")
-    #     player_id = input("Votre identifiant de joeur : ")
-        
-    #     player_data = {
-    #         "lastname": lastname,
-    #         "firstname": firstname,
-    #         "sexe": sexe,
-    #         "date_of_birth": date_of_birth,
-    #         "rank": rank,
-    #         "player_id": player_id
-    #     }
-    #     return player_data
+
     
     def get_player_lastname(self):
-        print("get_player_lastname")
+        print("Entrez les informations du joueur")
         lastname = input("Nom de famille : ")
         return lastname
     
@@ -65,11 +47,14 @@ class View:
     def get_player_rank(self):
         rank = input("Niveau: ")
         return rank
-    
+    def player_create(self):
+        print("Le joueur a été créé.")
     def get_player_id(self):
         player_id = input("Identifiant: ")
         return player_id
-        
+    
+    def player_save(self):
+        print("Le joueur a été enregistré dans la base de données.")
    #afficher les joueurs
     def display_list_of_players(self):
         player: Player = Player()
@@ -77,30 +62,30 @@ class View:
         if players:
             print("Liste des joueurs :")
             for player in players:
-                print(f"Nom : {player['lastname']}, Prénom : {player['firstname']}, Sexe : {player['sexe']}, Date de naissance : {player['date_of_birth']}, Classement : {player['rank']}")
+                print(f"Nom : {player.lastname}, Prénom : {player.firstname}, Sexe : {player.sexe}, Date de naissance : {player.date_of_birth}, Classement : {player.rank}")
         else:
             print("Aucun joueur n'a été trouvé dans la base de données.")
        
-    def print_create_player():
+    def print_create_player(self):
         create_player = print("Création des joueurs: ")   
         return create_player
     # afficher player menu 
-    def print_create_tournament():
+    def print_create_tournament(self):
         print("Création d'un nouveau tournoi")
         
-    def display_list_players_to_chose():
+    def display_list_players_to_chose(self):
         print("Liste des joueurs présents: ")
         
-    def input_index_player():
-        input("Mettez l'index du joueur ou créez en un appuyant sur 'C'")
+    def input_index_player(self):
+        return input("Mettez l'index du joueur ou créez en un appuyant sur 'C'") 
         
-    def input_index_player_invalible():
+    def input_index_player_invalible(self):
         print("Index du joueur invalide.")
         
-    def not_enough_players():
+    def not_enough_players(self):
         print("Il n'y a pas assez de joueurs.")
         
-    def end_of_tournament():
+    def end_of_tournament(self):
         print("Le tournoi est terminé.")
     #afficher le tournoi
     def diplay_tournaments(self):
