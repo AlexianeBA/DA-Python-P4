@@ -42,7 +42,8 @@ class Tournament:
         self.table.insert(serialize_tournament)
 
 
-
+    def add_round(self, round):
+        self.rounds.append(round)
     
       # trier par score 2eme round
     

@@ -15,7 +15,7 @@ from models.player import Player
 from models.tournament import Tournament
 from models.round import Round
 from models.match import Match
-import random
+from datetime import datetime
 
 class Controller:
     def __init__(self, object_view:View):
@@ -29,6 +29,7 @@ class Controller:
         self.players_table = self.db.table("Players")
         self.tournament_table = self.db.table("Tournaments")
         self.rounds = []
+        self.round: Round = Round()
        
         
         
@@ -101,7 +102,6 @@ class Controller:
         
         self.tournament = new_tournament
         self.tournament.save_tournament_in_db()
-        # TODO : créer méthode qui va appeler get_all_players. Dans cette méthode, contruire un dictionnaire
         players = self.player.get_all_players()
         player_dict = {}
         print(self.view.display_list_players_to_chose())
@@ -114,7 +114,9 @@ class Controller:
             joueur = self.add_player(player_dict)
             self.tournament.players.append(joueur)
         self.tournament.save_tournament_in_db()
-        self.create_round()
+        #ajouter un input ou on demande à l'user si il veut quitter ou si il veut lancer le tournoi. si il veut le lancer alors la fonction create round se lance sinon on quitte l(e script
+        self.view.rest_of_tournament()
+        
     
     def add_player(self, player_dict):
         user_input = self.view.input_index_player()
@@ -131,20 +133,9 @@ class Controller:
     
         # 1er round
     def create_round(self):
-        if self.rounds.current_round <= self.rounds.nb_round:
-            players = self.player.get_all_players()
-            if len(players)<8:
-                self.view.not_enough_players()
-                return
-                player_group_1 = players[:4]
-                player_group_2 = players[4:8]
-            
-                round_name = f"Round {self.current_round} - {self.name}"
-                new_round = Round(name_of_round=round_name)
-                new_round.create_list_of_matches(player_group_1, player_group_2)
-                self.rounds.append(new_round)
-                self.current_round += 1
-                print(f"Round {self.current_round} - {self.name} créé.")
-            
-            else:
-                self.view.end_of_tournament
+       first_round = Round(name_of_round="Round 1", date_and_hour_start=datetime.now())
+       self.tournament.add_round(round= first_round)
+       first_round.create_list_of_matches()
+       self.view.display_round(round= first_round)
+       for match in first_round.list_of_matches:
+           self.view.display_match(match)

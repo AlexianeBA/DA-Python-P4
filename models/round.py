@@ -10,6 +10,7 @@ class Round:
         self.date_and_hour_end = date_and_hour_end
         
     #création d'une liste de matches pour un tournoi    
+    # TODO mettre dans controller
     def create_list_of_matches(self, player_group_1, player_group_2):
         for player_1, player_2 in zip(player_group_1, player_group_2):
             player_1: Player = player_1
