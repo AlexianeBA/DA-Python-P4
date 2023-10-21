@@ -1,11 +1,15 @@
 from models.player import Player
 from tinydb import TinyDB
 from models.tournament import Tournament
+from models.round import Round
+from models.match import Match
 
 class View:
     def __init__(self):
         self.player: Player = Player()
         self.db = TinyDB("db.json")
+        self.round: Round = Round()
+        self.match: Match = Match(self.player, self.player)
     def display_menu(self):
         menu = '''
 1: Ajouter des joueurs
@@ -92,10 +96,13 @@ class View:
         pass
      #afficher la liste des tours avec les joueurs
     def display_round(self):
-        pass
+        print(self.round.name_of_round)
+        print(self.round.date_and_hour_start)
+        print(self.round.date_and_hour_end)
     #afficher la liste des matchs avec les joueurs
     def display_match(self):
-        pass
+        print("Le joueur 1 est: ", self.match.player_1.firstname, self.match.player_1.lastname)
+        print("Le joueur 2 est : ", self.match.player_2.firstname, self.match.player_2.lastname)
     #afficher la liste des match dans un tournois
     def display_match_in_tournament(self):
         pass
@@ -139,4 +146,13 @@ class View:
     
     def get_tournament_description(self):
         tournament_description = input("Description du tournoi: ")
-        return tournament_description                                                                                                                                                                        
+        return tournament_description                                                                                                                
+    
+    def rest_of_tournament(self):
+        user_response = input('Souhaitez-vous lancer le tournoi ou le quitter? Entrer "lancer" ou "quitter"')
+        if user_response == "lancer":
+            print("Vous avez choisi de lancer le tournoi")
+        elif user_response == "quitter":
+            print("Vous avez choisi de quitter le tournoi.")
+        else:
+            print("Réponse invalide. Veuillez entrer 'lancer' ou 'quitter'.")
