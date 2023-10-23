@@ -148,23 +148,25 @@ class Controller:
     def create_match(self, player1, player2):
         match = Match(player_1=player1, player_2= player2)
         self.tournament.add_match(match)
-        self.view.display_match
+        self.view.display_match(match)
+        return match
         
-    def match_result(self):
+    def match_result(self, match:Match):
+
         result = self.view.get_match_result()
         
         if result == "1":
-            self.match.player_1_result.add_score(1)
-            self.match.player_2_result.add_score(0)
+            match.player_1.update_score("1")
+            match.player_2.update_score("0")
         elif result == "2":
-            self.match.player_1_result.add_score(0)
-            self.match.player_2_result.add_score(1)
+            match.player_1.update_score("0")
+            match.player_2.update_score("1")
         elif result == "0.5":
-            self.match.player_1_result.add_score(0.5)
-            self.match.player_2_result.add_score(0.5)
+            match.player_1.update_score("0.5")
+            match.player_2.update_score("0.5")
             
-        self.view.display_player_score(self.match.player_1_result)
-        self.view.display_player_score(self.match.player_2_result)
+        self.view.generic_print("Le joueur {self.player_1.firstname} a un score de {self.player_1.score}.")
+        self.view.generic_print("Le joueur {self.player_2.firstname} a un score de {self.player_2.score}.")
         
         
     def select_random_players_first_round(self):
@@ -173,10 +175,12 @@ class Controller:
         
         current_round = self.tournament.get_current_round()
         if current_round:
+            last_match = None
             for i in range(0, len(players), 2):
-                match = Match(player_1 = players[i], player_2 = players[i+1])
-                self.tournament.add_match(match)
-                self.view.display_match(match)
+                player_1 = players[i]
+                player_2 = players[i+1]
+                self.create_match(player_1, player_2)
+                self.match_result(last_match)
         else:
             self.view.generic_print("Aucun tour en cours.")
         

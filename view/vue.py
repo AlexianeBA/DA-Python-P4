@@ -118,7 +118,8 @@ class View:
         return input_to_return
     
     def get_match_result(self):
-        pass
-    
-    def display_player_score(self):
-        pass
+        result = input("Entrer le résultat du match: 1 dans le cas où le joueur 1 à remporter le match, 2 dans le cas où le joueur 2 à gagner ou 0.5 en cas de match nul.")
+        if result in ('1', '2', '0.5'):
+            return result
+        else:
+            print("Valeur invalide. Veuillez entrer 1,2 ou 0.5.")
