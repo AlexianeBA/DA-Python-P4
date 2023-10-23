@@ -11,14 +11,15 @@ class Round:
         
     #création d'une liste de matches pour un tournoi    
     # TODO mettre dans controller
-    def create_list_of_matches(self, player_group_1, player_group_2):
-        for player_1, player_2 in zip(player_group_1, player_group_2):
-            player_1: Player = player_1
-            player_2: Player = player_2
-            match = Match(player_1, player_2, 0,0)
-            self.list_of_matches.append(match)
+    # def create_list_of_matches(self, player_group_1, player_group_2):
+    #     for player_1, player_2 in zip(player_group_1, player_group_2):
+    #         player_1: Player = player_1
+    #         player_2: Player = player_2
+    #         match = Match(player_1, player_2, 0,0)
+    #         self.list_of_matches.append(match)
             
-       
+    def add_match(self, match):
+        self.list_of_matches.append(match) 
     
     #mettre à jour le score après chaque tours
     def update_score(self,user_response):

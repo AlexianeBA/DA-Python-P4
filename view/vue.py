@@ -9,7 +9,7 @@ class View:
         self.player: Player = Player()
         self.db = TinyDB("db.json")
         self.round: Round = Round()
-        self.match: Match = Match(self.player, self.player)
+        
     def display_menu(self):
         menu = '''
 1: Ajouter des joueurs
@@ -96,16 +96,19 @@ class View:
         pass
      #afficher la liste des tours avec les joueurs
     def display_round(self):
-        print(self.round.name_of_round)
-        print(self.round.date_and_hour_start)
-        print(self.round.date_and_hour_end)
+        print("Détail du round: ")
+        print(f"Nom du round: {self.round.name_of_round}")
+        print(f"Date et heure de début: {self.round.date_and_hour_start}")
     #afficher la liste des matchs avec les joueurs
-    def display_match(self):
-        print("Le joueur 1 est: ", self.match.player_1.firstname, self.match.player_1.lastname)
-        print("Le joueur 2 est : ", self.match.player_2.firstname, self.match.player_2.lastname)
+    
+    
+    def display_match(self, match: Match):
+        print("Le joueur 1 est: ", match.player_1.firstname, match.player_1.lastname)
+        print(f"Score Joueur 1: {match.player_1_result}")
+        print("Le joueur 2 est : ", match.player_2.firstname, match.player_2.lastname)
+        print(f"Score Joueur 2: {match.player_2_result}")
     #afficher la liste des match dans un tournois
-    def display_match_in_tournament(self):
-        pass
+    
     
     # afficher la liste des joueurs d'un tournoi
     def display_list_of_player_from_tournament(self):
@@ -156,3 +159,11 @@ class View:
             print("Vous avez choisi de quitter le tournoi.")
         else:
             print("Réponse invalide. Veuillez entrer 'lancer' ou 'quitter'.")
+            
+    def display_first_round_matches(self, match_first_round):
+        for match in match_first_round:
+            print(f"Match: {match[0]} vs {match[1]}")
+            
+    
+    def no_round_in_progress(self):
+        print("Aucun tour en cours.")

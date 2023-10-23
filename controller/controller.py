@@ -16,12 +16,13 @@ from models.tournament import Tournament
 from models.round import Round
 from models.match import Match
 from datetime import datetime
+import random
 
 class Controller:
     def __init__(self, object_view:View):
         self.view = object_view
         self.player:Player = Player()
-        self.tournament = object_view
+        self.tournament: Tournament = Tournament()
         # self.match: Match = Match()
         self.view = object_view
         self.db = TinyDB('db.json')
@@ -47,9 +48,11 @@ class Controller:
         if selected_menu == "3":
             create_tournament = self.create_tournament()
             print(create_tournament)
-        if selected_menu == 4:
-            play_tournament = self.play_tournament()
-            print(play_tournament)
+        if selected_menu == "4":
+            # play_tournament = self.play_tournament()
+            # print(play_tournament)
+            self.create_round()
+            self.select_random_players_first_round()
         if selected_menu == 5:
             display_list_tournaments = self.view. diplay_tournaments()
             print(display_list_tournaments)
@@ -67,6 +70,8 @@ class Controller:
             print(display_list_matchs_of_tournament)
         if selected_menu == 10:
             pass
+        
+            
     
 
 
@@ -134,8 +139,21 @@ class Controller:
         # 1er round
     def create_round(self):
        first_round = Round(name_of_round="Round 1", date_and_hour_start=datetime.now())
-       self.tournament.add_round(round= first_round)
-       first_round.create_list_of_matches()
-       self.view.display_round(round= first_round)
-       for match in first_round.list_of_matches:
-           self.view.display_match(match)
+       self.tournament.add_round(round=first_round)
+       self.view.display_round()
+      
+           
+    def select_random_players_first_round(self):
+        players = self.player.get_all_players()
+        random.shuffle(players)
+        
+        current_round = self.tournament.get_current_round()
+        if current_round:
+            for i in range(0, len(players), 2):
+                match = Match(player_1 = players[i], player_2 = players[i+1])
+                self.tournament.add_match(match)
+                self.view.display_match(match)
+        else:
+            self.view.no_round_in_progress()
+        
+        

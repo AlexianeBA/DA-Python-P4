@@ -44,6 +44,17 @@ class Tournament:
 
     def add_round(self, round):
         self.rounds.append(round)
-    
+   
       # trier par score 2eme round
-    
+    def add_match(self, match):
+        self.current_round = self.get_current_round()
+        if self.current_round:
+            self.current_round.add_match(match)
+        else:
+            print("Aucun tour en cours")
+    def get_current_round(self):
+        if isinstance(self.current_round, int) and 1 <= self.current_round <= len(self.rounds):
+            return self.rounds[self.current_round - 1]
+        else:
+            return None
+        
