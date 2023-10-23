@@ -31,15 +31,16 @@ class Controller:
         self.tournament_table = self.db.table("Tournaments")
         self.rounds = []
         self.round: Round = Round()
+        # self.match: Match = Match()
        
         
         
         
     def start(self):
         self.view.display_menu()
-        selected_menu = self.view.menu_user_response()
+        selected_menu = self.view.generic_input("Sélectionnez une option: ")
         print(selected_menu)
-        print(type(selected_menu))
+       
         if selected_menu == "1":
             add_player = self.create_player()
             print(add_player)
@@ -53,22 +54,22 @@ class Controller:
             # print(play_tournament)
             self.create_round()
             self.select_random_players_first_round()
-        if selected_menu == 5:
+        if selected_menu == "5":
             display_list_tournaments = self.view. diplay_tournaments()
             print(display_list_tournaments)
-        if selected_menu == 6:
+        if selected_menu == "6":
             display_list_of_players_from_tournament = self.view.display_list_of_player_from_tournament()
             print(display_list_of_players_from_tournament)
-        if selected_menu == 7:
+        if selected_menu == "7":
             display_ranking_players_of_tournament = self.view.display_ranking_players_of_tournament()
             print(display_ranking_players_of_tournament)
-        if selected_menu == 8:
+        if selected_menu == "8":
             display_rounds_of_tournament = self.view.display_rounds_tournament()
             print(display_rounds_of_tournament)
-        if selected_menu == 9:
+        if selected_menu == "9":
             display_list_matchs_of_tournament = self.view.display_list_matchs_of_tournament()
             print(display_list_matchs_of_tournament)
-        if selected_menu == 10:
+        if selected_menu == "10":
             pass
         
             
@@ -81,12 +82,12 @@ class Controller:
     def create_player(self):
         print(self.view.print_create_player)
         joueur: Player= Player()
-        joueur.lastname = self.view.get_player_lastname()
-        joueur.firstname= self.view.get_player_firstname()
-        joueur.sexe= self.view.get_player_sexe()
-        joueur.date_of_birth= self.view.get_player_date_of_birth()
-        joueur.rank = self.view.get_player_rank()
-        joueur.id = self.view.get_player_id()
+        joueur.lastname = self.view.generic_input("Nom de famille : ")
+        joueur.firstname= self.view.generic_input("Prénom : ")
+        joueur.sexe= self.view.generic_input("Sexe: ")
+        joueur.date_of_birth= self.view.generic_input("Date de naissance: ")
+        joueur.rank = self.view.generic_input("Niveau: ")
+        joueur.player_id = self.view.generic_input("Identifiant: ")
         self.view.player_create()
         #Sauvegarde des données du joueur
         serialized_player = joueur.serialize_player()
@@ -96,12 +97,12 @@ class Controller:
     
        #création d'un tournois   
     def create_tournament(self):
-        print(self.view.print_create_tournament)
-        name = self.view.get_tournament_name()
-        location = self.view.get_tournament_location()
-        date = self.view.get_tournament_date()
+        print(self.view.generic_print("Création d'un nouveau tournoi"))
+        name = self.view.generic_input("Nom du tournoi: ")
+        location = self.view.generic_input("Lieu du tournoi: ")
+        date = self.view.generic_input("Date du tournoi: ")
         # nb_round = self.tournament.nb_rounds
-        descritpion = self.view.get_tournament_description()
+        descritpion = self.view.generic_input("Description du tournoi: ")
         
         new_tournament = Tournament(name, location, date, descritpion)
         
@@ -109,7 +110,7 @@ class Controller:
         self.tournament.save_tournament_in_db()
         players = self.player.get_all_players()
         player_dict = {}
-        print(self.view.display_list_players_to_chose())
+        print(self.view.generic_print("Liste des joueurs présents: "))
         for index, player in enumerate(players, start=1):
             player:Player
             player_dict[str(index)] = player
@@ -124,7 +125,7 @@ class Controller:
         
     
     def add_player(self, player_dict):
-        user_input = self.view.input_index_player()
+        user_input = self.view.generic_input("Mettez l'index du joueur ou créez en un appuyant sur 'C'")
         if user_input == 'C':
             return self.create_player()
         else:
@@ -138,11 +139,34 @@ class Controller:
     
         # 1er round
     def create_round(self):
-       first_round = Round(name_of_round="Round 1", date_and_hour_start=datetime.now())
-       self.tournament.add_round(round=first_round)
-       self.view.display_round()
-      
+       name_of_round = self.view.generic_input("Ajouter un nom au round: ")
+       date_and_hour_start = datetime.now()
+       new_round = Round(name_of_round, date_and_hour_start)
+       self.tournament.add_round(new_round)
+       self.view.display_round
            
+    def create_match(self, player1, player2):
+        match = Match(player_1=player1, player_2= player2)
+        self.tournament.add_match(match)
+        self.view.display_match
+        
+    def match_result(self):
+        result = self.view.get_match_result()
+        
+        if result == "1":
+            self.match.player_1_result.add_score(1)
+            self.match.player_2_result.add_score(0)
+        elif result == "2":
+            self.match.player_1_result.add_score(0)
+            self.match.player_2_result.add_score(1)
+        elif result == "0.5":
+            self.match.player_1_result.add_score(0.5)
+            self.match.player_2_result.add_score(0.5)
+            
+        self.view.display_player_score(self.match.player_1_result)
+        self.view.display_player_score(self.match.player_2_result)
+        
+        
     def select_random_players_first_round(self):
         players = self.player.get_all_players()
         random.shuffle(players)
@@ -154,6 +178,6 @@ class Controller:
                 self.tournament.add_match(match)
                 self.view.display_match(match)
         else:
-            self.view.no_round_in_progress()
+            self.view.generic_print("Aucun tour en cours.")
         
         

@@ -25,37 +25,8 @@ class View:
         '''
         print(menu)
         
-    def menu_user_response(self):
-        self.user_response = input("Sélectionnez une option: ")
-        return self.user_response
-    
-
-    
-    def get_player_lastname(self):
-        print("Entrez les informations du joueur")
-        lastname = input("Nom de famille : ")
-        return lastname
-    
-    def get_player_firstname(self):
-        firstname = input("Prénom : ")
-        return firstname
-    
-    def get_player_sexe(self):
-        sexe = input("Sexe: ")
-        return sexe
-    
-    def get_player_date_of_birth(self):
-        date_of_birth = input("Date de naissance: ")
-        return date_of_birth
-    
-    def get_player_rank(self):
-        rank = input("Niveau: ")
-        return rank
     def player_create(self):
         print("Le joueur a été créé.")
-    def get_player_id(self):
-        player_id = input("Identifiant: ")
-        return player_id
     
     def player_save(self):
         print("Le joueur a été enregistré dans la base de données.")
@@ -73,16 +44,7 @@ class View:
     def print_create_player(self):
         create_player = print("Création des joueurs: ")   
         return create_player
-    # afficher player menu 
-    def print_create_tournament(self):
-        print("Création d'un nouveau tournoi")
-        
-    def display_list_players_to_chose(self):
-        print("Liste des joueurs présents: ")
-        
-    def input_index_player(self):
-        return input("Mettez l'index du joueur ou créez en un appuyant sur 'C'") 
-        
+ 
     def input_index_player_invalible(self):
         print("Index du joueur invalide.")
         
@@ -91,17 +53,19 @@ class View:
         
     def end_of_tournament(self):
         print("Le tournoi est terminé.")
+        
     #afficher le tournoi
     def diplay_tournaments(self):
         pass
-     #afficher la liste des tours avec les joueurs
+    
+    #afficher la liste des tours avec les joueurs
     def display_round(self):
         print("Détail du round: ")
         print(f"Nom du round: {self.round.name_of_round}")
         print(f"Date et heure de début: {self.round.date_and_hour_start}")
+        
+        
     #afficher la liste des matchs avec les joueurs
-    
-    
     def display_match(self, match: Match):
         print("Le joueur 1 est: ", match.player_1.firstname, match.player_1.lastname)
         print(f"Score Joueur 1: {match.player_1_result}")
@@ -124,7 +88,6 @@ class View:
     #afficher le gagnant pour chaque tournoi
     
     
-    
    #afficher le classement des joueurs d'un tournoi 
     def display_ranking_players_of_tournament():
        pass
@@ -134,23 +97,7 @@ class View:
    #afficher la liste des match d'un tounoi
     def display_list_matchs_of_tournament():
         pass
-   
-    def get_tournament_name(self):
-        tournament_name = input("Nom du tournoi: ")
-        return tournament_name
-    
-    def get_tournament_location(self):
-        tournament_location = input("Lieu du tournoi: ")
-        return tournament_location
-    
-    def get_tournament_date(self):
-        tournament_date = input("Date du tournoi: ")
-        return tournament_date
-    
-    def get_tournament_description(self):
-        tournament_description = input("Description du tournoi: ")
-        return tournament_description                                                                                                                
-    
+
     def rest_of_tournament(self):
         user_response = input('Souhaitez-vous lancer le tournoi ou le quitter? Entrer "lancer" ou "quitter"')
         if user_response == "lancer":
@@ -163,7 +110,15 @@ class View:
     def display_first_round_matches(self, match_first_round):
         for match in match_first_round:
             print(f"Match: {match[0]} vs {match[1]}")
-            
+        
+    def generic_print(self,sentance_print):
+        print(sentance_print) 
+    def generic_input(self,sentance_input):
+        input_to_return = input(sentance_input)
+        return input_to_return
     
-    def no_round_in_progress(self):
-        print("Aucun tour en cours.")
+    def get_match_result(self):
+        pass
+    
+    def display_player_score(self):
+        pass
