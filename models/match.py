@@ -16,11 +16,3 @@ class Match:
         }
         return serialize_match
      
-
-    # # à supprimer  
-    # def add_opponent(self):
-    #     self.player_1.add_opponent(self.player_2.firstname)
-    #     self.player_2.add_opponent(self.player_1.firstname)
-    #     return self
-        
-   

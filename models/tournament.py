@@ -58,4 +58,5 @@ class Tournament:
         else:
             return None
         
-   
+    def is_finished(self):
+        return self.current_round >= len(self.nb_round)

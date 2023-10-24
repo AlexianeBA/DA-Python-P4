@@ -55,7 +55,7 @@ class View:
         print("Le tournoi est terminé.")
         
     #afficher le tournoi
-    def diplay_tournaments(self):
+    def diplay_tournament():
         pass
     
     #afficher la liste des tours avec les joueurs
@@ -97,7 +97,7 @@ class View:
    #afficher la liste des match d'un tounoi
     def display_list_matchs_of_tournament():
         pass
-
+    
     def rest_of_tournament(self):
         user_response = input('Souhaitez-vous lancer le tournoi ou le quitter? Entrer "lancer" ou "quitter"')
         if user_response == "lancer":
