@@ -171,17 +171,12 @@ class Controller:
         new_round = Round(name_of_round, date_and_hour_start)
         
         self.tournament.rounds.append(new_round)
+        self.tournament.save_tournament_in_db()
+        
         self.view.display_round()
         self.select_random_players_first_round()
         
-        round_data = {
-            "name": new_round.name_of_round,
-            "list_of_matches": new_round.list_of_matches,
-            "date_and_hour_start": new_round.date_and_hour_start,
-            "date_and_hour_end": new_round.date_and_hour_end
-        }
-        
-        self.tournament.add_round_to_db(round_data)
+       
 
     def create_match(self, player1, player2):
         match = Match(player_1=player1, player_2=player2)
@@ -207,10 +202,10 @@ class Controller:
             match.player_2.update_score("0.5")
 
         self.view.generic_print(
-            "Le joueur {match.player_1.firstname} a un score de {match.player_1.score}."
+            f"Le joueur {match.player_1.firstname} a un score de {match.player_1.score}."
         )
         self.view.generic_print(
-            "Le joueur {match.player_2.firstname} a un score de {match.player_2.score}."
+            f"Le joueur {match.player_2.firstname} a un score de {match.player_2.score}."
         )
 
     def select_random_players_first_round(self):
@@ -235,3 +230,6 @@ class Controller:
         if user_input == "O":
             self.tournament = None
             self.view.generic_print("Le tournoi est quitté.")
+    
+
+        

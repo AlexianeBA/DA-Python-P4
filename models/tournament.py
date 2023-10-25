@@ -45,8 +45,6 @@ class Tournament:
     def add_round(self, round):
         self.rounds.append(round)
     
-    def add_round_to_db(self, round_data):
-        self.db.insert(round_data)
       # trier par score 2eme round
     def add_match(self, match):
         self.current_round = self.get_current_round()
