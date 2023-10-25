@@ -44,7 +44,7 @@ class Round:
         serialized_matches = [match.serialize_match() for match in self.list_of_matches]
         serialize_round= {
             "name_of_round": self.name_of_round,
-            "list_of_matches": self.list_of_matches,
+            "list_of_matches": serialized_matches,
             "date_and_hour_start": self.date_and_hour_start.strftime("%Y-%m-%d %H:%M:%S"),
             "date_and_hour_end": self.date_and_hour_end
         }
