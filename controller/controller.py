@@ -169,9 +169,19 @@ class Controller:
         name_of_round = self.view.generic_input("Ajouter un nom au round: ")
         date_and_hour_start = datetime.now()
         new_round = Round(name_of_round, date_and_hour_start)
-        self.tournament.add_round(new_round)
-        self.view.display_round
+        
+        self.tournament.rounds.append(new_round)
+        self.view.display_round()
         self.select_random_players_first_round()
+        
+        round_data = {
+            "name": new_round.name_of_round,
+            "list_of_matches": new_round.list_of_matches,
+            "date_and_hour_start": new_round.date_and_hour_start,
+            "date_and_hour_end": new_round.date_and_hour_end
+        }
+        
+        self.tournament.add_round_to_db(round_data)
 
     def create_match(self, player1, player2):
         match = Match(player_1=player1, player_2=player2)
