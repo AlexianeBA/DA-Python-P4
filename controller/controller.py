@@ -9,6 +9,7 @@
 # afficher les matchs du tounoi
 # afficher le resultat du tournoi
 # afficher le classement des joueurs
+import sys
 from tinydb import TinyDB
 from view.vue import View
 from models.player import Player
@@ -43,8 +44,9 @@ class Controller:
         if selected_menu == "2":
             self.view.display_list_of_players()
         if selected_menu == "3":
-            create_tournament = self.create_tournament()
-            print(create_tournament)
+            created_tournament = self.create_tournament()
+            self.ask_to_exit_tournament()
+            self.play_tournament(created_tournament)
         if selected_menu == "4":
             # play_tournament = self.play_tournament()
             # print(play_tournament)
@@ -115,7 +117,7 @@ class Controller:
             joueur = self.add_player(player_dict)
             self.tournament.players.append(joueur)
         self.tournament.save_tournament_in_db()
-        self.create_round()
+        return self.tournament
         # ajouter un input ou on demande à l'user si il veut quitter ou si il veut lancer le tournoi. si il veut le lancer alors la fonction create round se lance sinon on quitte l(e script
         # self.view.rest_of_tournament()
 
@@ -128,59 +130,60 @@ class Controller:
         else:
             return player_dict[user_input]
 
-    def play_tournament(self):
-        if not self.tournament:
+    def play_tournament(self, tournament: Tournament):
+        if not tournament:
             self.view.generic_print(
                 "Aucun tournoi n'a été créé. Veuillez d'abord créer un tournoi."
             )
             self.create_tournament()
             return
 
-        if not self.tournament.rounds:
+        if not tournament.rounds:
             self.view.generic_print(
                 "Aucun round n'a été créé. Veuillez d'abord créer un round."
             )
-            self.create_round
 
-        while not self.tournament.is_finished():
-            current_round = self.tournament.get_current_round()
+        while not tournament.is_finished():
+            round = self.create_round(tournament)
+            for round in tournament.rounds:
+                if round.date_and_hour_end == "":
+                    round = self.play_round(round)
+                tournament.current_round += 1
+                tournament.save_tournament_in_db()
+                self.ask_to_exit_tournament()
 
-            if current_round:
-                self.view.generic_print(f"Tour en cours: {current_round.name_of_round}")
-
-                for match in current_round.list_of_matches:
-                    self.play_match(match)
-                    self.view.generic_print("Voulez-vous quitter le tournoi maintenant ? (Entrez 'O' pour oui, 'N' pour non)")
-                    user_input = self.view.generic_input()
-                if user_input.lower() == 'o':
-                    self.quit_tournament()
-                    return
-
-            else:
-                self.view.generic_print(
-                    "Tous les rounds ont été joués. Le tournoi est terminé."
-                )
-
-            self.view.generic_print("Le tournoi est terminé.")
+        self.view.generic_print(
+            "Tous les rounds ont été joués. Le tournoi est terminé."
+        )
 
         # 1er round
 
-    def create_round(self):
+    def create_round(self, tournament: Tournament):
         name_of_round = self.view.generic_input("Ajouter un nom au round: ")
+
         date_and_hour_start = datetime.now()
-        new_round = Round(name_of_round, date_and_hour_start)
-        
-        self.tournament.rounds.append(new_round)
-        self.tournament.save_tournament_in_db()
-        
-        self.view.display_round()
-        self.select_random_players_first_round()
-        
-       
+        list_of_matchs = []
+        if tournament.current_round == 1:
+            list_of_matchs = self.select_random_players_first_round()
+        new_round = Round(
+            list_of_matches=list_of_matchs,
+            name_of_round=name_of_round,
+            date_and_hour_start=date_and_hour_start,
+        )
+        tournament.rounds.append(new_round)
+        tournament.save_tournament_in_db()
+        return new_round
+
+    def play_round(self, round: Round):
+        self.view.display_round(round)
+
+        for match in round.list_of_matches:
+            round.list_of_matches.append(self.match_result(match=match))
+        round.date_and_hour_end = datetime.now()
+        return round
 
     def create_match(self, player1, player2):
         match = Match(player_1=player1, player_2=player2)
-        self.tournament.add_match(match)
         self.view.display_match(match)
         return match
 
@@ -208,28 +211,24 @@ class Controller:
             f"Le joueur {match.player_2.firstname} a un score de {match.player_2.score}."
         )
 
+        return match
+
     def select_random_players_first_round(self):
         players = self.player.get_all_players()
         random.shuffle(players)
+        list_matches = []
 
-        current_round = self.tournament.get_current_round()
-        if current_round:
-            for i in range(0, len(players), 2):
-                player_1 = players[i]
-                player_2 = players[i + 1]
-                match = self.create_match(player_1, player_2)
-                self.match_result(match)
-        else:
-            self.view.generic_print("Aucun tour en cours.")
+        for i in range(0, len(players), 2):
+            player_1 = players[i]
+            player_2 = players[i + 1]
+            match = self.create_match(player_1, player_2)
+            list_matches.append(match)
 
-    def quit_tournament(self):
-        self.view.generic_print(
-            "Quitter le tournoi? (Entrez O pour oui et N pour non.)"
+        return list_matches
+
+    def ask_to_exit_tournament(self):
+        user_input = self.view.generic_input(
+            "Continuer le tournoi? (Entrez O pour oui et N pour non.)"
         )
-        user_input = self.view.generic_input()
-        if user_input == "O":
-            self.tournament = None
-            self.view.generic_print("Le tournoi est quitté.")
-    
-
-        
+        if user_input == "N":
+            sys.exit()
