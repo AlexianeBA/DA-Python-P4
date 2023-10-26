@@ -173,6 +173,7 @@ class Controller:
         list_of_matchs = []
         if tournament.current_round == 1:
             list_of_matchs = self.select_random_players_first_round()
+
         else:
             list_of_matchs = self.select_players_by_score()
         new_round = Round(
@@ -193,7 +194,9 @@ class Controller:
         round.date_and_hour_end = datetime.now()
         return round
 
-    def create_match(self, player1, player2):
+    def create_match(self, player1: Player, player2: Player):
+        player1.add_opponent(player2)
+        player2.add_opponent(player1)
         match = Match(player_1=player1, player_2=player2)
         self.view.display_match(match)
         return match
@@ -254,6 +257,11 @@ class Controller:
         for i in range(0, len(sorted_players), 2):
             player_1 = sorted_players[i]
             player_2 = sorted_players[i + 1]
+            player_1: Player
+            player_2: Player
+            if player_2 in player_1.opponent or player_1 in player_2.opponent:
+                continue
+
             match = self.create_match(player_1, player_2)
             list_of_matches.append(match)
             selected_players.extend([player_1, player_2])
@@ -287,3 +295,6 @@ class Controller:
             )
             tournament.rounds.append(new_round)
             tournament.save_tournament_in_db()
+
+    def filter_players(self):
+        pass
