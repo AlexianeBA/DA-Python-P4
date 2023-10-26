@@ -1,6 +1,7 @@
 from typing import List
 from models.match import Match
 from models.player import Player
+from datetime import datetime
 
 
 class Round:
@@ -51,9 +52,7 @@ class Round:
         serialize_round = {
             "name_of_round": self.name_of_round,
             "list_of_matches": serialized_matches,
-            "date_and_hour_start": self.date_and_hour_start.strftime(
-                "%Y-%m-%d %H:%M:%S"
-            ),
-            "date_and_hour_end": self.date_and_hour_end,
+            "date_and_hour_start": str(self.date_and_hour_start),
+            "date_and_hour_end": str(self.date_and_hour_end),
         }
         return serialize_round

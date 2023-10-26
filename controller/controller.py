@@ -18,6 +18,7 @@ from models.round import Round
 from models.match import Match
 from datetime import datetime
 import random
+import string
 
 
 class Controller:
@@ -76,6 +77,12 @@ class Controller:
         if selected_menu == "10":
             pass
 
+    # Génération de l'ID
+    def generate_random_id(self):
+        numbers = random.choices(string.digits, k=4)
+        player_id = "AB" + "".join(numbers)
+        return player_id
+
     # création de joueur
     def create_player(self):
         print(self.view.print_create_player)
@@ -85,7 +92,7 @@ class Controller:
         joueur.sexe = self.view.generic_input("Sexe: ")
         joueur.date_of_birth = self.view.generic_input("Date de naissance: ")
         joueur.rank = self.view.generic_input("Niveau: ")
-        joueur.player_id = self.view.generic_input("Identifiant: ")
+        joueur.player_id = self.generate_random_id()
         self.view.player_create()
         # Sauvegarde des données du joueur
         serialized_player = joueur.serialize_player()
@@ -142,19 +149,15 @@ class Controller:
             self.view.generic_print(
                 "Aucun round n'a été créé. Veuillez d'abord créer un round."
             )
+            while tournament.current_round <= 4:
+                round = self.create_round(tournament)
+                for round in tournament.rounds:
+                    if round.date_and_hour_end == "":
+                        round = self.play_round(round)
+                    tournament.current_round += 1
+                    tournament.save_tournament_in_db()
 
-        while not tournament.is_finished():
-            round = self.create_round(tournament)
-            for round in tournament.rounds:
-                if round.date_and_hour_end == "":
-                    round = self.play_round(round)
-                tournament.current_round += 1
-                tournament.save_tournament_in_db()
-                self.ask_to_exit_tournament()
-
-        self.view.generic_print(
-            "Tous les rounds ont été joués. Le tournoi est terminé."
-        )
+        return round
 
         # 1er round
 
@@ -165,6 +168,8 @@ class Controller:
         list_of_matchs = []
         if tournament.current_round == 1:
             list_of_matchs = self.select_random_players_first_round()
+        else:
+            list_of_matchs = self.select_players_by_score()
         new_round = Round(
             list_of_matches=list_of_matchs,
             name_of_round=name_of_round,
@@ -178,7 +183,8 @@ class Controller:
         self.view.display_round(round)
 
         for match in round.list_of_matches:
-            round.list_of_matches.append(self.match_result(match=match))
+            match = self.match_result(match=match)
+            # round.list_of_matches.append(self.match_result(match=match))
         round.date_and_hour_end = datetime.now()
         return round
 
@@ -197,18 +203,22 @@ class Controller:
         if result == "1":
             match.player_1.update_score("1")
             match.player_2.update_score("0")
+            match.player_1_result = 1
         elif result == "2":
             match.player_1.update_score("0")
             match.player_2.update_score("1")
+            match.player_2_result = 1
         elif result == "0.5":
             match.player_1.update_score("0.5")
             match.player_2.update_score("0.5")
+            match.player_1_result = 0.5
+            match.player_2_result = 0.5
 
         self.view.generic_print(
-            f"Le joueur {match.player_1.firstname} a un score de {match.player_1.score}."
+            f"Le joueur {match.player_1.firstname} a un score de {match.player_1_result}."
         )
         self.view.generic_print(
-            f"Le joueur {match.player_2.firstname} a un score de {match.player_2.score}."
+            f"Le joueur {match.player_2.firstname} a un score de {match.player_2_result}."
         )
 
         return match
@@ -225,6 +235,9 @@ class Controller:
             list_matches.append(match)
 
         return list_matches
+
+    def select_players_by_score(self):
+        pass
 
     def ask_to_exit_tournament(self):
         user_input = self.view.generic_input(
