@@ -149,8 +149,13 @@ class Controller:
             self.view.generic_print(
                 "Aucun round n'a été créé. Veuillez d'abord créer un round."
             )
+
             while tournament.current_round <= 4:
-                round = self.create_round(tournament)
+                if tournament.current_round == 1:
+                    round = self.create_round(tournament)
+                else:
+                    round = self.create_rounds_2to_4(tournament)
+
                 for round in tournament.rounds:
                     if round.date_and_hour_end == "":
                         round = self.play_round(round)
@@ -237,7 +242,23 @@ class Controller:
         return list_matches
 
     def select_players_by_score(self):
-        pass
+        players = self.player.get_all_players()
+
+        sorted_players = sorted(
+            players, key=lambda player: self.player.score, reverse=True
+        )
+
+        selected_players = []
+        list_of_matches = []
+
+        for i in range(0, len(sorted_players), 2):
+            player_1 = sorted_players[i]
+            player_2 = sorted_players[i + 1]
+            match = self.create_match(player_1, player_2)
+            list_of_matches.append(match)
+            selected_players.extend([player_1, player_2])
+
+        return list_of_matches
 
     def ask_to_exit_tournament(self):
         user_input = self.view.generic_input(
@@ -245,3 +266,24 @@ class Controller:
         )
         if user_input == "N":
             sys.exit()
+
+    def create_rounds_2to_4(self, tournament: Tournament):
+        if not tournament:
+            self.view.generic_print(
+                "Aucun tournoi n'a été créé. Veuillez d'abord créer un tournoi."
+            )
+            return
+
+        for current_round in range(2, 5):
+            name_of_round = self.view.generic_input(
+                f"Ajouter un nom au round {current_round}"
+            )
+            date_and_hour_start = datetime.now()
+            list_of_matchs = self.select_players_by_score()
+            new_round = Round(
+                list_of_matches=list_of_matchs,
+                name_of_round=name_of_round,
+                date_and_hour_start=date_and_hour_start,
+            )
+            tournament.rounds.append(new_round)
+            tournament.save_tournament_in_db()
