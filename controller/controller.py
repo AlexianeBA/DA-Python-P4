@@ -54,8 +54,9 @@ class Controller:
             self.create_round()
             self.select_random_players_first_round()
         if selected_menu == "5":
-            display_list_tournaments = self.view.diplay_tournaments()
-            print(display_list_tournaments)
+            # display_list_tournaments = self.view.diplay_tournaments()
+            # print(display_list_tournaments)
+            self.resume_tournament()
         if selected_menu == "6":
             display_list_of_players_from_tournament = (
                 self.view.display_list_of_player_from_tournament()
@@ -123,11 +124,11 @@ class Controller:
         while len(self.tournament.players) <= 7:
             joueur = self.add_player(player_dict)
             self.tournament.players.append(joueur)
-        self.tournament.save_tournament_in_db()
+        serialized_tournament = self.tournament.serialize_tournament()
+        self.tournament.update_tournament(serialized_tournament)
         return self.tournament
-        # ajouter un input ou on demande à l'user si il veut quitter ou si il veut lancer le tournoi. si il veut le lancer alors la fonction create round se lance sinon on quitte l(e script
-        # self.view.rest_of_tournament()
 
+    # Ajout des joueurs pour le tournois
     def add_player(self, player_dict):
         user_input = self.view.generic_input(
             "Mettez l'index du joueur ou créez en un appuyant sur 'C'"
@@ -137,6 +138,7 @@ class Controller:
         else:
             return player_dict[user_input]
 
+    # Lancement du tournois
     def play_tournament(self, tournament: Tournament):
         if not tournament:
             self.view.generic_print(
@@ -160,12 +162,12 @@ class Controller:
                     if round.date_and_hour_end == "":
                         round = self.play_round(round)
                     tournament.current_round += 1
-                    tournament.save_tournament_in_db()
+                    serialized_tournament = tournament.serialize_tournament()
+                    tournament.update_tournament(serialized_tournament)
 
         return round
 
-        # 1er round
-
+    # création du premier round
     def create_round(self, tournament: Tournament):
         name_of_round = self.view.generic_input("Ajouter un nom au round: ")
 
@@ -182,9 +184,11 @@ class Controller:
             date_and_hour_start=date_and_hour_start,
         )
         tournament.rounds.append(new_round)
-        tournament.save_tournament_in_db()
+        serialized_tournament = tournament.serialize_tournament()
+        tournament.update_tournament(serialized_tournament)
         return new_round
 
+    # Lancement du round
     def play_round(self, round: Round):
         self.view.display_round(round)
 
@@ -201,6 +205,7 @@ class Controller:
         self.view.display_match(match)
         return match
 
+    # Attribution des scores
     def match_result(self, match: Match):
         self.view.generic_print(
             f"Match en cours: {match.player_1.lastname} vs {match.player_2.lastname}"
@@ -231,6 +236,7 @@ class Controller:
 
         return match
 
+    # selection aléatoire des joueurs pour le 1er round
     def select_random_players_first_round(self):
         players = self.player.get_all_players()
         random.shuffle(players)
@@ -243,8 +249,8 @@ class Controller:
             list_matches.append(match)
 
         return list_matches
-
-    def select_players_by_score(self):
+        # Séléction des joueurs à partir du score
+        # def select_players_by_score(self):
         players = self.player.get_all_players()
 
         sorted_players = sorted(
@@ -257,17 +263,13 @@ class Controller:
         for i in range(0, len(sorted_players), 2):
             player_1 = sorted_players[i]
             player_2 = sorted_players[i + 1]
-            player_1: Player
-            player_2: Player
-            if player_2 in player_1.opponent or player_1 in player_2.opponent:
-                continue
-
             match = self.create_match(player_1, player_2)
             list_of_matches.append(match)
             selected_players.extend([player_1, player_2])
 
         return list_of_matches
 
+    # Intéraction avec l'utilisateur pour continuer ou quitter le tournoi en cours
     def ask_to_exit_tournament(self):
         user_input = self.view.generic_input(
             "Continuer le tournoi? (Entrez O pour oui et N pour non.)"
@@ -275,6 +277,7 @@ class Controller:
         if user_input == "N":
             sys.exit()
 
+    # Création des rounds 2,3,4
     def create_rounds_2to_4(self, tournament: Tournament):
         if not tournament:
             self.view.generic_print(
@@ -287,14 +290,65 @@ class Controller:
                 f"Ajouter un nom au round {current_round}"
             )
             date_and_hour_start = datetime.now()
-            list_of_matchs = self.select_players_by_score()
+            list_of_matchs = self.filter_players(tournament)
             new_round = Round(
                 list_of_matches=list_of_matchs,
                 name_of_round=name_of_round,
                 date_and_hour_start=date_and_hour_start,
             )
             tournament.rounds.append(new_round)
-            tournament.save_tournament_in_db()
+            serialized_tournament = tournament.serialize_tournament()
+            tournament.update_tournament(serialized_tournament)
 
-    def filter_players(self):
-        pass
+    # Filtre des joueurs pour ne pas qu'ils se retouvent l'un contre l'autre plus d'une fois
+    # def filter_players(self):
+    #     players = self.player.get_all_players()
+    #     sorted_players = sorted(
+    #         players, key=lambda player: self.player.score, reverse=True
+    #     )
+    #     print(sorted_players)
+    #     list_of_matches = []
+    #     while len(sorted_players) > 0:
+    #         for i in range(0, len(sorted_players), 2):
+    #             player_1 = sorted_players[i]
+    #             player_2 = sorted_players[i + 1]
+    #             player_1: Player
+    #             player_2: Player
+    #             if (
+    #                 player_2 not in player_1.opponent
+    #                 and player_1 not in player_2.opponent
+    #             ):
+    #                 match = self.create_match(player_1, player_2)
+    #                 list_of_matches.append(match)
+    #                 sorted_players.remove(player_1)
+    #                 sorted_players.remove(player_2)
+
+    #             break
+
+    #     return list_of_matches
+
+    def resume_tournament(self):
+        tournaments = self.tournament.get_all_tournaments()
+
+        if not tournaments:
+            self.view.generic_print("Aucun tournoi trouvé.")
+
+        self.view.generic_print("Liste des tournois disponible")
+
+        for i, tournament in enumerate(tournaments):
+            self.view.generic_print(f"{i+1}. {tournament.name}")
+
+        selected_index = self.view.generic_input(
+            "Séléctionnez le numéro du tournoi que vous souhaitez reprendre: "
+        )
+        try:
+            selected_index = int(selected_index) - 1
+            if 0 <= selected_index < len(tournaments):
+                selected_tournament = tournaments[selected_index]
+                self.view.generic_print(
+                    f"Tournoi {selected_tournament.name} repris avec succès."
+                )
+            else:
+                self.view.generic_print("Indice de tournoi invalide.")
+        except:
+            self.view.generic_print("Séléction invalide.")
