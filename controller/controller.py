@@ -1,14 +1,3 @@
-# fonction pour faire tourner le script qui permet de :
-# afficher le menu
-# ajouter des joueurs à la base de données (appler methode vue (input))
-# créer un tournoi
-# lancer un tournoi
-# afficher la liste des joueurs
-# afficher la liste des joueurs du tournoi
-# afficher les tours du tournoi
-# afficher les matchs du tounoi
-# afficher le resultat du tournoi
-# afficher le classement des joueurs
 import sys
 from tinydb import TinyDB
 from view.vue import View
@@ -49,34 +38,25 @@ class Controller:
             self.ask_to_exit_tournament()
             self.play_tournament(created_tournament)
         if selected_menu == "4":
-            # play_tournament = self.play_tournament()
-            # print(play_tournament)
             self.create_round()
             self.select_random_players_first_round()
         if selected_menu == "5":
-            # display_list_tournaments = self.view.diplay_tournaments()
-            # print(display_list_tournaments)
             self.resume_tournament()
+            self.create_round()
         if selected_menu == "6":
-            display_list_of_players_from_tournament = (
-                self.view.display_list_of_player_from_tournament()
-            )
-            print(display_list_of_players_from_tournament)
+            self.display_list_of_tournaments()
         if selected_menu == "7":
-            display_ranking_players_of_tournament = (
-                self.view.display_ranking_players_of_tournament()
-            )
-            print(display_ranking_players_of_tournament)
+            self.display_list_of_players_from_selected_tournament()
+
         if selected_menu == "8":
-            display_rounds_of_tournament = self.view.display_rounds_tournament()
-            print(display_rounds_of_tournament)
+            self.display_rank_of_players_in_tournament()
         if selected_menu == "9":
-            display_list_matchs_of_tournament = (
-                self.view.display_list_matchs_of_tournament()
-            )
-            print(display_list_matchs_of_tournament)
+            self.display_all_rounds_of_tournament()
         if selected_menu == "10":
-            pass
+            self.display_matches_of_one_tournament()
+        if selected_menu == "11":
+            self.view.generic_print("Vous avez choisi de quitter le programme.")
+            sys.exit()
 
     # Génération de l'ID
     def generate_random_id(self):
@@ -177,7 +157,7 @@ class Controller:
             list_of_matchs = self.select_random_players_first_round()
 
         else:
-            list_of_matchs = self.select_players_by_score()
+            list_of_matchs = self.filter_players()
         new_round = Round(
             list_of_matches=list_of_matchs,
             name_of_round=name_of_round,
@@ -186,6 +166,7 @@ class Controller:
         tournament.rounds.append(new_round)
         serialized_tournament = tournament.serialize_tournament()
         tournament.update_tournament(serialized_tournament)
+        self.ask_to_exit_tournament()
         return new_round
 
     # Lancement du round
@@ -249,33 +230,45 @@ class Controller:
             list_matches.append(match)
 
         return list_matches
+
         # Séléction des joueurs à partir du score
-        # def select_players_by_score(self):
-        players = self.player.get_all_players()
+        def select_players_by_score(self, players):
+            sorted_players = sorted(
+                players, key=lambda player: player.score, reverse=True
+            )
+            list_of_matches = []
 
-        sorted_players = sorted(
-            players, key=lambda player: self.player.score, reverse=True
-        )
+            while len(sorted_players) >= 2:
+                player_1 = sorted_players.pop(0)
+                player_2 = None
 
-        selected_players = []
-        list_of_matches = []
+                # Recherche du joueur 2 qui n'a pas encore joué contre le joueur 1
+                for opponent in player_1.opponent:
+                    if opponent in sorted_players:
+                        player_2 = opponent
+                        break
 
-        for i in range(0, len(sorted_players), 2):
-            player_1 = sorted_players[i]
-            player_2 = sorted_players[i + 1]
-            match = self.create_match(player_1, player_2)
-            list_of_matches.append(match)
-            selected_players.extend([player_1, player_2])
+                if player_2 is None:
+                    # Si le joueur 1 a déjà joué contre tous les autres joueurs disponibles,
+                    # choisissez un joueur au hasard parmi les joueurs restants
+                    player_2 = random.choice(sorted_players)
 
-        return list_of_matches
+                match = self.create_match(player_1, player_2)
+                list_of_matches.append(match)
+
+                # Mise à jour de la liste des joueurs restants
+                sorted_players.remove(player_2)
+
+            return list_of_matches
 
     # Intéraction avec l'utilisateur pour continuer ou quitter le tournoi en cours
     def ask_to_exit_tournament(self):
         user_input = self.view.generic_input(
             "Continuer le tournoi? (Entrez O pour oui et N pour non.)"
         )
-        if user_input == "N":
-            sys.exit()
+        if user_input == "n":
+            self.view.generic_print("Vous avez quitté le tournoi.")
+            exit(0)
 
     # Création des rounds 2,3,4
     def create_rounds_2to_4(self, tournament: Tournament):
@@ -290,7 +283,7 @@ class Controller:
                 f"Ajouter un nom au round {current_round}"
             )
             date_and_hour_start = datetime.now()
-            list_of_matchs = self.filter_players(tournament)
+            list_of_matchs = self.filter_players()
             new_round = Round(
                 list_of_matches=list_of_matchs,
                 name_of_round=name_of_round,
@@ -301,54 +294,154 @@ class Controller:
             tournament.update_tournament(serialized_tournament)
 
     # Filtre des joueurs pour ne pas qu'ils se retouvent l'un contre l'autre plus d'une fois
-    # def filter_players(self):
-    #     players = self.player.get_all_players()
-    #     sorted_players = sorted(
-    #         players, key=lambda player: self.player.score, reverse=True
-    #     )
-    #     print(sorted_players)
-    #     list_of_matches = []
-    #     while len(sorted_players) > 0:
-    #         for i in range(0, len(sorted_players), 2):
-    #             player_1 = sorted_players[i]
-    #             player_2 = sorted_players[i + 1]
-    #             player_1: Player
-    #             player_2: Player
-    #             if (
-    #                 player_2 not in player_1.opponent
-    #                 and player_1 not in player_2.opponent
-    #             ):
-    #                 match = self.create_match(player_1, player_2)
-    #                 list_of_matches.append(match)
-    #                 sorted_players.remove(player_1)
-    #                 sorted_players.remove(player_2)
+    def filter_players(self):
+        players = self.player.get_all_players()
+        sorted_players = sorted(
+            players, key=lambda player: self.player.score, reverse=True
+        )
+        print(sorted_players)
+        list_of_matches = []
+        while len(sorted_players) > 0:
+            for i in range(0, len(sorted_players), 2):
+                player_1 = sorted_players[i]
+                player_2 = sorted_players[i + 1]
+                player_1: Player
+                player_2: Player
+                if (
+                    player_2 not in player_1.opponent
+                    and player_1 not in player_2.opponent
+                ):
+                    match = self.create_match(player_1, player_2)
+                    list_of_matches.append(match)
+                    sorted_players.remove(player_1)
+                    sorted_players.remove(player_2)
 
-    #             break
+                break
 
-    #     return list_of_matches
+        return list_of_matches
 
-    def resume_tournament(self):
-        tournaments = self.tournament.get_all_tournaments()
-
+    # méthode générique pour choisir l'index du tournoi
+    def selected_tournament_index(self, tournaments):
         if not tournaments:
             self.view.generic_print("Aucun tournoi trouvé.")
+            return None
 
-        self.view.generic_print("Liste des tournois disponible")
+        self.view.generic_print("Liste des tournois disponibles")
 
         for i, tournament in enumerate(tournaments):
             self.view.generic_print(f"{i+1}. {tournament.name}")
 
-        selected_index = self.view.generic_input(
-            "Séléctionnez le numéro du tournoi que vous souhaitez reprendre: "
-        )
+        selected_index = self.view.generic_input("Sélectionnez le numéro du tournoi : ")
+
         try:
             selected_index = int(selected_index) - 1
             if 0 <= selected_index < len(tournaments):
-                selected_tournament = tournaments[selected_index]
-                self.view.generic_print(
-                    f"Tournoi {selected_tournament.name} repris avec succès."
-                )
+                return selected_index
             else:
                 self.view.generic_print("Indice de tournoi invalide.")
-        except:
-            self.view.generic_print("Séléction invalide.")
+        except ValueError:
+            self.view.generic_print("Sélection invalide.")
+
+        return None
+
+    # reprendre un tournoi en cours
+    def resume_tournament(self):
+        tournaments = self.tournament.get_all_tournaments()
+        selected_index = self.selected_tournament_index(tournaments)
+        if selected_index is not None:
+            selected_tournament = tournaments[selected_index]
+            self.resume_selected_tournament(selected_tournament)
+
+    # Reprendre le tournoi séléctionné
+    def resume_selected_tournament(self, selected_tournament):
+        if not selected_tournament:
+            self.view.generic_print("Tournoi invalide")
+            return
+
+        deserialized_tournament = self.tournament.deserialize_tournament(
+            selected_tournament
+        )
+        self.play_tournament(deserialized_tournament)
+
+        self.view.generic_print(
+            f"Tournoi {deserialized_tournament.name} repris avec succès."
+        )
+
+    # afficher la liste des tournoi disponible
+    def display_list_of_tournaments(self):
+        tournaments = self.tournament.get_all_tournaments()
+
+        if not tournaments:
+            self.view.generic_print("Aucun tournoi trouvé.")
+            return
+
+        self.view.generic_print("Liste des tournois disponibles:")
+
+        for i, tournament in enumerate(tournaments, start=1):
+            self.view.generic_print(f"{i}. {tournament.name}")
+
+    # afficher la liste des joueurs d'un tournoi choisi
+    def display_list_of_players_from_selected_tournament(self):
+        tournaments = self.tournament.get_all_tournaments()
+        selected_index = self.selected_tournament_index(tournaments)
+
+        if selected_index is not None:
+            selected_tournament = tournaments[selected_index]
+            self.view.generic_print(f"Joueurs du tournoi {selected_tournament.name} :")
+            for player in selected_tournament.players:
+                self.view.generic_print(player)
+
+    # afficher le rang des joueurs d'un tournoi choisi
+    def display_rank_of_players_in_tournament(self):
+        tournaments = self.tournament.get_all_tournaments()
+        selected_index = self.selected_tournament_index(tournaments)
+
+        if selected_index is not None:
+            selected_tournament = tournaments[selected_index]
+            self.view.generic_print(
+                f"Classement des joueurs du tournoi {selected_tournament.name} :"
+            )
+            sorted_players = sorted(
+                selected_tournament.players,
+                key=lambda player: player.score,
+                reverse=True,
+            )
+            for rank, player in enumerate(sorted_players, start=1):
+                self.view.generic_print(
+                    f"{rank}. {player.name} - Score : {player.score}"
+                )
+
+    # afficher les rounds d'un tournoi choisi
+    def display_all_rounds_of_tournament(self):
+        tournaments = self.tournament.get_all_tournaments()
+        selected_index = self.selected_tournament_index(tournaments)
+
+        if selected_index is not None:
+            selected_tournament = tournaments[selected_index]
+            rounds = selected_tournament.rounds
+
+            if not rounds:
+                self.view.generic_print("Aucun round trouvé pour ce tournoi.")
+        else:
+            self.view.generic_print(f"Rounds du tournoi {selected_tournament.name} :")
+            for i in enumerate(rounds, start=1):
+                self.view.generic_print(f"Round {i}:")
+
+    # afficher la liste des matchs d'un tournoi choisi
+    def display_matches_of_one_tournament(self):
+        tournaments = self.tournament.get_all_tournaments()
+        selected_index = self.selected_tournament_index(tournaments)
+
+        if selected_index is not None:
+            selected_tournament = tournaments[selected_index]
+
+        matches = selected_tournament.matches
+
+        if not matches:
+            self.view.generic_print(
+                f"Aucun match trouvé pour le tournoi {selected_tournament.name}."
+            )
+        else:
+            self.view.generic_print(f"Matchs du tournoi {selected_tournament.name} :")
+            for i, match in enumerate(matches, start=1):
+                self.view.generic_print(f"Match {i}: {match}")

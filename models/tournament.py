@@ -27,6 +27,8 @@ class Tournament:
         self.db = TinyDB("db.json")
         self.table = self.db.table("Tournaments")
         self.players: List[Player] = players
+        self.player: Player = Player()
+        self.round: Round = Round()
 
     def serialize_tournament(self):
         list_players = []
@@ -73,13 +75,23 @@ class Tournament:
             current_round=serialized_tournament["current_round"],
             description=serialized_tournament["description"],
         )
+
+        tournament_object.players = [
+            self.player.deserialize_player(player_dict)
+            for player_dict in serialized_tournament["players"]
+        ]
+
+        tournament_object.rounds = [
+            self.round.deserialize_round(round_dict)
+            for round_dict in serialized_tournament["rounds"]
+        ]
+
         return tournament_object
 
     def get_tournament(self, name_tournament):
         QueryTournament = Query()
         p = self.table.search(QueryTournament.name == name_tournament)
-
-        print(p)
+        return p
 
     def get_all_tournaments(self):
         tournaments = self.db.table("Tournaments").all()

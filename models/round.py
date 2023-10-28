@@ -17,15 +17,6 @@ class Round:
         self.date_and_hour_start = date_and_hour_start
         self.date_and_hour_end = date_and_hour_end
 
-    # création d'une liste de matches pour un tournoi
-    # TODO mettre dans controller
-    # def create_list_of_matches(self, player_group_1, player_group_2):
-    #     for player_1, player_2 in zip(player_group_1, player_group_2):
-    #         player_1: Player = player_1
-    #         player_2: Player = player_2
-    #         match = Match(player_1, player_2, 0,0)
-    #         self.list_of_matches.append(match)
-
     def add_match(self, match):
         self.list_of_matches.append(match)
 
@@ -56,3 +47,12 @@ class Round:
             "date_and_hour_end": str(self.date_and_hour_end),
         }
         return serialize_round
+
+    def deserialize_round(self, round_dict):
+        round_object = Round(
+            name_of_round=round_dict["name_of_round"],
+            date_and_hour_start=round_dict["date_and_hour_start"],
+            date_and_hour_end=round_dict["date_and_hour_end"],
+        )
+
+        return round_object
