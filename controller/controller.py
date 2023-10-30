@@ -38,11 +38,10 @@ class Controller:
             self.ask_to_exit_tournament()
             self.play_tournament(created_tournament)
         if selected_menu == "4":
-            self.create_round()
+            self.create_round(tournament=self.tournament)
             self.select_random_players_first_round()
         if selected_menu == "5":
             self.resume_tournament()
-            self.create_round()
         if selected_menu == "6":
             self.display_list_of_tournaments()
         if selected_menu == "7":
@@ -89,7 +88,7 @@ class Controller:
         # nb_round = self.tournament.nb_rounds
         descritpion = self.view.generic_input("Description du tournoi: ")
 
-        new_tournament = Tournament(name, location, date, descritpion)
+        new_tournament = Tournament(name="Nom du tournoi", location="Lieu", date="Date", description="Description")
 
         self.tournament = new_tournament
         self.tournament.save_tournament_in_db()
@@ -331,19 +330,35 @@ class Controller:
         for i, tournament in enumerate(tournaments):
             self.view.generic_print(f"{i+1}. {tournament.name}")
 
-        selected_index = self.view.generic_input("Sélectionnez le numéro du tournoi : ")
+        while True:
+            selected_index = self.view.generic_input("Sélectionnez le numéro du tournoi : ")
+            try:
+                selected_index = int(selected_index) - 1
+                if 0 <= selected_index < len(tournaments):
+                    return selected_index
+                else:
+                    self.view.generic_print("Indice de tournoi invalide.")
+            except ValueError:
+                self.view.generic_print("Sélection invalide.")
 
-        try:
-            selected_index = int(selected_index) - 1
-            if 0 <= selected_index < len(tournaments):
-                return selected_index
-            else:
-                self.view.generic_print("Indice de tournoi invalide.")
-        except ValueError:
-            self.view.generic_print("Sélection invalide.")
 
-        return None
+    # reprendre un tournoi en cours
+    def resume_selected_tournament(self, selected_tournament):
+        if not selected_tournament:
+            self.view.generic_print("Tournoi invalide")
+            return
 
+        deserialized_tournament = self.tournament.deserialize_tournament(
+        selected_tournament
+        )
+
+        if not deserialized_tournament:
+            self.view.generic_print("Désérialisation du tournoi échouée.")
+            return
+
+        self.view.generic_print(
+            f"Tournoi {deserialized_tournament.name} repris avec succès."
+        )
     # reprendre un tournoi en cours
     def resume_tournament(self):
         tournaments = self.tournament.get_all_tournaments()

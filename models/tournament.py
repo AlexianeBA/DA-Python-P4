@@ -67,26 +67,33 @@ class Tournament:
         )
 
     def deserialize_tournament(self, serialized_tournament):
-        tournament_object = Tournament(
-            name=serialized_tournament["name"],
-            location=serialized_tournament["location"],
-            date=serialized_tournament["date"],
-            nb_round=serialized_tournament["nb_round"],
-            current_round=serialized_tournament["current_round"],
-            description=serialized_tournament["description"],
-        )
+        if isinstance(serialized_tournament, dict):
+            name=serialized_tournament.get("name", ""),
+            location=serialized_tournament.get("location", ""),
+            date=serialized_tournament.get("date", ""),
+            nb_round=serialized_tournament.get("nb_round", 4),
+            current_round=serialized_tournament.get("current_round",1),
+            description=serialized_tournament.get("description"),
+            
+            tournament_object = Tournament(
+                name=name,
+                location=location,
+                date= date,
+                nb_round=nb_round,
+                current_round=current_round,
+                description=description
+            )
+            tournament_object.players = [
+                self.player.deserialize_player(player_dict)
+                for player_dict in serialized_tournament.get("players", [])
+            ]
 
-        tournament_object.players = [
-            self.player.deserialize_player(player_dict)
-            for player_dict in serialized_tournament["players"]
-        ]
+            tournament_object.rounds = [
+                self.round.deserialize_round(round_dict)
+                for round_dict in serialized_tournament.get("rounds",[])
+            ]
 
-        tournament_object.rounds = [
-            self.round.deserialize_round(round_dict)
-            for round_dict in serialized_tournament["rounds"]
-        ]
-
-        return tournament_object
+            return tournament_object
 
     def get_tournament(self, name_tournament):
         QueryTournament = Query()

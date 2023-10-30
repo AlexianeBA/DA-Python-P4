@@ -17,12 +17,13 @@ class View:
 2: Afficher la liste des joueurs
 3: Créer un tournoi
 4: Lancer un tournoi
-5: Afficher la liste des tournois
-6: Afficher la liste des joueurs d'un tournoi
-7: Afficher le classement des joueurs d'un tounoi
-8: Afficher les tours d'un tournoi
-9: Afficher tous les matchs d'un tounoi
-10: Quitter    
+5: Reprendre un tournoi en cours
+6: Afficher la liste des tournois
+7: Afficher la liste des joueurs d'un tournoi
+8: Afficher le classement des joueurs d'un tounoi
+9: Afficher les tours d'un tournoi
+10: Afficher tous les matchs d'un tounoi
+11: Quitter    
         """
         print(menu)
 
