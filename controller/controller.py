@@ -64,7 +64,7 @@ class Controller:
         
         if players:
             players.sort(key=lambda player: player.lastname)
-            self.view.generic_print("Liste des joueurs triés par ordre alphabétique:")
+            self.view.generic_print("Liste de tous les joueurs triés par ordre alphabétique:")
             for player in players:
                 self.view.generic_print(
                     f"Nom : {player.lastname}, Prénom : {player.firstname}, Sexe : {player.sexe}, Date de naissance : {player.date_of_birth}, Classement : {player.rank}"
