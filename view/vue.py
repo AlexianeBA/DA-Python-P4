@@ -23,7 +23,7 @@ class View:
 8: Afficher le classement des joueurs d'un tounoi
 9: Afficher les tours d'un tournoi
 10: Afficher tous les matchs d'un tounoi
-11: Quitter    
+12: Quitter    
         """
         print(menu)
 
