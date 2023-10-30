@@ -17,12 +17,13 @@ class View:
 2: Afficher la liste des joueurs
 3: Créer un tournoi
 4: Lancer un tournoi
-5: Afficher la liste des tournois
-6: Afficher la liste des joueurs d'un tournoi
-7: Afficher le classement des joueurs d'un tounoi
-8: Afficher les tours d'un tournoi
-9: Afficher tous les matchs d'un tounoi
-10: Quitter    
+5: Reprendre un tournoi en cours
+6: Afficher la liste des tournois
+7: Afficher la liste des joueurs d'un tournoi
+8: Afficher le classement des joueurs d'un tounoi
+9: Afficher les tours d'un tournoi
+10: Afficher tous les matchs d'un tounoi
+11: Quitter    
         """
         print(menu)
 
@@ -58,10 +59,6 @@ class View:
     def end_of_tournament(self):
         print("Le tournoi est terminé.")
 
-    # afficher le tournoi
-    def diplay_tournament():
-        pass
-
     # afficher la liste des tours avec les joueurs
     def display_round(self, round: Round):
         print("Détail du round: ")
@@ -75,32 +72,13 @@ class View:
         print("Le joueur 2 est : ", match.player_2.firstname, match.player_2.lastname)
         print(f"Score Joueur 2: {match.player_2_result}\n")
 
-    # afficher la liste des match dans un tournois
-
-    # afficher la liste des joueurs d'un tournoi
     def display_list_of_player_from_tournament(self):
         pass
 
-    # afficher les scores pour chaque tours
-
-    # afficher le score pour chaque matchs
-
-    # afficher le gagnant pour chaque tour
-
-    # afficher le gagnant pour chaque match
-
-    # afficher le gagnant pour chaque tournoi
-
-    # afficher le classement des joueurs d'un tournoi
     def display_ranking_players_of_tournament():
         pass
 
-    # afficher les tours d'un trounoi
     def display_rounds_tournament():
-        pass
-
-    # afficher la liste des match d'un tounoi
-    def display_list_matchs_of_tournament():
         pass
 
     def rest_of_tournament(self):
