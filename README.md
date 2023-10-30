@@ -31,6 +31,6 @@ Ensuite, installez les packages présents dans le fichier requirements.txt
 Pour lancer le script: 
 ``python3 main.py``
 
-## Auteur
+## Auteurs
 
 * **Alexiane Barbe** _alias_ [@AlexianeBA](https://github.com/AlexianeBA)
