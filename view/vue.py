@@ -23,7 +23,7 @@ class View:
 8: Afficher le classement des joueurs d'un tounoi
 9: Afficher les tours d'un tournoi
 10: Afficher tous les matchs d'un tounoi
-12: Quitter    
+11: Quitter    
         """
         print(menu)
 
@@ -33,18 +33,6 @@ class View:
     def player_save(self):
         print("Le joueur a été enregistré dans la base de données.")
 
-    # afficher les joueurs
-    def display_list_of_players(self):
-        player: Player = Player()
-        players = self.player.get_all_players()
-        if players:
-            print("Liste des joueurs :")
-            for player in players:
-                print(
-                    f"Nom : {player.lastname}, Prénom : {player.firstname}, Sexe : {player.sexe}, Date de naissance : {player.date_of_birth}, Classement : {player.rank}"
-                )
-        else:
-            print("Aucun joueur n'a été trouvé dans la base de données.")
 
     def print_create_player(self):
         create_player = print("Création des joueurs: ")
