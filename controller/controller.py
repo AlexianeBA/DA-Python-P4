@@ -134,6 +134,8 @@ class Controller:
 
     # Lancement du tournois
     def play_tournament(self, tournament: Tournament):
+        print("on play",tournament)
+        print(type(tournament))
         if not tournament:
             self.view.generic_print(
                 "Aucun tournoi n'a été créé. Veuillez d'abord créer un tournoi."
@@ -342,41 +344,39 @@ class Controller:
 
         self.view.generic_print("Liste des tournois disponibles")
 
+        dict_of_tournaments = {}
         for i, tournament in enumerate(tournaments):
-            self.view.generic_print(f"{i+1}. {tournament.name}")
+            self.view.generic_print(f"{i}. {tournament.name}")
+            dict_of_tournaments[str(i)] = tournament
 
-        while True:
-            selected_index = self.view.generic_input("Sélectionnez le numéro du tournoi : ")
+        is_tournament_exist = False
+        while not is_tournament_exist:
+            selected_index = str(self.view.generic_input("Sélectionnez le numéro du tournoi : "))
             try:
-                selected_index = int(selected_index) - 1
-                if 0 <= selected_index < len(tournaments):
-                    return selected_index
+                # si la clé existe dans le dict alors on return le tournoi
+                print(dict_of_tournaments)
+                if selected_index in dict_of_tournaments:
+                    return dict_of_tournaments[selected_index]
                 else:
                     self.view.generic_print("Indice de tournoi invalide.")
             except ValueError:
                 self.view.generic_print("Sélection invalide.")
+            except Exception as e:
+                self.view.generic_print(f"Il y a une erreur {e}")
 
     # reprendre un tournoi en cours
     def resume_tournament(self):
         tournaments = self.tournament.get_all_tournaments()
-        selected_index = self.selected_tournament_index(tournaments)
-        if selected_index is not None:
-            selected_tournament = tournaments[selected_index]
-            self.resume_selected_tournament(selected_tournament)
+        selected_tournament = self.selected_tournament_index(tournaments)
+        print(f"Le tournoi à le nom de {selected_tournament.name}")
+        self.resume_selected_tournament(selected_tournament)
 
     # Reprendre le tournoi séléctionné
     def resume_selected_tournament(self, selected_tournament):
-        if not selected_tournament:
-            self.view.generic_print("Tournoi invalide")
-            return
-
-        deserialized_tournament = self.tournament.deserialize_tournament(
-            selected_tournament
-        )
-        self.play_tournament(deserialized_tournament)
+        self.play_tournament(selected_tournament)
 
         self.view.generic_print(
-            f"Tournoi {deserialized_tournament.name} repris avec succès."
+            f"Tournoi {selected_tournament.name} repris avec succès."
         )
 
     # afficher la liste des tournoi disponible
