@@ -310,27 +310,29 @@ class Controller:
             tournament.update_tournament(serialized_tournament)
 
     # Filtre des joueurs pour ne pas qu'ils se retouvent l'un contre l'autre plus d'une fois
-    def filter_players(self):
+    def filter_players(self, previous_matches):
         players = self.player.get_all_players()
         sorted_players = sorted(
             players, key=lambda player: self.player.score, reverse=True
         )
         print(sorted_players)
         list_of_matches = []
+        
+        previous_players = set()
+        for round_matches in previous_matches:
+            for match in round_matches:
+                previous_players.add(match.player_1)
+                previous_players.add(match.player_2)
+                
         while len(sorted_players) > 0:
             for i in range(0, len(sorted_players), 2):
                 player_1 = sorted_players[i]
                 player_2 = sorted_players[i + 1]
-                player_1: Player
-                player_2: Player
-                if (
-                    player_2 not in player_1.opponent
-                    and player_1 not in player_2.opponent
-                ):
+                if player_1 not in previous_players and player_2 not in previous_players:
                     match = self.create_match(player_1, player_2)
                     list_of_matches.append(match)
-                    sorted_players.remove(player_1)
-                    sorted_players.remove(player_2)
+                    previous_players.add(player_1)
+                    previous_players.add(player_2)
 
                 break
 
@@ -442,17 +444,19 @@ class Controller:
 
             if not rounds:
                 self.view.generic_print("Aucun round trouvé pour ce tournoi.")
-        else:
-            self.view.generic_print(f"Rounds du tournoi {selected_tournament.name} :")
-            for i in enumerate(rounds, start=1):
-                self.view.generic_print(f"Round {i}:")
+            else:
+                self.view.generic_print(f"Rounds du tournoi {selected_tournament.name} :")
+                for i, round_info in enumerate(rounds, start=1):
+                    self.view.generic_print(f"Round {i}: {round_info}")
 
+        else:
+            self.view.generic_print("Aucun tournoi séléctionné.")
     # afficher la liste des matchs d'un tournoi choisi
     def display_matches_of_one_tournament(self):
         tournaments = self.tournament.get_all_tournaments()
         selected_index = self.selected_tournament_index(tournaments)
 
-        if selected_index:
+        if selected_index is not None:
             selected_tournament = tournaments[selected_index]
 
             self.view.generic_print(f"Matchs du tournoi {selected_tournament.name} :")
