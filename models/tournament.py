@@ -74,7 +74,7 @@ class Tournament:
                 date=serialized_tournament["date"],
                 nb_rounds=serialized_tournament["nb_rounds"],
                 current_round=serialized_tournament["current_round"],
-                description=serialized_tournament["description"]
+                description=serialized_tournament["description"],
             )
             tournament_object.players = [
                 self.player.deserialize_player(player_dict)
