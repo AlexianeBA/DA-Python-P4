@@ -12,14 +12,14 @@ class Tournament:
         date="",
         description="",
         current_round=1,
-        nb_round=4,
+        nb_rounds=4,
         players=[],
         rounds=[],
     ):
         self.name = name
         self.location = location
         self.date = date
-        self.nb_round = nb_round
+        self.nb_rounds = nb_rounds
         self.current_round = current_round
         # self.players: List[Player] = []
         self.rounds: List[Round] = rounds
@@ -42,7 +42,7 @@ class Tournament:
             "name": self.name,
             "location": self.location,
             "date": self.date,
-            "nb_round": self.nb_round,
+            "nb_rounds": self.nb_rounds,
             "current_round": self.current_round,
             "description": self.description,
             "players": list_players,
@@ -58,7 +58,7 @@ class Tournament:
         self.rounds.append(round)
 
     def is_finished(self):
-        return self.current_round >= self.nb_round
+        return self.current_round >= self.nb_rounds
 
     def update_tournament(self, serialized_tournament):
         QueryTournament = Query()
@@ -67,26 +67,26 @@ class Tournament:
         )
 
     def deserialize_tournament(self, serialized_tournament):
-        tournament_object = Tournament(
-            name=serialized_tournament["name"],
-            location=serialized_tournament["location"],
-            date=serialized_tournament["date"],
-            nb_round=serialized_tournament["nb_round"],
-            current_round=serialized_tournament["current_round"],
-            description=serialized_tournament["description"],
-        )
+        if isinstance(serialized_tournament, dict):
+            tournament_object = Tournament(
+                name=serialized_tournament["name"],
+                location=serialized_tournament["location"],
+                date=serialized_tournament["date"],
+                nb_rounds=serialized_tournament["nb_rounds"],
+                current_round=serialized_tournament["current_round"],
+                description=serialized_tournament["description"]
+            )
+            tournament_object.players = [
+                self.player.deserialize_player(player_dict)
+                for player_dict in serialized_tournament["players"]
+            ]
 
-        tournament_object.players = [
-            self.player.deserialize_player(player_dict)
-            for player_dict in serialized_tournament["players"]
-        ]
+            tournament_object.rounds = [
+                self.round.deserialize_round(round_dict)
+                for round_dict in serialized_tournament["rounds"]
+            ]
 
-        tournament_object.rounds = [
-            self.round.deserialize_round(round_dict)
-            for round_dict in serialized_tournament["rounds"]
-        ]
-
-        return tournament_object
+            return tournament_object
 
     def get_tournament(self, name_tournament):
         QueryTournament = Query()
