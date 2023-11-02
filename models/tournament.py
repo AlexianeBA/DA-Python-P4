@@ -58,7 +58,7 @@ class Tournament:
         self.rounds.append(round)
 
     def is_finished(self):
-        return self.current_round >= self.nb_rounds
+        return self.current_round > self.nb_rounds
 
     def update_tournament(self, serialized_tournament):
         QueryTournament = Query()

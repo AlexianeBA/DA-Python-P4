@@ -193,7 +193,8 @@ class Controller:
     # Lancement du round
     def play_round(self, round: Round):
         self.view.display_round(round)
-        round.list_of_matches.append(self.match_result(match=match))
+        # match = self.create_match(player1, player2)
+        # round.list_of_matches.append(match)
 
         for match in round.list_of_matches:
             match = self.match_result(match=match)
@@ -254,36 +255,6 @@ class Controller:
             list_matches.append(match)
 
         return list_matches
-
-        # Séléction des joueurs à partir du score
-        def select_players_by_score(self, players):
-            sorted_players = sorted(
-                players, key=lambda player: player.score, reverse=True
-            )
-            list_of_matches = []
-
-            while len(sorted_players) >= 2:
-                player_1 = sorted_players.pop(0)
-                player_2 = None
-
-                # Recherche du joueur 2 qui n'a pas encore joué contre le joueur 1
-                for opponent in player_1.opponent:
-                    if opponent in sorted_players:
-                        player_2 = opponent
-                        break
-
-                if player_2 is None:
-                    # Si le joueur 1 a déjà joué contre tous les autres joueurs disponibles,
-                    # choisissez un joueur au hasard parmi les joueurs restants
-                    player_2 = random.choice(sorted_players)
-
-                match = self.create_match(player_1, player_2)
-                list_of_matches.append(match)
-
-                # Mise à jour de la liste des joueurs restants
-                sorted_players.remove(player_2)
-
-            return list_of_matches
 
     # Intéraction avec l'utilisateur pour continuer ou quitter le tournoi en cours
     def ask_to_exit_tournament(self):
@@ -392,11 +363,16 @@ class Controller:
 
     # Reprendre le tournoi séléctionné
     def resume_selected_tournament(self, selected_tournament):
-        self.play_tournament(selected_tournament)
+        if selected_tournament.is_finished():
+            self.view.generic_print(
+                "Le tournoi est déjà terminé, vous ne pouvez pas le reprendre."
+            )
 
-        self.view.generic_print(
-            f"Tournoi {selected_tournament.name} repris avec succès."
-        )
+        else:
+            self.play_tournament(selected_tournament)
+            self.view.generic_print(
+                f"Tournoi {selected_tournament.name} repris avec succès."
+            )
 
     # afficher la liste des tournoi disponible
     def display_list_of_tournaments(self):
