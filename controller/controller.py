@@ -76,12 +76,6 @@ class Controller:
                 "Aucun joueur n'a été trouvé dans la base de données."
             )
 
-    # Génération de l'ID
-    def generate_random_id(self):
-        numbers = random.choices(string.digits, k=4)
-        player_id = "AB" + "".join(numbers)
-        return player_id
-
     # création de joueur
     def create_player(self):
         print(self.view.print_create_player)
@@ -91,7 +85,7 @@ class Controller:
         joueur.sexe = self.view.generic_input("Sexe: ")
         joueur.date_of_birth = self.view.generic_input("Date de naissance: ")
         joueur.rank = self.view.generic_input("Niveau: ")
-        joueur.player_id = self.generate_random_id()
+        joueur.player_id = self.view.generic_input("ID: ")
         self.view.player_create()
         # Sauvegarde des données du joueur
         serialized_player = joueur.serialize_player()
@@ -174,11 +168,16 @@ class Controller:
 
         date_and_hour_start = datetime.now()
         list_of_matchs = []
+
         if tournament.current_round == 1:
             list_of_matchs = self.select_random_players_first_round()
 
         else:
             list_of_matchs = self.filter_players()
+
+        for match in list_of_matchs:
+            self.match_result(match)
+
         new_round = Round(
             list_of_matches=list_of_matchs,
             name_of_round=name_of_round,
@@ -223,6 +222,7 @@ class Controller:
             match.player_1.update_score("1")
             match.player_2.update_score("0")
             match.player_1_result = 1
+
         elif result == "2":
             match.player_1.update_score("0")
             match.player_2.update_score("1")
@@ -239,7 +239,8 @@ class Controller:
         self.view.generic_print(
             f"Le joueur {match.player_2.firstname} a un score de {match.player_2_result}."
         )
-
+        match.player_1.save_score_in_db(match.player_1.score)
+        match.player_2.save_score_in_db(match.player_2.score)
         return match
 
     # selection aléatoire des joueurs pour le 1er round
@@ -291,31 +292,47 @@ class Controller:
             tournament.update_tournament(serialized_tournament)
 
     # Filtre des joueurs pour ne pas qu'ils se retouvent l'un contre l'autre plus d'une fois
+
     def filter_players(self, current_round, previous_rounds):
         players = self.player.get_all_players()
-        sorted_players = sorted(
-            players, key=lambda player: self.player.score, reverse=True
-        )
-        print(sorted_players)
+
+        players.sort(key=lambda player: player.score, reverse=True)
+
+        selected_players = []
+
         list_of_matches = []
 
-        previous_players = set()
-        matchups = []
+        for player in players:
+            if player not in selected_players:
+                opponent = None
 
-        for i in range(0, len(sorted_players), 2):
-            player_1 = sorted_players[i]
-            player_2 = sorted_players[i + 1]
-            if player_1 not in previous_players and player_2 not in previous_players:
-                players_matches = set(match[0] for match in matchups) | set(
-                    match[1] for match in matchups
-                )
-                if player_1 not in players_matches and player_2 not in players_matches:
-                    match = self.create_match(player_1, player_2)
+                for other_player in players:
+                    if other_player != player and other_player not in selected_players:
+                        match_exists = any(
+                            any(
+                                match.player_1 == player
+                                and match.player_2 == other_player
+                                for match in self.round.list_of_matches
+                            )
+                            or any(
+                                match.player_2 == player
+                                and match.player_1 == other_player
+                                for match in self.round.list_of_matches
+                            )
+                            for round in previous_rounds
+                        )
+
+                        if not match_exists:
+                            opponent = other_player
+                            break
+
+                if opponent:
+                    selected_players.extend([player, opponent])
+                    match = self.create_match(player, opponent)
                     list_of_matches.append(match)
-                    matchups.append((player_1, player_2))
 
-            previous_players.add(player_1)
-            previous_players.add(player_2)
+            if len(list_of_matches) >= len(players) / 2:
+                break
 
         return list_of_matches
 

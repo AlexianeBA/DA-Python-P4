@@ -69,6 +69,11 @@ class Player:
     def save_player_in_db(self, player):
         self.table.insert(player)
 
+    def save_score_in_db(self, new_score):
+        self.score = new_score
+        player_id = self.player_id
+        self.table.update({"score": new_score})
+
     # GENERATION DES PAIRES
 
     # trier les joueurs de manière croissante selon le score obtenu pendant le tournoi

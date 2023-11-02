@@ -21,8 +21,7 @@ class Round:
         self.list_of_matches.append(match)
 
     # mettre à jour le score après chaque tours
-    def update_score(self, user_response):
-        match: Match = Match()
+    def update_score(self, match: Match, user_response):
         if user_response == "1":
             match.player_1.update_score(1)
             match.player_1_result += 1
