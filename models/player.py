@@ -25,7 +25,7 @@ class Player:
         self.table = self.db.table("Players")
 
     def update_score(self, score):
-        self.score += int(score)
+        self.score += float(score)
 
     def update_rank(self, new_rank):
         self.rank = new_rank
