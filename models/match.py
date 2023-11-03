@@ -1,7 +1,6 @@
 from models.player import Player
 
 
-# creer un match id
 class Match:
     def __init__(self, player_1, player_2, player_1_result=0, player_2_result=0):
         self.player_1: Player = player_1

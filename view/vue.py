@@ -27,15 +27,6 @@ class View:
         """
         print(menu)
 
-    def input_index_player_invalible(self):
-        print("Index du joueur invalide.")
-
-    def not_enough_players(self):
-        print("Il n'y a pas assez de joueurs.")
-
-    def end_of_tournament(self):
-        print("Le tournoi est terminé.")
-
     # afficher la liste des tours avec les joueurs
     def display_round(self, round: Round):
         print("Détail du round: ")

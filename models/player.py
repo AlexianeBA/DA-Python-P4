@@ -81,17 +81,3 @@ class Player:
             self.table.update(
                 {"rank": new_rank}, query_player_id.player_id == player_id
             )
-
-    # GENERATION DES PAIRES
-
-    # trier les joueurs de manière croissante selon le score obtenu pendant le tournoi
-    def sort_players_based_score_result_in_tournament():
-        pass
-
-    # associez les joueurs dans l'ordre, exemple: joueur 1 avec joueur 2 selon leur score. faire en sorte que les joueurs ne se rencontrent pas plus d'une fois et si le score des joueurs est identique, choisir aléatoirement
-    def players_in_order():
-        pass
-
-    # tirage au sort de qui joue blanc et qui joue noir
-    def draw_player_color():
-        pass
