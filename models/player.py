@@ -11,6 +11,7 @@ class Player:
         rank="",
         score=0,
         player_id="",
+        opponent=[],
     ):
         self.lastname = lastname
         self.firstname = firstname
@@ -19,7 +20,7 @@ class Player:
         self.rank = rank
         self.score = score
         self.player_id = player_id
-        self.opponent = []
+        self.opponent = opponent
         self.db = TinyDB("db.json")
         self.table = self.db.table("Players")
 
@@ -29,8 +30,9 @@ class Player:
     def update_rank(self, new_rank):
         self.rank = new_rank
 
-    def add_opponent(self, opponent):
-        self.opponent.append(opponent)
+    def add_opponent(self, faced_opponent):
+        faced_opponent: Player = faced_opponent
+        self.opponent.append(faced_opponent.player_id)
 
     def serialize_player(self):
         serialize_player = {
@@ -41,6 +43,7 @@ class Player:
             "rank": self.rank,
             "score": self.score,
             "player_id": self.player_id,
+            "opponent": self.opponent,
         }
         return serialize_player
 
@@ -62,6 +65,7 @@ class Player:
             rank=player_dict["rank"],
             score=player_dict["score"],
             player_id=player_dict["player_id"],
+            opponent=player_dict["opponent"],
         )
         return player_object
 
@@ -70,9 +74,13 @@ class Player:
         self.table.insert(player)
 
     def save_score_in_db(self, new_score):
-        self.score = new_score
         player_id = self.player_id
-        self.table.update({"score": new_score})
+        query_player_id = Query()
+        player = self.table.get(query_player_id.player_id == player_id)
+        if player:
+            self.table.update(
+                {"score": new_score}, query_player_id.player_id == player_id
+            )
 
     # GENERATION DES PAIRES
 

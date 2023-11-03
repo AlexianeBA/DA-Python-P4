@@ -21,7 +21,6 @@ class Tournament:
         self.date = date
         self.nb_rounds = nb_rounds
         self.current_round = current_round
-        # self.players: List[Player] = []
         self.rounds: List[Round] = rounds
         self.description = description
         self.db = TinyDB("db.json")
@@ -101,3 +100,16 @@ class Tournament:
             deserialized_tournament = self.deserialize_tournament(tournament)
             list_of_tournaments.append(deserialized_tournament)
         return list_of_tournaments
+
+    def get_all_players_of_a_tournament(self, tournament_name):
+        Tournaments = Query()
+        tournaments = self.db.table("Tournaments")
+        for tournament_key in tournaments.all():
+            tournament_data = tournaments.get(doc_id=tournament_key.doc_id)
+            if tournament_data["name"] == tournament_name:
+                # Le nom du tournoi correspond, vous pouvez maintenant accéder à la liste des joueurs
+                players_list = tournament_data.get("players", [])
+                return players_list
+
+        # Si aucun tournoi correspondant n'est trouvé, renvoyez une liste vide
+        return []

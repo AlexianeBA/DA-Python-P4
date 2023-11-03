@@ -27,17 +27,6 @@ class View:
         """
         print(menu)
 
-    def player_create(self):
-        print("Le joueur a été créé.")
-
-    def player_save(self):
-        print("Le joueur a été enregistré dans la base de données.")
-
-
-    def print_create_player(self):
-        create_player = print("Création des joueurs: ")
-        return create_player
-
     def input_index_player_invalible(self):
         print("Index du joueur invalide.")
 
