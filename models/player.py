@@ -8,7 +8,7 @@ class Player:
         firstname="",
         sexe="",
         date_of_birth="",
-        rank="",
+        rank=0,
         score=0,
         player_id="",
         opponent=[],
@@ -27,8 +27,8 @@ class Player:
     def update_score(self, score):
         self.score += float(score)
 
-    def update_rank(self, new_rank):
-        self.rank = new_rank
+    def update_rank(self, rank):
+        self.rank += int(rank)
 
     def add_opponent(self, faced_opponent):
         faced_opponent: Player = faced_opponent
@@ -62,7 +62,7 @@ class Player:
             firstname=player_dict["firstname"],
             sexe=player_dict["sexe"],
             date_of_birth=player_dict["date_of_birth"],
-            rank=player_dict["rank"],
+            rank=int(player_dict["rank"]),
             score=player_dict["score"],
             player_id=player_dict["player_id"],
             opponent=player_dict["opponent"],
@@ -73,13 +73,13 @@ class Player:
     def save_player_in_db(self, player):
         self.table.insert(player)
 
-    def save_score_in_db(self, new_score):
+    def update_player_rank(self, new_rank):
         player_id = self.player_id
         query_player_id = Query()
         player = self.table.get(query_player_id.player_id == player_id)
         if player:
             self.table.update(
-                {"score": new_score}, query_player_id.player_id == player_id
+                {"rank": new_rank}, query_player_id.player_id == player_id
             )
 
     # GENERATION DES PAIRES

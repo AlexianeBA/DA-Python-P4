@@ -38,7 +38,7 @@ class Controller:
             self.ask_to_exit_tournament()
             self.play_tournament(created_tournament)
         elif selected_menu == "4":
-            self.create_rounds(tournament=self.tournament)
+            self.create_new_round_and_play_it(tournament=self.tournament)
             self.select_players_for_round()
         elif selected_menu == "5":
             self.resume_tournament()
@@ -139,31 +139,14 @@ class Controller:
             return
 
         while tournament.current_round <= 4:
-            if tournament.current_round == 1:
-                round = self.create_rounds(tournament)
-            else:
-                round = self.create_rounds(tournament)
-            self.play_current_round(round)
+            self.create_new_round_and_play_it(tournament)
 
             tournament.current_round += 1
             serialized_tournament = tournament.serialize_tournament()
             tournament.update_tournament(serialized_tournament)
 
-    def play_current_round(self, round: Round):
-        if not round:
-            self.view.generic_print(
-                "Aucun round n'a été créé. Veuillez d'abord créer un round."
-            )
-            return
-
-        for match in round.list_of_matches:
-            if match.player_1_result is None or match.player_2_result is None:
-                self.play_match(match)
-
-        round.date_and_hour_end = datetime.now()
-
     # création des rounds 1,2,3 et 4
-    def create_rounds(self, tournament: Tournament, first_round=True):
+    def create_new_round_and_play_it(self, tournament: Tournament, first_round=True):
         round_number = tournament.current_round
         name_of_round = self.view.generic_input(
             "Ajouter un nom au round" + str(round_number) + ":"
@@ -180,16 +163,16 @@ class Controller:
         for match in list_of_matchs:
             self.play_match(match)
 
-        new_round = Round(
+        played_round = Round(
             list_of_matches=list_of_matchs,
             name_of_round=name_of_round,
             date_and_hour_start=date_and_hour_start,
         )
-        tournament.rounds.append(new_round)
+        played_round.date_and_hour_end = datetime.now()
+        tournament.rounds.append(played_round)
         serialized_tournament = tournament.serialize_tournament()
         tournament.update_tournament(serialized_tournament)
         self.ask_to_exit_tournament()
-        return new_round
 
     def select_players_for_round(self, first_round=True, tournament_name=None):
         if first_round:
@@ -239,11 +222,13 @@ class Controller:
             match.player_1.update_score("1")
             match.player_2.update_score("0")
             match.player_1_result = 1
+            match.player_1.update_rank(1)
 
         elif result == "2":
             match.player_1.update_score("0")
             match.player_2.update_score("1")
             match.player_2_result = 1
+            match.player_2.update_rank(1)
         elif result == "0.5":
             match.player_1.update_score("0.5")
             match.player_2.update_score("0.5")
@@ -256,8 +241,9 @@ class Controller:
         self.view.generic_print(
             f"Le joueur {match.player_2.firstname} a un score de {match.player_2_result}."
         )
-        match.player_1.save_score_in_db(match.player_1.score)
-        match.player_2.save_score_in_db(match.player_2.score)
+        match.player_1.update_player_rank(match.player_1.rank)
+        match.player_2.update_player_rank(match.player_2.rank)
+
         return match
 
     # méthode générique pour choisir l'index du tournoi
@@ -293,7 +279,8 @@ class Controller:
     # reprendre un tournoi en cours
     def resume_tournament(self):
         tournaments = self.tournament.get_all_tournaments()
-        selected_tournament = self.selected_tournament_index(tournaments)
+        selected_tournament: Tournament = self.selected_tournament_index(tournaments)
+
         if selected_tournament:
             self.view.generic_print(
                 f"Le tournoi à le nom de {selected_tournament.name}"
