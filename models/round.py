@@ -47,10 +47,15 @@ class Round:
         return serialize_round
 
     def deserialize_round(self, round_dict):
-        round_object = Round(
-            name_of_round=round_dict["name_of_round"],
-            date_and_hour_start=round_dict["date_and_hour_start"],
-            date_and_hour_end=round_dict["date_and_hour_end"],
-        )
+        self.name_of_round = round_dict["name_of_round"]
+        self.date_and_hour_start = round_dict["date_and_hour_start"]
+        self.date_and_hour_end = round_dict["date_and_hour_end"]
+        self.list_of_matches = []
+        serialized_matches = round_dict["list_of_matches"]
 
-        return round_object
+        for serialized_match in serialized_matches:
+            match_instance = Match(
+                player_1=serialized_match["player_1"],
+                player_2=serialized_match["player_2"],
+            )
+            self.list_of_matches.append(match_instance)
