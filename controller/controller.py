@@ -281,9 +281,7 @@ class Controller:
         selected_tournament: Tournament = self.selected_tournament_index(tournaments)
 
         if selected_tournament:
-            self.view.generic_print(
-                f"Le tournoi à le nom de {selected_tournament.name}"
-            )
+            self.view.generic_print(f"Reprise du tournoi: {selected_tournament.name}")
             self.resume_selected_tournament(selected_tournament)
             self.tournament.current_round = selected_tournament.current_round
         else:
@@ -384,11 +382,12 @@ class Controller:
                     f"Liste des matchs du round {round.name_of_round} : "
                 )
 
-                for match in round.list_of_matches:
-                    player_1 = match["player_1"]
-                    player_2 = match["player_2"]
-                    player_1_result = match["player_1_result"]
-                    player_2_result = match["player_2_result"]
+                for serialized_match in round.list_of_matches:
+                    match = self.round.deserialize_match(serialized_match)
+                    player_1 = match.player_1
+                    player_2 = match.player_2
+                    player_1_result = match.player_1_result
+                    player_2_result = match.player_2_result
 
                     self.view.generic_print(
                         f"Match : {player_1['firstname']} {player_1['lastname']} vs {player_2['firstname']} {player_2['lastname']}, Résultat : {player_1_result} - {player_2_result}"
