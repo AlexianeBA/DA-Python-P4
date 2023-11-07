@@ -102,7 +102,6 @@ class Tournament:
         return list_of_tournaments
 
     def get_all_players_of_a_tournament(self, tournament_name):
-        Tournaments = Query()
         tournaments = self.db.table("Tournaments")
         for tournament_key in tournaments.all():
             tournament_data = tournaments.get(doc_id=tournament_key.doc_id)

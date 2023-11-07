@@ -1,6 +1,5 @@
 from models.player import Player
 from tinydb import TinyDB
-from models.tournament import Tournament
 from models.round import Round
 from models.match import Match
 
@@ -23,8 +22,7 @@ class View:
 8: Afficher le classement des joueurs d'un tounoi
 9: Afficher les tours d'un tournoi
 10: Afficher tous les matchs d'un tounoi
-11: Quitter    
-        """
+11: Quitter"""
         print(menu)
 
     # afficher la liste des tours avec les joueurs
@@ -73,7 +71,7 @@ class View:
 
     def get_match_result(self):
         result = input(
-            "Entrer le résultat du match: 1 dans le cas où le joueur 1 à remporter le match, 2 dans le cas où le joueur 2 à gagner ou 0.5 en cas de match nul."
+            "Entrez le gagant : 1 pour le joueur 1, 2 pour le joueur 2 ou 0.5 pour match nul."
         )
         if result in ("1", "2", "0.5"):
             return result

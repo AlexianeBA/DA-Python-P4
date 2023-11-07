@@ -1,6 +1,5 @@
 from typing import List
 from models.match import Match
-from models.player import Player
 
 
 class Round:

@@ -65,8 +65,13 @@ class Controller:
                 "Liste de tous les joueurs triés par ordre alphabétique:"
             )
             for player in players:
+                a = player.lastname
+                b = player.firstname
+                c = player.sexe
+                d = player.date_of_birth
+                e = player.rank
                 self.view.generic_print(
-                    f"Nom : {player.lastname}, Prénom : {player.firstname}, Sexe : {player.sexe}, Date de naissance : {player.date_of_birth}, Classement : {player.rank}"
+                    f"Nom: {a}, Prénom: {b}, Sexe: {c}, Date de naissance: {d}, Classement: {e}"
                 )
         else:
             self.view.generic_print(
@@ -378,22 +383,21 @@ class Controller:
             )
             rounds = selected_tournament.rounds
             for round in rounds:
-                self.view.generic_print(
-                    f"Liste des matchs du round {round.name_of_round} : "
-                )
-
                 for serialized_match in round.list_of_matches:
                     match = self.round.deserialize_match(serialized_match)
                     player_1 = match.player_1
                     player_2 = match.player_2
                     player_1_result = match.player_1_result
                     player_2_result = match.player_2_result
+                    first_player = f"{player_1['firstname']} {player_1['lastname']}"
+                    second_player = f"{player_2['firstname']} {player_2['lastname']}"
+                    result = f"{player_1_result} - {player_2_result}"
 
                     self.view.generic_print(
-                        f"Match : {player_1['firstname']} {player_1['lastname']} vs {player_2['firstname']} {player_2['lastname']}, Résultat : {player_1_result} - {player_2_result}"
+                        f"Match : {first_player} vs {second_player}, Résultat : {result}"
                     )
         else:
-            self.view.generic_print(f"Aucun match trouvé pour le tournoi sélectionné")
+            self.view.generic_print("Aucun match trouvé pour le tournoi sélectionné")
 
     # Intéraction avec l'utilisateur pour continuer ou quitter le tournoi en cours
     def ask_to_exit_tournament(self):
