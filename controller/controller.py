@@ -99,7 +99,16 @@ class Controller:
         self.view.generic_print("Création d'un nouveau tournoi")
         name = self.view.generic_input("Nom du tournoi: ")
         location = self.view.generic_input("Lieu du tournoi: ")
-        date = self.view.generic_input("Date du tournoi: ")
+        while True:
+            date_str = self.view.generic_input("Date du tournoi (jj/mm/aa): ")
+            try:
+                date = datetime.strptime(date_str, "%d/%m/%y")
+                break
+            except ValueError:
+                self.view.generic_print(
+                    "Format de date invalide. Utilisez le format jj/mm/aa."
+                )
+
         descritpion = self.view.generic_input("Description du tournoi: ")
 
         new_tournament = Tournament(
@@ -118,7 +127,8 @@ class Controller:
 
         while len(self.tournament.players) <= 7:
             joueur = self.add_player(player_dict)
-            self.tournament.players.append(joueur)
+            if joueur:
+                self.tournament.players.append(joueur)
         serialized_tournament = self.tournament.serialize_tournament()
         self.tournament.update_tournament(serialized_tournament)
         return self.tournament
@@ -130,8 +140,10 @@ class Controller:
         )
         if user_input == "c":
             return self.create_player()
-        else:
+        elif user_input in player_dict:
             return player_dict[user_input]
+        else:
+            self.view.generic_print("Index de joueur invalide. Réessayez.")
 
     # Lancement du tournois
     def play_tournament(self, tournament: Tournament):
@@ -145,7 +157,6 @@ class Controller:
         while tournament.current_round <= 4:
             self.create_new_round_and_play_it(tournament)
 
-            tournament.current_round += 1
             serialized_tournament = tournament.serialize_tournament()
             tournament.update_tournament(serialized_tournament)
 
@@ -174,6 +185,7 @@ class Controller:
         )
         played_round.date_and_hour_end = datetime.now()
         tournament.rounds.append(played_round)
+        tournament.current_round += 1
         serialized_tournament = tournament.serialize_tournament()
         tournament.update_tournament(serialized_tournament)
         self.ask_to_exit_tournament()
@@ -196,13 +208,17 @@ class Controller:
         return list_matches
 
     # Lancement du round
-    def play_round(self, round: Round):
+    def play_round(self):
+        round: Round = Round()
         self.view.display_round(round)
 
         for match in round.list_of_matches:
             match = self.play_match(match=match)
 
         round.date_and_hour_end = datetime.now()
+
+        self.tournament.current_round += 1
+        self.tournament.update_tournament(self.tournament.serialize_tournament())
         return round
 
     # creation des matchs
@@ -285,21 +301,12 @@ class Controller:
         tournaments = self.tournament.get_all_tournaments()
         selected_tournament: Tournament = self.selected_tournament_index(tournaments)
 
-        if selected_tournament:
-            self.view.generic_print(f"Reprise du tournoi: {selected_tournament.name}")
-            self.resume_selected_tournament(selected_tournament)
-            self.tournament.current_round = selected_tournament.current_round
-        else:
-            self.view.generic_print("Aucun tournoi séléctionné.")
-
-    def resume_selected_tournament(self, selected_tournament):
         if selected_tournament.is_finished():
             self.view.generic_print(
                 "Le tournoi est déjà terminé, vous ne pouvez pas le reprendre."
             )
-
         else:
-            self.tournament.current_round = selected_tournament.current_round
+            self.view.generic_print(f"Reprise du tournoi: {selected_tournament.name}")
             self.play_tournament(selected_tournament)
 
     # afficher la liste des tournoi disponible
