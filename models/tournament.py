@@ -2,6 +2,7 @@ from typing import List
 from models.round import Round
 from models.player import Player
 from tinydb import TinyDB, Query
+from datetime import datetime
 
 
 class Tournament:
@@ -37,6 +38,7 @@ class Tournament:
         list_rounds = []
         for round in self.rounds:
             list_rounds.append(round.serialize_round())
+
         serialize_tournament = {
             "name": self.name,
             "location": self.location,

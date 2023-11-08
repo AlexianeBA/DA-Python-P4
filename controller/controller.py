@@ -99,20 +99,11 @@ class Controller:
         self.view.generic_print("Création d'un nouveau tournoi")
         name = self.view.generic_input("Nom du tournoi: ")
         location = self.view.generic_input("Lieu du tournoi: ")
-        while True:
-            date_str = self.view.generic_input("Date du tournoi (jj/mm/aa): ")
-            try:
-                date = datetime.strptime(date_str, "%d/%m/%y")
-                break
-            except ValueError:
-                self.view.generic_print(
-                    "Format de date invalide. Utilisez le format jj/mm/aa."
-                )
-
-        descritpion = self.view.generic_input("Description du tournoi: ")
+        date = str(datetime.now())
+        description = self.view.generic_input("Description du tournoi: ")
 
         new_tournament = Tournament(
-            name=name, location=location, date=date, description=descritpion
+            name=name, location=location, date=date, description=description
         )
 
         self.tournament = new_tournament
@@ -390,18 +381,17 @@ class Controller:
             )
             rounds = selected_tournament.rounds
             for round in rounds:
-                for serialized_match in round.list_of_matches:
-                    match = self.round.deserialize_match(serialized_match)
-                    player_1 = match.player_1
-                    player_2 = match.player_2
-                    player_1_result = match.player_1_result
-                    player_2_result = match.player_2_result
-                    first_player = f"{player_1['firstname']} {player_1['lastname']}"
-                    second_player = f"{player_2['firstname']} {player_2['lastname']}"
-                    result = f"{player_1_result} - {player_2_result}"
+                self.view.generic_print(
+                    f"Liste des matchs du round {round.name_of_round} : "
+                )
+                for match in round.list_of_matches:
+                    player_1 = match["player_1"]
+                    player_2 = match["player_2"]
+                    player_1_result = match["player_1_result"]
+                    player_2_result = match["player_2_result"]
 
                     self.view.generic_print(
-                        f"Match : {first_player} vs {second_player}, Résultat : {result}"
+                        f"Match : {player_1['firstname']} {player_1['lastname']} vs {player_2['firstname']} {player_2['lastname']}, Résultat : {player_1_result} - {player_2_result}"
                     )
         else:
             self.view.generic_print("Aucun match trouvé pour le tournoi sélectionné")
