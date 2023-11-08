@@ -58,3 +58,11 @@ class Round:
                 player_2=serialized_match["player_2"],
             )
             self.list_of_matches.append(match_instance)
+
+        deserializer_round = Round(
+            name_of_round=round_dict["name_of_round"],
+            date_and_hour_start=["date_and_hour_start"],
+            date_and_hour_end=["date_and_hour_end"],
+        )
+
+        return deserializer_round
