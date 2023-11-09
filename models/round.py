@@ -50,9 +50,8 @@ class Round:
         self.date_and_hour_start = round_dict["date_and_hour_start"]
         self.date_and_hour_end = round_dict["date_and_hour_end"]
         self.list_of_matches = []
-        serialized_matches = round_dict["list_of_matches"]
 
-        for serialized_match in serialized_matches:
+        for serialized_match in round_dict["list_of_matches"]:
             match_instance = Match(
                 player_1=serialized_match["player_1"],
                 player_2=serialized_match["player_2"],
@@ -63,6 +62,7 @@ class Round:
             name_of_round=round_dict["name_of_round"],
             date_and_hour_start=["date_and_hour_start"],
             date_and_hour_end=["date_and_hour_end"],
+            list_of_matches=self.list_of_matches,
         )
 
         return deserializer_round

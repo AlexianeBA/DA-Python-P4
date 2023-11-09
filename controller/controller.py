@@ -385,13 +385,13 @@ class Controller:
                     f"Liste des matchs du round {round.name_of_round} : "
                 )
                 for match in round.list_of_matches:
-                    player_1 = match["player_1"]
-                    player_2 = match["player_2"]
-                    player_1_result = match["player_1_result"]
-                    player_2_result = match["player_2_result"]
+                    player_1 = match.player_1
+                    player_2 = match.player_2
+                    player_1_result = match.player_1_result
+                    player_2_result = match.player_2_result
 
                     self.view.generic_print(
-                        f"Match : {player_1['firstname']} {player_1['lastname']} vs {player_2['firstname']} {player_2['lastname']}, Résultat : {player_1_result} - {player_2_result}"
+                        f"Match : {player_1} vs {player_2}, Résultat : {player_1_result} - {player_2_result}"
                     )
         else:
             self.view.generic_print("Aucun match trouvé pour le tournoi sélectionné")
