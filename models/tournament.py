@@ -5,6 +5,19 @@ from tinydb import TinyDB, Query
 
 
 class Tournament:
+    """Represents a chess tournament.
+
+    Attributes:
+        name (str): The name of the tournament.
+        location (str): The location where the tournament is held.
+        date (str): The date when the tournament takes place.
+        description (str): A description or additional information about the tournament.
+        current_round (int): The current round of the tournament.
+        nb_rounds (int): The total number of rounds in the tournament.
+        rounds (List[Round]): List of Round instances in the tournament.
+        players (List[Player]): List of Player instances participating in the tournament.
+    """
+
     def __init__(
         self,
         name="",
@@ -16,6 +29,18 @@ class Tournament:
         players=[],
         rounds=[],
     ):
+        """Initializes a Tournament instance.
+
+        Args:
+            name (str, optional): The name of the tournament. Defaults to "".
+            location (str, optional): The location where the tournament is held. Defaults to "".
+            date (str, optional): The date when the tournament takes place. Defaults to "".
+            description (str, optional): A description or additional information about the tournament. Defaults to "".
+            current_round (int, optional): The current round of the tournament. Defaults to 1.
+            nb_rounds (int, optional): The total number of rounds in the tournament. Defaults to 4.
+            players (List[Player], optional): List of Player instances participating in the tournament. Defaults to [].
+            rounds (List[Round], optional): List of Round instances in the tournament. Defaults to [].
+        """
         self.name = name
         self.location = location
         self.date = date
@@ -30,6 +55,11 @@ class Tournament:
         self.round: Round = Round()
 
     def serialize_tournament(self):
+        """Serializes the Tournament instance to a dictionary.
+
+        Returns:
+            dict: A dictionary containing serialized tournament information.
+        """
         list_players = []
         for player in self.players:
             list_players.append(player.serialize_player())
@@ -51,19 +81,38 @@ class Tournament:
         return serialize_tournament
 
     def save_tournament_in_db(self):
+        """Saves the serialized tournament information in the database."""
         serialize_tournament = self.serialize_tournament()
         self.table.insert(serialize_tournament)
 
     def is_finished(self):
+        """Checks if the tournament has finished.
+
+        Returns:
+            bool: True if the tournament has finished, False otherwise.
+        """
         return self.current_round > self.nb_rounds
 
     def update_tournament(self, serialized_tournament):
+        """Updates the tournament information in the database.
+
+        Args:
+            serialized_tournament (dict): A dictionary containing serialized tournament information.
+        """
         QueryTournament = Query()
         self.table.update(
             serialized_tournament, QueryTournament.name == serialized_tournament["name"]
         )
 
     def deserialize_tournament(self, serialized_tournament):
+        """Deserializes a dictionary to create a Tournament instance.
+
+        Args:
+            serialized_tournament (dict): A dictionary containing serialized tournament information.
+
+        Returns:
+            Tournament: A Tournament instance created from the provided dictionary.
+        """
         if isinstance(serialized_tournament, dict):
             tournament_object = Tournament(
                 name=serialized_tournament["name"],
@@ -86,6 +135,11 @@ class Tournament:
             return tournament_object
 
     def get_all_tournaments(self):
+        """Gets a list of all tournaments from the database.
+
+        Returns:
+            List[Tournament]: A list of Tournament instances.
+        """
         tournaments = self.db.table("Tournaments").all()
         list_of_tournaments = []
 
@@ -95,6 +149,14 @@ class Tournament:
         return list_of_tournaments
 
     def get_all_players_of_a_tournament(self, tournament_name):
+        """Gets the list of players from a specific tournament.
+
+        Args:
+            tournament_name (str): The name of the tournament.
+
+        Returns:
+            List[Player]: A list of Player instances participating in the tournament.
+        """
         tournaments = self.db.table("Tournaments")
         for tournament_key in tournaments.all():
             tournament_data = tournaments.get(doc_id=tournament_key.doc_id)

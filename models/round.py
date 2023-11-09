@@ -3,6 +3,15 @@ from models.match import Match
 
 
 class Round:
+    """Represents a round in a tournament.
+
+    Attributes:
+        list_of_matches (List[Match]): List of Match instances in the round.
+        name_of_round (str): The name or identifier of the round.
+        date_and_hour_start (str): The start date and time of the round.
+        date_and_hour_end (str): The end date and time of the round.
+    """
+
     def __init__(
         self,
         list_of_matches=[],
@@ -10,12 +19,25 @@ class Round:
         date_and_hour_start="",
         date_and_hour_end="",
     ):
+        """Initializes a Round instance.
+
+        Args:
+            list_of_matches (List[Match], optional): List of Match instances in the round. Defaults to [].
+            name_of_round (str, optional): The name or identifier of the round. Defaults to "".
+            date_and_hour_start (str, optional): The start date and time of the round. Defaults to "".
+            date_and_hour_end (str, optional): The end date and time of the round. Defaults to "".
+        """
         self.list_of_matches: List[Match] = list_of_matches
         self.name_of_round = name_of_round
         self.date_and_hour_start = date_and_hour_start
         self.date_and_hour_end = date_and_hour_end
 
     def serialize_round(self):
+        """Serializes the Round instance to a dictionary.
+
+        Returns:
+            dict: A dictionary containing serialized round information.
+        """
         serialized_matches = [match.serialize_match() for match in self.list_of_matches]
         serialize_round = {
             "name_of_round": self.name_of_round,
@@ -26,6 +48,14 @@ class Round:
         return serialize_round
 
     def deserialize_round(self, round_dict):
+        """Deserializes a dictionary to create a Round instance.
+
+        Args:
+            round_dict (dict): A dictionary containing serialized round information.
+
+        Returns:
+            Round: A Round instance created from the provided dictionary.
+        """
         self.name_of_round = round_dict["name_of_round"]
         self.date_and_hour_start = round_dict["date_and_hour_start"]
         self.date_and_hour_end = round_dict["date_and_hour_end"]

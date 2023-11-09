@@ -11,7 +11,30 @@ from tabulate import tabulate
 
 
 class Controller:
+    """
+    Controller class for managing a tournament system.
+
+    Args:
+    - object_view (View): An instance of the View class.
+
+    Attrubutes:
+    - view (View): An instance of the View class.
+    - player (Player):  An instance of the Player class.
+    - tournament (Tournament):  An instance of the Tournament class.
+    - db (TinyDB): Database instance.
+    - player_table (Table): Table for storing player data.
+    - tournament_table (Table): Table for storing tournament data.
+    - rounds (list): List to store tournament rounds.
+    - round (Round): An instance of the Round class.
+    """
+
     def __init__(self, object_view: View):
+        """
+        Initialize the Controller with a View instance and other necessary attributes.
+
+        Args:
+        - obect_view (View): An instance of the View class.
+        """
         self.view = object_view
         self.player: Player = Player()
         self.tournament: Tournament = Tournament()
@@ -24,6 +47,9 @@ class Controller:
         self.round: Round = Round()
 
     def start(self):
+        """
+        Start the tournament system, display menu, and handle user input for differents options.
+        """
         self.view.display_menu()
         selected_menu = self.view.generic_input("Sélectionnez une option: ")
         self.view.generic_print(selected_menu)
@@ -55,6 +81,9 @@ class Controller:
 
     # afficher les joueurs
     def display_list_of_players_in_alphabetical_order(self):
+        """
+        Display list of players in alphabetical order with their details.
+        """
         players = self.player.get_all_players()
 
         if players:
@@ -87,6 +116,9 @@ class Controller:
 
     # création de joueur
     def create_player(self):
+        """
+        Create a new player and save the player's data in the database.
+        """
         self.view.generic_print("Création de joueur")
         joueur: Player = Player()
         joueur.lastname = self.view.generic_input("Nom de famille : ")
@@ -103,6 +135,10 @@ class Controller:
 
     # création d'un tournois
     def create_tournament(self):
+        """
+        Create a new tournament and add players to it.
+        Return the created tournament.
+        """
         self.view.generic_print("Création d'un nouveau tournoi")
         name = self.view.generic_input("Nom du tournoi: ")
         location = self.view.generic_input("Lieu du tournoi: ")
@@ -133,6 +169,15 @@ class Controller:
 
     # Ajout des joueurs pour le tournois
     def add_player(self, player_dict):
+        """
+        Add a player to the tournament by selecting from the list or creating a new one.
+
+        Args:
+        - player_dict (dict): Dictionnary mapping player indices to player objects.
+
+        Returns:
+        - Player: The selected or created player.
+        """
         user_input = self.view.generic_input(
             "Mettez l'index du joueur ou créez en un appuyant sur 'c'"
         )
@@ -145,6 +190,12 @@ class Controller:
 
     # Lancement du tournois
     def play_tournament(self, tournament: Tournament):
+        """
+        Play the tournament, including multiple rounds.
+
+        Args:
+        - tournament (Tournament): The tournament to be played.
+        """
         if not tournament:
             self.view.generic_print(
                 "Aucun tournoi n'a été créé. Veuillez d'abord créer un tournoi."
@@ -160,6 +211,13 @@ class Controller:
 
     # création des rounds 1,2,3 et 4
     def create_new_round_and_play_it(self, tournament: Tournament, first_round=True):
+        """
+        Create a new round for the tournament and play it.
+
+        Args:
+        - tournament (Tournament): The tournament in which the round is created.
+        - first_round (bool): Flag indicating if it's the first round.
+        """
         round_number = tournament.current_round
         name_of_round = self.view.generic_input(
             "Ajouter un nom au round" + str(round_number) + ":"
@@ -188,7 +246,18 @@ class Controller:
         tournament.update_tournament(serialized_tournament)
         self.ask_to_exit_tournament()
 
+    # séléction des joueurs pour les rounds
     def select_players_for_round(self, first_round=True, tournament_name=None):
+        """
+        Select players for a round, either randomly or based on the scores of the previous round.
+
+        Args:
+        - first_round (bool): Flag indicating if it's the first round.
+        - tournament_name (str): Name of tournament.
+
+        Returns:
+        - list: List of Match objects for the round.
+        """
         if first_round:
             players = self.player.get_all_players()
             random.shuffle(players)
@@ -207,6 +276,10 @@ class Controller:
 
     # Lancement du round
     def play_round(self):
+        """
+        Play a round of the tournament, including all matches.
+        Return the played round.
+        """
         round: Round = Round()
         self.view.display_round(round)
 
@@ -221,6 +294,16 @@ class Controller:
 
     # creation des matchs
     def create_match(self, player1: Player, player2: Player):
+        """
+        Create a match between two players and display match details.
+
+        Args:
+        - player1 (Player): The firts player.
+        - player2 (Player): The second player.
+
+        Returns:
+        - Match: The created Match object.
+        """
         player1.add_opponent(player2)
         player2.add_opponent(player1)
         match = Match(player_1=player1, player_2=player2)
@@ -230,6 +313,15 @@ class Controller:
 
     # Attribution des scores
     def play_match(self, match: Match):
+        """
+        Play a match and update players scors and ranks.
+
+        Args:
+        - match (Match): The Match pnject to be played.
+
+        Returns:
+        ' Match: The played Match object.
+        """
         self.view.generic_print(
             f"Match en cours: {match.player_1.lastname} vs {match.player_2.lastname}"
         )
@@ -274,6 +366,15 @@ class Controller:
 
     # méthode générique pour choisir l'index du tournoi
     def selected_tournament_index(self, tournaments):
+        """
+        Allow the user to select a tournament from a list and return the selected tournament.
+
+        Args:
+        - tournaments (list): List of Tournament objects.
+
+        Returns:
+        - Tournament or None: The selected tournament or None if no tournament is found..
+        """
         if not tournaments:
             self.view.generic_print("Aucun tournoi trouvé.")
             return None
@@ -303,6 +404,12 @@ class Controller:
 
     # reprendre un tournoi en cours
     def resume_tournament(self):
+        """
+        Resume a tournament by allowing the user to choose from available tournaments whit their names and numbers.
+
+        Returns:
+        - None
+        """
         tournaments = self.tournament.get_all_tournaments()
         selected_tournament: Tournament = self.selected_tournament_index(tournaments)
 
@@ -316,6 +423,12 @@ class Controller:
 
     # afficher la liste des tournoi disponible
     def display_list_of_tournaments(self):
+        """
+        Display a list of available tournaments with their names and numbers.
+
+        Returns:
+        - None
+        """
         tournaments = self.tournament.get_all_tournaments()
 
         if not tournaments:
@@ -334,6 +447,12 @@ class Controller:
 
     # afficher la liste des joueurs, par ordre alphabétique, d'un tournoi choisi
     def display_list_of_players_from_selected_tournament(self):
+        """
+        Display a list of players from a selected tournament with their IDs, names, and scores.
+
+        Returns:
+        - None
+        """
         tournaments = self.tournament.get_all_tournaments()
         selected_tournament = self.selected_tournament_index(tournaments)
 
@@ -362,6 +481,12 @@ class Controller:
 
     # afficher le rang des joueurs d'un tournoi choisi
     def display_rank_of_players_in_tournament(self):
+        """
+        Display the rank of players in a selected tournament.
+
+        Returns:
+        - None
+        """
         tournaments = self.tournament.get_all_tournaments()
         selected_tournament = self.selected_tournament_index(tournaments)
 
@@ -384,6 +509,12 @@ class Controller:
 
     # afficher les rounds d'un tournoi choisi
     def display_all_rounds_of_tournament(self):
+        """
+        Display a list of rounds in a selected tournament.
+
+        Returns:
+        - None
+        """
         tournaments = self.tournament.get_all_tournaments()
         selected_tournament = self.selected_tournament_index(tournaments)
 
@@ -409,6 +540,12 @@ class Controller:
 
     # afficher la liste des matchs d'un tournoi choisi
     def display_matches_of_one_tournament(self):
+        """
+        Display a list of matches in a selected tournament, including player information and results.
+
+        Returns:
+        - None
+        """
         tournaments = self.tournament.get_all_tournaments()
         selected_tournament: Tournament = self.selected_tournament_index(tournaments)
 
@@ -453,6 +590,9 @@ class Controller:
 
     # Intéraction avec l'utilisateur pour continuer ou quitter le tournoi en cours
     def ask_to_exit_tournament(self):
+        """
+        Ask the user if they want to continue or exit the current tournament.
+        """
         user_input = self.view.generic_input(
             "Continuer le tournoi? (Entrez O pour oui et N pour non.)"
         )
