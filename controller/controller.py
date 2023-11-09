@@ -26,7 +26,7 @@ class Controller:
     def start(self):
         self.view.display_menu()
         selected_menu = self.view.generic_input("Sélectionnez une option: ")
-        print(selected_menu)
+        self.view.generic_print(selected_menu)
         self.view.generic_print("Vous avez fait le choix: " + selected_menu)
 
         if selected_menu == "1":
@@ -124,7 +124,7 @@ class Controller:
         for index, player in enumerate(players, start=1):
             player: Player
             player_dict[str(index)] = player
-            print(f"{index}: {player.lastname}")
+            self.view.generic_print(f"{index}: {player.lastname}")
 
         while len(self.tournament.players) <= 7:
             joueur = self.add_player(player_dict)
@@ -295,7 +295,6 @@ class Controller:
             )
             try:
                 # si la clé existe dans le dict alors on return le tournoi
-                print(dict_of_tournaments)
                 if selected_index in dict_of_tournaments:
                     return dict_of_tournaments[selected_index]
                 else:
@@ -327,9 +326,14 @@ class Controller:
             return
 
         self.view.generic_print("Liste des tournois disponibles:")
-
+        table_data = []
         for i, tournament in enumerate(tournaments, start=1):
-            self.view.generic_print(f"{i}. {tournament.name}")
+            table_data.append([i, tournament.name])
+
+        table_headers = ["Numéro", "Nom du tournoi"]
+        table = tabulate(table_data, headers=table_headers, tablefmt="fancy_grid")
+        self.view.generic_print("Liste des tournois disponibles: ")
+        self.view.generic_print(table)
 
     # afficher la liste des joueurs, par ordre alphabétique, d'un tournoi choisi
     def display_list_of_players_from_selected_tournament(self):
@@ -341,10 +345,19 @@ class Controller:
                 f"Liste des joueurs du tournoi {selected_tournament.name}"
             )
             players = selected_tournament.players
+
+            table_data = []
             for player in players:
-                self.view.generic_print(
-                    f"ID: {player.player_id} Nom : {player.lastname}, Prénom: {player.firstname}, Score : {player.score}."
-                )
+                row_data = [
+                    player.player_id,
+                    f"{player.lastname} {player.firstname}",
+                    player.score,
+                ]
+                table_data.append(row_data)
+
+            table_headers = ["ID", "Nom du joueur", "Score"]
+            table = tabulate(table_data, headers=table_headers, tablefmt="fancy_grid")
+            self.view.generic_print(table)
         else:
             self.view.generic_print(
                 "Aucun joueur trouvé pour le tournoi {selected_tournament.name}"
@@ -360,10 +373,13 @@ class Controller:
                 f"Classement des joueurs du tournoi {selected_tournament.name} :"
             )
             players = selected_tournament.players
+            table_data = []
             for player in players:
-                self.view.generic_print(
-                    f"Rang du joueur {player.firstname}: {player.rank}"
-                )
+                row_data = [player.firstname, player.rank]
+                table_data.append(row_data)
+            table_headers = ["Prénom du joueur", "Rang"]
+            table = tabulate(table_data, headers=table_headers, tablefmt="fancy_grid")
+            self.view.generic_print(table)
         else:
             self.view.generic_print(
                 f"Aucun rang de joueurs dans le tournoi {selected_tournament.name}"
@@ -380,8 +396,14 @@ class Controller:
             )
 
             rounds = selected_tournament.rounds
-            for round in rounds:
-                self.view.generic_print(f"{round.name_of_round}")
+            table_data = []
+            for i, round in enumerate(rounds, start=1):
+                row_data = [i, round.name_of_round]
+                table_data.append(row_data)
+
+            table_headers = ["Numéro du round", "Nom du round"]
+            table = tabulate(table_data, headers=table_headers, tablefmt="fancy_grid")
+            self.view.generic_print(table)
 
         else:
             self.view.generic_print(
@@ -404,18 +426,31 @@ class Controller:
                     f"Liste des matchs du round {round.name_of_round} : "
                 )
                 matches = round.list_of_matches
-
+                table_data = []
                 for match in matches:
                     player_1 = match.player_1
                     player_2 = match.player_2
                     player_1_result = match.player_1_result
                     player_2_result = match.player_2_result
-
-                    self.view.generic_print(
-                        f"Match : ID: {player_1['player_id']}, Nom: {player_1['lastname']}, Prénom: {player_1['firstname']}, Score: {player_1['score']}, Rang: {player_1['rank']} "
-                        f"VS ID: {player_2['player_id']}, Nom: {player_2['lastname']}, Prénom: {player_2['firstname']}, Score: {player_2['score']}, Rang: {player_2['rank']}, "
-                        f"Résultat : {player_1_result} - {player_2_result}"
-                    )
+                    row_data = [
+                        f"{player_1['lastname']} {player_1['firstname']}",
+                        f"ID: {player_1['player_id']}, Score: {player_1['score']}, Rang: {player_1['rank']}",
+                        f"{player_2['lastname']}, {player_2['firstname']}",
+                        f"ID: {player_2['player_id']}, Score: {player_2['score']}, Rang: {player_2['rank']}",
+                        f"Résultat : {player_1_result} - {player_2_result}",
+                    ]
+                    table_data.append(row_data)
+                table_headers = [
+                    "Joueur 1",
+                    "Info Joueur 1",
+                    "Joueur 2",
+                    "Info Joueur 2",
+                    "Résultat",
+                ]
+                table = tabulate(
+                    table_data, headers=table_headers, tablefmt="fancy_grid"
+                )
+                self.view.generic_print(table)
         else:
             self.view.generic_print("Aucun match trouvé pour le tournoi sélectionné")
 
