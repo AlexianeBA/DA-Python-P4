@@ -70,8 +70,9 @@ class Controller:
                 c = player.sexe
                 d = player.date_of_birth
                 e = player.rank
+                f = player.score
                 self.view.generic_print(
-                    f"Nom: {a}, Prénom: {b}, Sexe: {c}, Date de naissance: {d}, Classement: {e}"
+                    f"Nom: {a}, Prénom: {b}, Sexe: {c}, Date de naissance: {d}, Classement: {e}, Score: {f}"
                 )
         else:
             self.view.generic_print(
@@ -230,21 +231,22 @@ class Controller:
         result = self.view.get_match_result()
 
         if result == "1":
-            match.player_1.update_score("1")
-            match.player_2.update_score("0")
+            match.player_1.update_score(1)
             match.player_1_result = 1
             match.player_1.update_rank(1)
 
         elif result == "2":
-            match.player_1.update_score("0")
-            match.player_2.update_score("1")
+            match.player_2.update_score(1)
             match.player_2_result = 1
             match.player_2.update_rank(1)
         elif result == "0.5":
-            match.player_1.update_score("0.5")
-            match.player_2.update_score("0.5")
+            match.player_1.update_score(0.5)
+            match.player_2.update_score(0.5)
             match.player_1_result = 0.5
             match.player_2_result = 0.5
+
+        match.player_1.update_player_score(match.player_1.score, match.player_1_result)
+        match.player_2.update_player_score(match.player_2.score, match.player_2_result)
 
         self.view.generic_print(
             f"Le joueur {match.player_1.firstname} a un score de {match.player_1_result}."
@@ -325,7 +327,7 @@ class Controller:
             players = selected_tournament.players
             for player in players:
                 self.view.generic_print(
-                    f"ID: {player.player_id} Nom : {player.lastname}, Prénom: {player.firstname}."
+                    f"ID: {player.player_id} Nom : {player.lastname}, Prénom: {player.firstname}, Score : {player.score}."
                 )
         else:
             self.view.generic_print(
@@ -384,14 +386,17 @@ class Controller:
                 self.view.generic_print(
                     f"Liste des matchs du round {round.name_of_round} : "
                 )
-                for match in round.list_of_matches:
+                matches = round.list_of_matches
+                for match in matches:
                     player_1 = match.player_1
                     player_2 = match.player_2
                     player_1_result = match.player_1_result
                     player_2_result = match.player_2_result
 
                     self.view.generic_print(
-                        f"Match : {player_1} vs {player_2}, Résultat : {player_1_result} - {player_2_result}"
+                        f"Match : ID: {player_1['player_id']}, Nom: {player_1['lastname']}, Prénom: {player_1['firstname']}, Score: {player_1['score']}, Rang: {player_1['rank']} "
+                        f"VS ID: {player_2['player_id']}, Nom: {player_2['lastname']}, Prénom: {player_2['firstname']}, Score: {player_2['score']}, Rang: {player_2['rank']}, "
+                        f"Résultat : {player_1_result} - {player_2_result}"
                     )
         else:
             self.view.generic_print("Aucun match trouvé pour le tournoi sélectionné")

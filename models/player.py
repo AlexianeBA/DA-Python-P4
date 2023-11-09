@@ -81,3 +81,12 @@ class Player:
             self.table.update(
                 {"rank": new_rank}, query_player_id.player_id == player_id
             )
+
+    def update_player_score(self, new_score):
+        player_id = self.player_id
+        query_player_id = Query()
+        player = self.table.get(query_player_id.player_id == player_id)
+        if player:
+            self.table.update(
+                {"score": new_score}, query_player_id.player_id == player_id
+            )
