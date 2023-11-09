@@ -55,6 +55,8 @@ class Round:
             match_instance = Match(
                 player_1=serialized_match["player_1"],
                 player_2=serialized_match["player_2"],
+                player_1_result=serialized_match["player_1_result"],
+                player_2_result=serialized_match["player_2_result"],
             )
             self.list_of_matches.append(match_instance)
 

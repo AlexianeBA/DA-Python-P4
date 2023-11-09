@@ -23,7 +23,7 @@ class View:
 9: Afficher les tours d'un tournoi
 10: Afficher tous les matchs d'un tounoi
 11: Quitter"""
-        print(menu)
+        self.generic_print(menu)
 
     # afficher la liste des tours avec les joueurs
     def display_round(self, round: Round):

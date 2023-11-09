@@ -7,6 +7,7 @@ from models.round import Round
 from models.match import Match
 from datetime import datetime
 import random
+from tabulate import tabulate
 
 
 class Controller:
@@ -61,19 +62,27 @@ class Controller:
 
         if players:
             players.sort(key=lambda player: player.lastname)
-            self.view.generic_print(
-                "Liste de tous les joueurs triés par ordre alphabétique:"
-            )
+            table_data = []
             for player in players:
-                a = player.lastname
-                b = player.firstname
-                c = player.sexe
-                d = player.date_of_birth
-                e = player.rank
-                f = player.score
-                self.view.generic_print(
-                    f"Nom: {a}, Prénom: {b}, Sexe: {c}, Date de naissance: {d}, Classement: {e}, Score: {f}"
-                )
+                row = [
+                    player.lastname,
+                    player.firstname,
+                    player.sexe,
+                    player.date_of_birth,
+                    player.rank,
+                    player.score,
+                ]
+                table_data.append(row)
+            headers = [
+                "Nom",
+                "Prénom",
+                "Sexe",
+                "Date de naissance",
+                "Classement",
+                "Score",
+            ]
+            table = tabulate(table_data, headers=headers, tablefmt="fancy_grid")
+            self.view.generic_print(table)
         else:
             self.view.generic_print(
                 "Aucun joueur n'a été trouvé dans la base de données."
@@ -234,8 +243,15 @@ class Controller:
             match.player_1.update_score(1)
             match.player_1_result = 1
             match.player_1.update_rank(1)
+            match.player_2.update_score(0)
+            match.player_2_result = 0
+            match.player_2.update_player_rank(0)
 
         elif result == "2":
+            match.player_1.update_score(0)
+            match.player_1_result = 0
+            match.player_1.update_player_rank(0)
+
             match.player_2.update_score(1)
             match.player_2_result = 1
             match.player_2.update_rank(1)
@@ -245,8 +261,8 @@ class Controller:
             match.player_1_result = 0.5
             match.player_2_result = 0.5
 
-        match.player_1.update_player_score(match.player_1.score, match.player_1_result)
-        match.player_2.update_player_score(match.player_2.score, match.player_2_result)
+        match.player_1.update_player_score(match.player_1.score)
+        match.player_2.update_player_score(match.player_2.score)
 
         self.view.generic_print(
             f"Le joueur {match.player_1.firstname} a un score de {match.player_1_result}."
@@ -375,7 +391,7 @@ class Controller:
     # afficher la liste des matchs d'un tournoi choisi
     def display_matches_of_one_tournament(self):
         tournaments = self.tournament.get_all_tournaments()
-        selected_tournament = self.selected_tournament_index(tournaments)
+        selected_tournament: Tournament = self.selected_tournament_index(tournaments)
 
         if selected_tournament:
             self.view.generic_print(
@@ -383,10 +399,12 @@ class Controller:
             )
             rounds = selected_tournament.rounds
             for round in rounds:
+                round: Round = round
                 self.view.generic_print(
                     f"Liste des matchs du round {round.name_of_round} : "
                 )
                 matches = round.list_of_matches
+
                 for match in matches:
                     player_1 = match.player_1
                     player_2 = match.player_2
