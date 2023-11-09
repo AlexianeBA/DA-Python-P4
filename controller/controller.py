@@ -38,21 +38,18 @@ class Controller:
             self.ask_to_exit_tournament()
             self.play_tournament(created_tournament)
         elif selected_menu == "4":
-            self.create_new_round_and_play_it(tournament=self.tournament)
-            self.select_players_for_round()
-        elif selected_menu == "5":
             self.resume_tournament()
-        elif selected_menu == "6":
+        elif selected_menu == "5":
             self.display_list_of_tournaments()
-        elif selected_menu == "7":
+        elif selected_menu == "6":
             self.display_list_of_players_from_selected_tournament()
-        elif selected_menu == "8":
+        elif selected_menu == "7":
             self.display_rank_of_players_in_tournament()
-        elif selected_menu == "9":
+        elif selected_menu == "8":
             self.display_all_rounds_of_tournament()
-        elif selected_menu == "10":
+        elif selected_menu == "9":
             self.display_matches_of_one_tournament()
-        elif selected_menu == "11":
+        elif selected_menu == "10":
             self.view.generic_print("Vous avez choisi de quitter le programme.")
             sys.exit()
 

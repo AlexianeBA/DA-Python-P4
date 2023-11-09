@@ -15,14 +15,13 @@ class View:
 1: Ajouter des joueurs
 2: Afficher la liste des joueurs
 3: Créer un tournoi
-4: Lancer un tournoi
-5: Reprendre un tournoi en cours
-6: Afficher la liste des tournois
-7: Afficher la liste des joueurs d'un tournoi
-8: Afficher le classement des joueurs d'un tounoi
-9: Afficher les tours d'un tournoi
-10: Afficher tous les matchs d'un tounoi
-11: Quitter"""
+4: Reprendre un tournoi en cours
+5: Afficher la liste des tournois
+6: Afficher la liste des joueurs d'un tournoi
+7: Afficher le classement des joueurs d'un tounoi
+8: Afficher les tours d'un tournoi
+9: Afficher tous les matchs d'un tounoi
+10: Quitter"""
         self.generic_print(menu)
 
     # afficher la liste des tours avec les joueurs
@@ -37,30 +36,6 @@ class View:
         print(f"Score Joueur 1: {match.player_1_result}\n")
         print("Le joueur 2 est : ", match.player_2.firstname, match.player_2.lastname)
         print(f"Score Joueur 2: {match.player_2_result}\n")
-
-    def display_list_of_player_from_tournament(self):
-        pass
-
-    def display_ranking_players_of_tournament():
-        pass
-
-    def display_rounds_tournament():
-        pass
-
-    def rest_of_tournament(self):
-        user_response = input(
-            'Souhaitez-vous lancer le tournoi ou le quitter? Entrer "lancer" ou "quitter"'
-        )
-        if user_response == "lancer":
-            print("Vous avez choisi de lancer le tournoi")
-        elif user_response == "quitter":
-            print("Vous avez choisi de quitter le tournoi.")
-        else:
-            print("Réponse invalide. Veuillez entrer 'lancer' ou 'quitter'.")
-
-    def display_first_round_matches(self, match_first_round):
-        for match in match_first_round:
-            print(f"Match: {match[0]} vs {match[1]}")
 
     def generic_print(self, sentance_print):
         print(sentance_print)

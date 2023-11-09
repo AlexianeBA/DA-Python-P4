@@ -54,9 +54,6 @@ class Tournament:
         serialize_tournament = self.serialize_tournament()
         self.table.insert(serialize_tournament)
 
-    def add_round(self, round):
-        self.rounds.append(round)
-
     def is_finished(self):
         return self.current_round > self.nb_rounds
 
@@ -88,11 +85,6 @@ class Tournament:
 
             return tournament_object
 
-    def get_tournament(self, name_tournament):
-        QueryTournament = Query()
-        p = self.table.search(QueryTournament.name == name_tournament)
-        return p
-
     def get_all_tournaments(self):
         tournaments = self.db.table("Tournaments").all()
         list_of_tournaments = []
@@ -107,9 +99,6 @@ class Tournament:
         for tournament_key in tournaments.all():
             tournament_data = tournaments.get(doc_id=tournament_key.doc_id)
             if tournament_data["name"] == tournament_name:
-                # Le nom du tournoi correspond, vous pouvez maintenant accéder à la liste des joueurs
                 players_list = tournament_data.get("players", [])
                 return players_list
-
-        # Si aucun tournoi correspondant n'est trouvé, renvoyez une liste vide
         return []
