@@ -2,7 +2,6 @@ from typing import List
 from models.round import Round
 from models.player import Player
 from tinydb import TinyDB, Query
-from datetime import datetime
 
 
 class Tournament:
