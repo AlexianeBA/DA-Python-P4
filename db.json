@@ -1,191 +1,681 @@
 {
-    "Players": {
-        "1": {
-            "lastname": "Barbe",
-            "firstname": "Alexiane",
-            "sexe": "F",
-            "date_of_birth": "05/03/2000",
-            "rank": "1",
-            "score": 0,
-            "player_id": ""
-        },
-        "2": {
-            "lastname": "Leroi",
-            "firstname": "Pierre",
-            "sexe": "M",
-            "date_of_birth": "05/03/2000",
-            "rank": "1",
-            "score": 0,
-            "player_id": ""
-        },
-        "3": {
-            "lastname": "Gentil",
-            "firstname": "Loic",
-            "sexe": "M",
-            "date_of_birth": "04/10/1996",
-            "rank": "2",
-            "score": 0,
-            "player_id": ""
-        },
-        "4": {
-            "lastname": "Gendre",
-            "firstname": "Marie",
-            "sexe": "F",
-            "date_of_birth": "06/09/1997",
-            "rank": "2",
-            "score": 0,
-            "player_id": ""
-        },
-        "5": {
-            "lastname": "Hearn",
-            "firstname": "Suzette",
-            "sexe": "F",
-            "date_of_birth": "25/07/1968",
-            "rank": "1",
-            "score": 0,
-            "player_id": ""
-        },
-        "6": {
-            "lastname": "Legros",
-            "firstname": "Jean",
-            "sexe": "M",
-            "date_of_birth": "04/07/1993",
-            "rank": "1",
-            "score": 0,
-            "player_id": ""
-        },
-        "7": {
-            "lastname": "Vigne",
-            "firstname": "Rose",
-            "sexe": "F",
-            "date_of_birth": "24/04/1998",
-            "rank": "2",
-            "score": 0,
-            "player_id": ""
-        },
-        "8": {
-            "lastname": "Favre",
-            "firstname": "Sacha",
-            "sexe": "M",
-            "date_of_birth": "21/10/1995",
-            "rank": "2",
-            "score": 0,
-            "player_id": ""
-        }
+  "Players": {
+    "1": {
+      "lastname": "Legendre",
+      "firstname": "Rose",
+      "sexe": "F",
+      "date_of_birth": "12/12/1996",
+      "rank": 9,
+      "score": 8.5,
+      "player_id": "AB1452",
+      "opponent": []
     },
-    "Tournaments": {
-        "1": {
-            "name": "a",
-            "location": "a",
-            "date": "a",
-            "nb_rounds": 4,
-            "current_round": 1,
-            "desciption": "a",
-            "players": [],
-            "rounds": []
-        },
-        "2": {
-            "name": "a",
-            "location": "a",
-            "date": "a",
-            "nb_rounds": 4,
-            "current_round": 1,
-            "desciption": "a",
-            "players": [],
-            "rounds": []
-        },
-        "3": {
-            "name": "z",
-            "location": "",
-            "date": "z",
-            "nb_rounds": 4,
-            "current_round": 1,
-            "desciption": "",
-            "players": [],
-            "rounds": []
-        },
-        "4": {
-            "name": "z",
-            "location": "",
-            "date": "z",
-            "nb_rounds": 4,
-            "current_round": 1,
-            "desciption": "",
-            "players": [
-                {
-                    "lastname": "Barbe",
-                    "firstname": "Alexiane",
-                    "sexe": "F",
-                    "date_of_birth": "05/03/2000",
-                    "rank": "1",
-                    "score": 0,
-                    "player_id": ""
-                },
-                {
-                    "lastname": "Leroi",
-                    "firstname": "Pierre",
-                    "sexe": "M",
-                    "date_of_birth": "05/03/2000",
-                    "rank": "1",
-                    "score": 0,
-                    "player_id": ""
-                },
-                {
-                    "lastname": "Gentil",
-                    "firstname": "Loic",
-                    "sexe": "M",
-                    "date_of_birth": "04/10/1996",
-                    "rank": "2",
-                    "score": 0,
-                    "player_id": ""
-                },
-                {
-                    "lastname": "Gendre",
-                    "firstname": "Marie",
-                    "sexe": "F",
-                    "date_of_birth": "06/09/1997",
-                    "rank": "2",
-                    "score": 0,
-                    "player_id": ""
-                },
-                {
-                    "lastname": "Hearn",
-                    "firstname": "Suzette",
-                    "sexe": "F",
-                    "date_of_birth": "25/07/1968",
-                    "rank": "1",
-                    "score": 0,
-                    "player_id": ""
-                },
-                {
-                    "lastname": "Legros",
-                    "firstname": "Jean",
-                    "sexe": "M",
-                    "date_of_birth": "04/07/1993",
-                    "rank": "1",
-                    "score": 0,
-                    "player_id": ""
-                },
-                {
-                    "lastname": "Vigne",
-                    "firstname": "Rose",
-                    "sexe": "F",
-                    "date_of_birth": "24/04/1998",
-                    "rank": "2",
-                    "score": 0,
-                    "player_id": ""
-                },
-                {
-                    "lastname": "Favre",
-                    "firstname": "Sacha",
-                    "sexe": "M",
-                    "date_of_birth": "21/10/1995",
-                    "rank": "2",
-                    "score": 0,
-                    "player_id": ""
-                }
-            ],
-            "rounds": []
-        }
+    "2": {
+      "lastname": "Legros",
+      "firstname": "Jacques",
+      "sexe": "M",
+      "date_of_birth": "14/10/1994",
+      "rank": 5,
+      "score": 4.5,
+      "player_id": "AB7845",
+      "opponent": []
+    },
+    "3": {
+      "lastname": "Millot",
+      "firstname": "Jean",
+      "sexe": "M",
+      "date_of_birth": "10/10/1997",
+      "rank": 8,
+      "score": 7.5,
+      "player_id": "AB1408",
+      "opponent": []
+    },
+    "4": {
+      "lastname": "Franc",
+      "firstname": "Patricia",
+      "sexe": "F",
+      "date_of_birth": "01/08/1992",
+      "rank": 6,
+      "score": 5.0,
+      "player_id": "AB0704",
+      "opponent": []
+    },
+    "5": {
+      "lastname": "Opis",
+      "firstname": "Jeanne",
+      "sexe": "F",
+      "date_of_birth": "15/07/1991",
+      "rank": 6,
+      "score": 6.0,
+      "player_id": "AB5698",
+      "opponent": []
+    },
+    "6": {
+      "lastname": "Martin",
+      "firstname": "Louis",
+      "sexe": "M",
+      "date_of_birth": "01/06/1993",
+      "rank": 6,
+      "score": 6.5,
+      "player_id": "AB1107",
+      "opponent": []
+    },
+    "7": {
+      "lastname": "Richard",
+      "firstname": "Marie",
+      "sexe": "F",
+      "date_of_birth": "04/07/1999",
+      "rank": 6,
+      "score": 6.0,
+      "player_id": "AB4637",
+      "opponent": []
+    },
+    "8": {
+      "lastname": "Dubois",
+      "firstname": "Loic",
+      "sexe": "M",
+      "date_of_birth": "05/03/2000",
+      "rank": 5,
+      "score": 4.0,
+      "player_id": "AB0503",
+      "opponent": []
     }
+  },
+  "Tournaments": {
+    "1": {
+      "name": "Gryffondor",
+      "location": "Poudlard",
+      "date": "2023-11-12 16:24:11.196863",
+      "nb_rounds": 4,
+      "current_round": 1,
+      "description": "A reprendre",
+      "players": [
+        {
+          "lastname": "Legendre",
+          "firstname": "Rose",
+          "sexe": "F",
+          "date_of_birth": "12/12/1996",
+          "rank": 5,
+          "score": 4.5,
+          "player_id": "AB1452",
+          "opponent": []
+        },
+        {
+          "lastname": "Legros",
+          "firstname": "Jacques",
+          "sexe": "M",
+          "date_of_birth": "14/10/1994",
+          "rank": 4,
+          "score": 3.0,
+          "player_id": "AB7845",
+          "opponent": []
+        },
+        {
+          "lastname": "Millot",
+          "firstname": "Jean",
+          "sexe": "M",
+          "date_of_birth": "10/10/1997",
+          "rank": 6,
+          "score": 5.0,
+          "player_id": "AB1408",
+          "opponent": []
+        },
+        {
+          "lastname": "Franc",
+          "firstname": "Patricia",
+          "sexe": "F",
+          "date_of_birth": "01/08/1992",
+          "rank": 4,
+          "score": 3.0,
+          "player_id": "AB0704",
+          "opponent": []
+        },
+        {
+          "lastname": "Opis",
+          "firstname": "Jeanne",
+          "sexe": "F",
+          "date_of_birth": "15/07/1991",
+          "rank": 4,
+          "score": 4.0,
+          "player_id": "AB5698",
+          "opponent": []
+        },
+        {
+          "lastname": "Martin",
+          "firstname": "Louis",
+          "sexe": "M",
+          "date_of_birth": "01/06/1993",
+          "rank": 4,
+          "score": 4.0,
+          "player_id": "AB1107",
+          "opponent": []
+        },
+        {
+          "lastname": "Richard",
+          "firstname": "Marie",
+          "sexe": "F",
+          "date_of_birth": "04/07/1999",
+          "rank": 5,
+          "score": 4.5,
+          "player_id": "AB4637",
+          "opponent": []
+        },
+        {
+          "lastname": "Dubois",
+          "firstname": "Loic",
+          "sexe": "M",
+          "date_of_birth": "05/03/2000",
+          "rank": 5,
+          "score": 4.0,
+          "player_id": "AB0503",
+          "opponent": []
+        }
+      ],
+      "rounds": []
+    },
+    "2": {
+      "name": "Serpentard",
+      "location": "Poudlard",
+      "date": "2023-11-12 16:24:44.219406",
+      "nb_rounds": 4,
+      "current_round": 5,
+      "description": "Termin\u00e9",
+      "players": [
+        {
+          "lastname": "Legendre",
+          "firstname": "Rose",
+          "sexe": "F",
+          "date_of_birth": "12/12/1996",
+          "rank": 5,
+          "score": 4.5,
+          "player_id": "AB1452",
+          "opponent": []
+        },
+        {
+          "lastname": "Legros",
+          "firstname": "Jacques",
+          "sexe": "M",
+          "date_of_birth": "14/10/1994",
+          "rank": 4,
+          "score": 3.0,
+          "player_id": "AB7845",
+          "opponent": []
+        },
+        {
+          "lastname": "Millot",
+          "firstname": "Jean",
+          "sexe": "M",
+          "date_of_birth": "10/10/1997",
+          "rank": 6,
+          "score": 5.0,
+          "player_id": "AB1408",
+          "opponent": []
+        },
+        {
+          "lastname": "Franc",
+          "firstname": "Patricia",
+          "sexe": "F",
+          "date_of_birth": "01/08/1992",
+          "rank": 4,
+          "score": 3.0,
+          "player_id": "AB0704",
+          "opponent": []
+        },
+        {
+          "lastname": "Opis",
+          "firstname": "Jeanne",
+          "sexe": "F",
+          "date_of_birth": "15/07/1991",
+          "rank": 4,
+          "score": 4.0,
+          "player_id": "AB5698",
+          "opponent": []
+        },
+        {
+          "lastname": "Martin",
+          "firstname": "Louis",
+          "sexe": "M",
+          "date_of_birth": "01/06/1993",
+          "rank": 4,
+          "score": 4.0,
+          "player_id": "AB1107",
+          "opponent": []
+        },
+        {
+          "lastname": "Richard",
+          "firstname": "Marie",
+          "sexe": "F",
+          "date_of_birth": "04/07/1999",
+          "rank": 5,
+          "score": 4.5,
+          "player_id": "AB4637",
+          "opponent": []
+        },
+        {
+          "lastname": "Dubois",
+          "firstname": "Loic",
+          "sexe": "M",
+          "date_of_birth": "05/03/2000",
+          "rank": 5,
+          "score": 4.0,
+          "player_id": "AB0503",
+          "opponent": []
+        }
+      ],
+      "rounds": [
+        {
+          "name_of_round": "Round 1",
+          "list_of_matches": [
+            {
+              "player_1": {
+                "lastname": "Millot",
+                "firstname": "Jean",
+                "sexe": "M",
+                "date_of_birth": "10/10/1997",
+                "rank": 6,
+                "score": 5.0,
+                "player_id": "AB1408",
+                "opponent": ["AB1107"]
+              },
+              "player_1_result": 0,
+              "player_2": {
+                "lastname": "Martin",
+                "firstname": "Louis",
+                "sexe": "M",
+                "date_of_birth": "01/06/1993",
+                "rank": 5,
+                "score": 5.0,
+                "player_id": "AB1107",
+                "opponent": ["AB1408"]
+              },
+              "player_2_result": 1
+            },
+            {
+              "player_1": {
+                "lastname": "Opis",
+                "firstname": "Jeanne",
+                "sexe": "F",
+                "date_of_birth": "15/07/1991",
+                "rank": 5,
+                "score": 5.0,
+                "player_id": "AB5698",
+                "opponent": ["AB0503"]
+              },
+              "player_1_result": 1,
+              "player_2": {
+                "lastname": "Dubois",
+                "firstname": "Loic",
+                "sexe": "M",
+                "date_of_birth": "05/03/2000",
+                "rank": 5,
+                "score": 4.0,
+                "player_id": "AB0503",
+                "opponent": ["AB5698"]
+              },
+              "player_2_result": 0
+            },
+            {
+              "player_1": {
+                "lastname": "Legros",
+                "firstname": "Jacques",
+                "sexe": "M",
+                "date_of_birth": "14/10/1994",
+                "rank": 4,
+                "score": 3.0,
+                "player_id": "AB7845",
+                "opponent": ["AB1452"]
+              },
+              "player_1_result": 0,
+              "player_2": {
+                "lastname": "Legendre",
+                "firstname": "Rose",
+                "sexe": "F",
+                "date_of_birth": "12/12/1996",
+                "rank": 6,
+                "score": 5.5,
+                "player_id": "AB1452",
+                "opponent": ["AB7845"]
+              },
+              "player_2_result": 1
+            },
+            {
+              "player_1": {
+                "lastname": "Franc",
+                "firstname": "Patricia",
+                "sexe": "F",
+                "date_of_birth": "01/08/1992",
+                "rank": 5,
+                "score": 4.0,
+                "player_id": "AB0704",
+                "opponent": ["AB4637"]
+              },
+              "player_1_result": 1,
+              "player_2": {
+                "lastname": "Richard",
+                "firstname": "Marie",
+                "sexe": "F",
+                "date_of_birth": "04/07/1999",
+                "rank": 5,
+                "score": 4.5,
+                "player_id": "AB4637",
+                "opponent": ["AB0704"]
+              },
+              "player_2_result": 0
+            }
+          ],
+          "date_and_hour_start": "2023-11-12 16:24:57.393934",
+          "date_and_hour_end": "2023-11-12 16:25:01.633889"
+        },
+        {
+          "name_of_round": "Round 2",
+          "list_of_matches": [
+            {
+              "player_1": {
+                "lastname": "Richard",
+                "firstname": "Marie",
+                "sexe": "F",
+                "date_of_birth": "04/07/1999",
+                "rank": 5,
+                "score": 5.0,
+                "player_id": "AB4637",
+                "opponent": ["AB1107"]
+              },
+              "player_1_result": 0.5,
+              "player_2": {
+                "lastname": "Martin",
+                "firstname": "Louis",
+                "sexe": "M",
+                "date_of_birth": "01/06/1993",
+                "rank": 5,
+                "score": 5.5,
+                "player_id": "AB1107",
+                "opponent": ["AB4637"]
+              },
+              "player_2_result": 0.5
+            },
+            {
+              "player_1": {
+                "lastname": "Legendre",
+                "firstname": "Rose",
+                "sexe": "F",
+                "date_of_birth": "12/12/1996",
+                "rank": 7,
+                "score": 6.5,
+                "player_id": "AB1452",
+                "opponent": ["AB5698"]
+              },
+              "player_1_result": 1,
+              "player_2": {
+                "lastname": "Opis",
+                "firstname": "Jeanne",
+                "sexe": "F",
+                "date_of_birth": "15/07/1991",
+                "rank": 5,
+                "score": 5.0,
+                "player_id": "AB5698",
+                "opponent": ["AB1452"]
+              },
+              "player_2_result": 0
+            },
+            {
+              "player_1": {
+                "lastname": "Dubois",
+                "firstname": "Loic",
+                "sexe": "M",
+                "date_of_birth": "05/03/2000",
+                "rank": 5,
+                "score": 4.0,
+                "player_id": "AB0503",
+                "opponent": ["AB1408"]
+              },
+              "player_1_result": 0,
+              "player_2": {
+                "lastname": "Millot",
+                "firstname": "Jean",
+                "sexe": "M",
+                "date_of_birth": "10/10/1997",
+                "rank": 7,
+                "score": 6.0,
+                "player_id": "AB1408",
+                "opponent": ["AB0503"]
+              },
+              "player_2_result": 1
+            },
+            {
+              "player_1": {
+                "lastname": "Franc",
+                "firstname": "Patricia",
+                "sexe": "F",
+                "date_of_birth": "01/08/1992",
+                "rank": 6,
+                "score": 5.0,
+                "player_id": "AB0704",
+                "opponent": ["AB7845"]
+              },
+              "player_1_result": 1,
+              "player_2": {
+                "lastname": "Legros",
+                "firstname": "Jacques",
+                "sexe": "M",
+                "date_of_birth": "14/10/1994",
+                "rank": 4,
+                "score": 3.0,
+                "player_id": "AB7845",
+                "opponent": ["AB0704"]
+              },
+              "player_2_result": 0
+            }
+          ],
+          "date_and_hour_start": "2023-11-12 16:25:06.058361",
+          "date_and_hour_end": "2023-11-12 16:25:10.761769"
+        },
+        {
+          "name_of_round": "Round 3",
+          "list_of_matches": [
+            {
+              "player_1": {
+                "lastname": "Richard",
+                "firstname": "Marie",
+                "sexe": "F",
+                "date_of_birth": "04/07/1999",
+                "rank": 5,
+                "score": 5.0,
+                "player_id": "AB4637",
+                "opponent": ["AB7845"]
+              },
+              "player_1_result": 0,
+              "player_2": {
+                "lastname": "Legros",
+                "firstname": "Jacques",
+                "sexe": "M",
+                "date_of_birth": "14/10/1994",
+                "rank": 5,
+                "score": 4.0,
+                "player_id": "AB7845",
+                "opponent": ["AB4637"]
+              },
+              "player_2_result": 1
+            },
+            {
+              "player_1": {
+                "lastname": "Millot",
+                "firstname": "Jean",
+                "sexe": "M",
+                "date_of_birth": "10/10/1997",
+                "rank": 8,
+                "score": 7.0,
+                "player_id": "AB1408",
+                "opponent": ["AB0704"]
+              },
+              "player_1_result": 1,
+              "player_2": {
+                "lastname": "Franc",
+                "firstname": "Patricia",
+                "sexe": "F",
+                "date_of_birth": "01/08/1992",
+                "rank": 6,
+                "score": 5.0,
+                "player_id": "AB0704",
+                "opponent": ["AB1408"]
+              },
+              "player_2_result": 0
+            },
+            {
+              "player_1": {
+                "lastname": "Dubois",
+                "firstname": "Loic",
+                "sexe": "M",
+                "date_of_birth": "05/03/2000",
+                "rank": 5,
+                "score": 4.0,
+                "player_id": "AB0503",
+                "opponent": ["AB1452"]
+              },
+              "player_1_result": 0,
+              "player_2": {
+                "lastname": "Legendre",
+                "firstname": "Rose",
+                "sexe": "F",
+                "date_of_birth": "12/12/1996",
+                "rank": 8,
+                "score": 7.5,
+                "player_id": "AB1452",
+                "opponent": ["AB0503"]
+              },
+              "player_2_result": 1
+            },
+            {
+              "player_1": {
+                "lastname": "Martin",
+                "firstname": "Louis",
+                "sexe": "M",
+                "date_of_birth": "01/06/1993",
+                "rank": 6,
+                "score": 6.5,
+                "player_id": "AB1107",
+                "opponent": ["AB5698"]
+              },
+              "player_1_result": 1,
+              "player_2": {
+                "lastname": "Opis",
+                "firstname": "Jeanne",
+                "sexe": "F",
+                "date_of_birth": "15/07/1991",
+                "rank": 5,
+                "score": 5.0,
+                "player_id": "AB5698",
+                "opponent": ["AB1107"]
+              },
+              "player_2_result": 0
+            }
+          ],
+          "date_and_hour_start": "2023-11-12 16:25:15.097125",
+          "date_and_hour_end": "2023-11-12 16:25:17.697565"
+        },
+        {
+          "name_of_round": "Round 4",
+          "list_of_matches": [
+            {
+              "player_1": {
+                "lastname": "Millot",
+                "firstname": "Jean",
+                "sexe": "M",
+                "date_of_birth": "10/10/1997",
+                "rank": 8,
+                "score": 7.5,
+                "player_id": "AB1408",
+                "opponent": ["AB7845"]
+              },
+              "player_1_result": 0.5,
+              "player_2": {
+                "lastname": "Legros",
+                "firstname": "Jacques",
+                "sexe": "M",
+                "date_of_birth": "14/10/1994",
+                "rank": 5,
+                "score": 4.5,
+                "player_id": "AB7845",
+                "opponent": ["AB1408"]
+              },
+              "player_2_result": 0.5
+            },
+            {
+              "player_1": {
+                "lastname": "Martin",
+                "firstname": "Louis",
+                "sexe": "M",
+                "date_of_birth": "01/06/1993",
+                "rank": 6,
+                "score": 6.5,
+                "player_id": "AB1107",
+                "opponent": ["AB1452"]
+              },
+              "player_1_result": 0,
+              "player_2": {
+                "lastname": "Legendre",
+                "firstname": "Rose",
+                "sexe": "F",
+                "date_of_birth": "12/12/1996",
+                "rank": 9,
+                "score": 8.5,
+                "player_id": "AB1452",
+                "opponent": ["AB1107"]
+              },
+              "player_2_result": 1
+            },
+            {
+              "player_1": {
+                "lastname": "Richard",
+                "firstname": "Marie",
+                "sexe": "F",
+                "date_of_birth": "04/07/1999",
+                "rank": 6,
+                "score": 6.0,
+                "player_id": "AB4637",
+                "opponent": ["AB0503"]
+              },
+              "player_1_result": 1,
+              "player_2": {
+                "lastname": "Dubois",
+                "firstname": "Loic",
+                "sexe": "M",
+                "date_of_birth": "05/03/2000",
+                "rank": 5,
+                "score": 4.0,
+                "player_id": "AB0503",
+                "opponent": ["AB4637"]
+              },
+              "player_2_result": 0
+            },
+            {
+              "player_1": {
+                "lastname": "Franc",
+                "firstname": "Patricia",
+                "sexe": "F",
+                "date_of_birth": "01/08/1992",
+                "rank": 6,
+                "score": 5.0,
+                "player_id": "AB0704",
+                "opponent": ["AB5698"]
+              },
+              "player_1_result": 0,
+              "player_2": {
+                "lastname": "Opis",
+                "firstname": "Jeanne",
+                "sexe": "F",
+                "date_of_birth": "15/07/1991",
+                "rank": 6,
+                "score": 6.0,
+                "player_id": "AB5698",
+                "opponent": ["AB0704"]
+              },
+              "player_2_result": 1
+            }
+          ],
+          "date_and_hour_start": "2023-11-12 16:25:22.228290",
+          "date_and_hour_end": "2023-11-12 16:25:27.472978"
+        }
+      ]
+    }
+  }
 }
