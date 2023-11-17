@@ -1,5 +1,6 @@
 from typing import List
 from models.match import Match
+from models.player import Player
 
 
 class Round:
@@ -63,8 +64,26 @@ class Round:
 
         for serialized_match in round_dict["list_of_matches"]:
             match_instance = Match(
-                player_1=serialized_match["player_1"],
-                player_2=serialized_match["player_2"],
+                player_1=Player(
+                    lastname=serialized_match["player_1"]["lastname"],
+                    firstname=serialized_match["player_1"]["firstname"],
+                    sexe=serialized_match["player_1"]["sexe"],
+                    date_of_birth=serialized_match["player_1"]["date_of_birth"],
+                    rank=serialized_match["player_1"]["rank"],
+                    score=serialized_match["player_1"]["score"],
+                    player_id=serialized_match["player_1"]["player_id"],
+                    opponent=serialized_match["player_1"]["opponent"],
+                ),
+                player_2=Player(
+                    lastname=serialized_match["player_2"]["lastname"],
+                    firstname=serialized_match["player_2"]["firstname"],
+                    sexe=serialized_match["player_2"]["sexe"],
+                    date_of_birth=serialized_match["player_2"]["date_of_birth"],
+                    rank=serialized_match["player_2"]["rank"],
+                    score=serialized_match["player_2"]["score"],
+                    player_id=serialized_match["player_2"]["player_id"],
+                    opponent=serialized_match["player_2"]["opponent"],
+                ),
                 player_1_result=serialized_match["player_1_result"],
                 player_2_result=serialized_match["player_2_result"],
             )

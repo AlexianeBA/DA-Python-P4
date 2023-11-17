@@ -108,6 +108,7 @@ class Player:
             list_of_players.append(deserialized_player)
         return list_of_players
 
+    
     def deserialize_player(self, player_dict):
         """Creates a Player instance from a serialized dictionary.
 
