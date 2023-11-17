@@ -39,7 +39,8 @@ class Match:
         }
         return serialize_match
 
-    def deserialize_match(self, deserialized_match):
+    @staticmethod
+    def deserialize_match(deserialized_match):
         """Creates a Match instance from a serialized dictionary.
 
         Args:

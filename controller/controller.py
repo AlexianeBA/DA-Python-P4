@@ -227,9 +227,13 @@ class Controller:
         list_of_matchs = []
 
         if first_round:
-            list_of_matchs = self.select_players_for_round()
+            list_of_matchs = self.select_players_for_round(
+                first_round=True, tournament_name=tournament.name
+            )
         else:
-            list_of_matchs = self.select_players_for_round(tournament.name)
+            list_of_matchs = self.select_players_for_round(
+                first_round=False, tournament_name=tournament.name
+            )
 
         for match in list_of_matchs:
             self.play_match(match)
@@ -244,10 +248,14 @@ class Controller:
         tournament.current_round += 1
         serialized_tournament = tournament.serialize_tournament()
         tournament.update_tournament(serialized_tournament)
-        self.ask_to_exit_tournament()
+        if tournament.current_round == 4:
+            self.view.generic_print("Tounoi terminé, Au revoir")
+            exit(0)
+        else:
+            self.ask_to_exit_tournament()
 
     # séléction des joueurs pour les rounds
-    def select_players_for_round(self, first_round=True, tournament_name=None):
+    def select_players_for_round(self, first_round, tournament_name):
         """
         Select players for a round, either randomly or based on the scores of the previous round.
 
@@ -258,17 +266,16 @@ class Controller:
         Returns:
         - list: List of Match objects for the round.
         """
+        players = self.tournament.get_all_players_of_a_tournament(tournament_name)
         if first_round:
-            players = self.player.get_all_players()
             random.shuffle(players)
         else:
-            players = self.tournament.get_all_players_of_a_tournament(tournament_name)
             players = sorted(players, key=lambda player: player.score, reverse=True)
 
         list_matches = []
         for i in range(0, len(players), 2):
-            player_1 = players[i]
-            player_2 = players[i + 1]
+            player_1 = Player.deserialize_player(players[i])
+            player_2 = Player.deserialize_player(players[i + 1])
             match = self.create_match(player_1, player_2)
             list_matches.append(match)
 

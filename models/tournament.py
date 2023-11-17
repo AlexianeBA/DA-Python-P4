@@ -158,9 +158,10 @@ class Tournament:
             List[Player]: A list of Player instances participating in the tournament.
         """
         tournaments = self.db.table("Tournaments")
+        players_list = []
         for tournament_key in tournaments.all():
             tournament_data = tournaments.get(doc_id=tournament_key.doc_id)
             if tournament_data["name"] == tournament_name:
                 players_list = tournament_data.get("players", [])
                 return players_list
-        return []
+        return players_list
