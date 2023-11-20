@@ -22,7 +22,8 @@ class Tournament:
         self,
         name="",
         location="",
-        date="",
+        start_date="",
+        end_date="",
         description="",
         current_round=1,
         nb_rounds=4,
@@ -43,7 +44,8 @@ class Tournament:
         """
         self.name = name
         self.location = location
-        self.date = date
+        self.start_date = start_date
+        self.end_date = end_date
         self.nb_rounds = nb_rounds
         self.current_round = current_round
         self.rounds: List[Round] = rounds
@@ -71,7 +73,8 @@ class Tournament:
         serialize_tournament = {
             "name": self.name,
             "location": self.location,
-            "date": self.date,
+            "start_date": self.start_date,
+            "end_date": self.end_date,
             "nb_rounds": self.nb_rounds,
             "current_round": self.current_round,
             "description": self.description,
@@ -117,7 +120,8 @@ class Tournament:
             tournament_object = Tournament(
                 name=serialized_tournament["name"],
                 location=serialized_tournament["location"],
-                date=serialized_tournament["date"],
+                start_date=serialized_tournament["start_date"],
+                end_date=serialized_tournament["end_date"],
                 nb_rounds=serialized_tournament["nb_rounds"],
                 current_round=serialized_tournament["current_round"],
                 description=serialized_tournament["description"],

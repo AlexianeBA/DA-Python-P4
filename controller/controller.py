@@ -142,11 +142,11 @@ class Controller:
         self.view.generic_print("Création d'un nouveau tournoi")
         name = self.view.generic_input("Nom du tournoi: ")
         location = self.view.generic_input("Lieu du tournoi: ")
-        date = str(datetime.now())
+        start_date = str(datetime.now())
         description = self.view.generic_input("Description du tournoi: ")
 
         new_tournament = Tournament(
-            name=name, location=location, date=date, description=description
+            name=name, location=location, start_date=start_date, description=description
         )
 
         self.tournament = new_tournament
@@ -246,6 +246,8 @@ class Controller:
         played_round.date_and_hour_end = datetime.now()
         tournament.rounds.append(played_round)
         tournament.current_round += 1
+        if tournament.current_round == 4:
+            tournament.end_date = str(datetime.now())
         serialized_tournament = tournament.serialize_tournament()
         tournament.update_tournament(serialized_tournament)
         if tournament.current_round == 4:
@@ -274,7 +276,7 @@ class Controller:
 
         list_matches = []
         for i in range(0, len(players), 2):
-            player_1 = Player.deserialize_player(players[i])
+            player_1 = Player.deserialize_player(player_dict=players[i])
             player_2 = Player.deserialize_player(players[i + 1])
             match = self.create_match(player_1, player_2)
             list_matches.append(match)
@@ -445,9 +447,11 @@ class Controller:
         self.view.generic_print("Liste des tournois disponibles:")
         table_data = []
         for i, tournament in enumerate(tournaments, start=1):
-            table_data.append([i, tournament.name])
+            table_data.append(
+                [i, tournament.name, tournament.start_date, tournament.end_date]
+            )
 
-        table_headers = ["Numéro", "Nom du tournoi"]
+        table_headers = ["Numéro", "Nom du tournoi", "Date de début", "Date de fin"]
         table = tabulate(table_data, headers=table_headers, tablefmt="fancy_grid")
         self.view.generic_print("Liste des tournois disponibles: ")
         self.view.generic_print(table)
