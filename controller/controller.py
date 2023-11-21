@@ -248,8 +248,8 @@ class Controller:
         tournament.current_round += 1
         if tournament.current_round == 4:
             tournament.end_date = str(datetime.now())
-            serialized_tournament = tournament.serialize_tournament()
-            tournament.update_tournament(serialized_tournament)
+        serialized_tournament = tournament.serialize_tournament()
+        tournament.update_tournament(serialized_tournament)
         if tournament.current_round == 5:
             self.view.generic_print("Tounoi terminé, Au revoir")
             exit(0)
@@ -578,10 +578,10 @@ class Controller:
                     player_1_result = match.player_1_result
                     player_2_result = match.player_2_result
                     row_data = [
-                        f"{player_1['lastname']} {player_1['firstname']}",
-                        f"ID: {player_1['player_id']}, Score: {player_1['score']}, Rang: {player_1['rank']}",
-                        f"{player_2['lastname']}, {player_2['firstname']}",
-                        f"ID: {player_2['player_id']}, Score: {player_2['score']}, Rang: {player_2['rank']}",
+                        f"{player_1.lastname} {player_1.firstname}",
+                        f"ID: {player_1.player_id}, Score: {player_1.score}, Rang: {player_1.rank}",
+                        f"{player_2.lastname}, {player_2.firstname}",
+                        f"ID: {player_2.player_id}, Score: {player_2.score}, Rang: {player_2.rank}",
                         f"Résultat : {player_1_result} - {player_2_result}",
                     ]
                     table_data.append(row_data)
