@@ -248,9 +248,9 @@ class Controller:
         tournament.current_round += 1
         if tournament.current_round == 4:
             tournament.end_date = str(datetime.now())
-        serialized_tournament = tournament.serialize_tournament()
-        tournament.update_tournament(serialized_tournament)
-        if tournament.current_round == 4:
+            serialized_tournament = tournament.serialize_tournament()
+            tournament.update_tournament(serialized_tournament)
+        if tournament.current_round == 5:
             self.view.generic_print("Tounoi terminé, Au revoir")
             exit(0)
         else:
